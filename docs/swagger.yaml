@@ -1,0 +1,44 @@
+definitions:
+  models.UserForm:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with the provided details
+      parameters:
+      - description: User input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register a new user
+      tags:
+      - users
+swagger: "2.0"
