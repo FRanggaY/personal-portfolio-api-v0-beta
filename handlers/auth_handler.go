@@ -54,6 +54,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// create token jwt (expired 24 hour)
 	expTime := time.Now().Add(24 * time.Hour)
 	claims := &config.JWTClaim{
+		Id:       exist_user.Id,
 		Username: user.Username,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "go-jwt-mux",
@@ -79,7 +80,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 	})
 
-	response := map[string]string{"message": "success"}
+	response := map[string]string{
+		"message":      "success",
+		"access_token": token,
+		"expired":      expTime.String(),
+	}
 	helper.ResponseJSON(w, http.StatusOK, response)
 }
 
@@ -142,5 +147,35 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	})
 
 	response := map[string]string{"message": "logout success"}
+	helper.ResponseJSON(w, http.StatusOK, response)
+}
+
+// Profile godoc
+// @Summary Profile user
+// @Description Profile user
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]string "Success"
+// @Router /profile [get]
+func Profile(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+
+	user, err := repositories.ReadUser(jwtClaim.Id)
+	if err != nil {
+		response := map[string]string{"message": "User ID not found"}
+		helper.ResponseJSON(w, http.StatusNotFound, response)
+		return
+	}
+
+	response := map[string]interface{}{
+		"message": "success",
+		"data": map[string]interface{}{
+			"id":       user.Id,
+			"username": user.Username,
+			"name":     user.Name,
+		},
+	}
+
 	helper.ResponseJSON(w, http.StatusOK, response)
 }

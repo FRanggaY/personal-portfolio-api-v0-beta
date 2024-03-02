@@ -11,6 +11,7 @@ var jwtKey = os.Getenv("JWT_KEY")
 var JWT_KEY = []byte(jwtKey)
 
 type JWTClaim struct {
+	Id       int64
 	Username string
 	jwt.RegisteredClaims
 }

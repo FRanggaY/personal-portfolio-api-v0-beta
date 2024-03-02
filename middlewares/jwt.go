@@ -19,7 +19,7 @@ func JWTMiddleware(next http.Handler) http.Handler {
 				return
 			}
 		}
-		// mengambil token value
+		// take token value
 		tokenString := c.Value
 
 		claims := &config.JWTClaim{}
@@ -58,7 +58,6 @@ func JWTMiddleware(next http.Handler) http.Handler {
 			helper.ResponseJSON(w, http.StatusUnauthorized, response)
 			return
 		}
-
 		next.ServeHTTP(w, r)
 	})
 }

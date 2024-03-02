@@ -35,6 +35,7 @@ func main() {
 	api.HandleFunc("/logout", handlers.Logout).Methods("GET")
 
 	apiProtect := r.PathPrefix(basePathRoute).Subrouter()
+	apiProtect.HandleFunc("/profile", handlers.Profile).Methods("GET")
 	apiProtect.HandleFunc("/user", handlers.GetFilteredPaginatedUsers).Methods("GET")
 
 	var userDetailRoute = "/user/{id}"

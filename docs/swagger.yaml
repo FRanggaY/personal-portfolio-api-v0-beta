@@ -153,6 +153,23 @@ paths:
       summary: Logout user
       tags:
       - auth
+  /profile:
+    get:
+      consumes:
+      - application/json
+      description: Profile user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Profile user
+      tags:
+      - auth
   /register:
     post:
       consumes:
