@@ -26,6 +26,7 @@ var messageUserIdDetailNotFound = "User ID not found in URL"
 // @Success 200 {object} map[string]string "Success"
 // @Success 500 {object} map[string]string "Internal Server Error"
 // @Failure 400 {object} map[string]string "Bad Request"
+// @Failure 404 {object} map[string]string "Not Found"
 // @Router /user [get]
 func GetFilteredPaginatedUsers(w http.ResponseWriter, r *http.Request) {
 	nameFilter := r.URL.Query().Get("name")
@@ -69,6 +70,12 @@ func GetFilteredPaginatedUsers(w http.ResponseWriter, r *http.Request) {
 			CreatedAt: user.CreatedAt,
 			UpdatedAt: user.UpdatedAt,
 		})
+	}
+
+	if filteredUsers == nil {
+		response := map[string]string{"message": "user not found"}
+		helper.ResponseJSON(w, http.StatusNotFound, response)
+		return
 	}
 
 	response := map[string]interface{}{
