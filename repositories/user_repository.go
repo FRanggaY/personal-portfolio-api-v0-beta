@@ -35,16 +35,21 @@ func CountUsers(nameFilter string) (int, error) {
 	return int(count), nil
 }
 
-func CreateUser(userInput *models.User) error {
+func CreateUser(userInput *models.UserCreateForm) error {
 	// Hash user's password
 	hashedPassword, err := HashUserPassword(userInput.Password)
 	if err != nil {
 		return err
 	}
-	userInput.Password = hashedPassword
+
+	newUser := models.User{
+		Username: userInput.Username,
+		Name:     userInput.Name,
+		Password: hashedPassword,
+	}
 
 	// Insert user into database
-	if err := models.DB.Create(userInput).Error; err != nil {
+	if err := models.DB.Create(&newUser).Error; err != nil {
 		return err
 	}
 	return nil
@@ -101,10 +106,19 @@ func ReadUserByUsername(username string) (*models.User, error) {
 	return &user, nil
 }
 
-func UpdateUser(user *models.User) error {
-	if err := models.DB.Save(user).Error; err != nil {
+func UpdateUser(id int64, updatedUser *models.UserEditForm) error {
+	existingUser, err := ReadUser(id)
+	if err != nil {
 		return err
 	}
+
+	existingUser.Name = updatedUser.Name
+	existingUser.Username = updatedUser.Username
+
+	if err := models.DB.Save(existingUser).Error; err != nil {
+		return err
+	}
+
 	return nil
 }
 

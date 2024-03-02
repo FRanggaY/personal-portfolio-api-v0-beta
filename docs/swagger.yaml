@@ -8,6 +8,13 @@ definitions:
       username:
         type: string
     type: object
+  models.UserEditForm:
+    properties:
+      name:
+        type: string
+      username:
+        type: string
+    type: object
   models.UserLoginForm:
     properties:
       password:
@@ -206,6 +213,46 @@ paths:
               type: string
             type: object
       summary: Get User
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Update user with provided detail by id
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserEditForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update User
       tags:
       - users
 swagger: "2.0"

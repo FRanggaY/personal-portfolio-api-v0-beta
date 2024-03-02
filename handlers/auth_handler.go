@@ -95,7 +95,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 // @Router /register [post]
 func Register(w http.ResponseWriter, r *http.Request) {
 	// define input from json
-	var userInput models.User
+	var userInput models.UserCreateForm
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&userInput); err != nil {
 		log.Fatal("Error decoding new user: ")

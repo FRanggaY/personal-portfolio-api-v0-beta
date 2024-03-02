@@ -33,8 +33,12 @@ func main() {
 
 	apiProtect := r.PathPrefix(basePathRoute).Subrouter()
 	apiProtect.HandleFunc("/user", handlers.GetFilteredPaginatedUsers).Methods("GET")
-	apiProtect.HandleFunc("/user/{id}", handlers.GetUser).Methods("GET")
-	apiProtect.HandleFunc("/user/{id}", handlers.DeleteUser).Methods("DELETE")
+
+	var userDetailRoute = "/user/{id}"
+	apiProtect.HandleFunc(userDetailRoute, handlers.GetUser).Methods("GET")
+	apiProtect.HandleFunc(userDetailRoute, handlers.UpdateUser).Methods("PUT")
+	apiProtect.HandleFunc(userDetailRoute, handlers.DeleteUser).Methods("DELETE")
+
 	apiProtect.Use(middlewares.JWTMiddleware)
 
 	log.Fatal(http.ListenAndServe(":8080", r))

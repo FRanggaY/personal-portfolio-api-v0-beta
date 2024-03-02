@@ -1,14 +1,18 @@
 package handlers
 
 import (
+	"encoding/json"
 	"math"
 	"net/http"
 	"time"
 
 	"github.com/FRanggaY/personal-portfolio-api/helper"
+	"github.com/FRanggaY/personal-portfolio-api/models"
 	"github.com/FRanggaY/personal-portfolio-api/repositories"
 	"github.com/gorilla/mux"
 )
+
+var messageUserIdDetailNotFound = "User ID not found in URL"
 
 // get all user godoc
 // @Summary Get All User
@@ -93,7 +97,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userIDStr, ok := vars["id"]
 	if !ok {
-		response := map[string]string{"message": "User ID not found in URL"}
+		response := map[string]string{"message": messageUserIdDetailNotFound}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
@@ -119,22 +123,57 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	helper.ResponseJSON(w, http.StatusOK, response)
 }
 
-// func UpdateUser(w http.ResponseWriter, r *http.Request) {
-// 	var updatedUser models.User
-// 	if err := json.NewDecoder(r.Body).Decode(&updatedUser); err != nil {
-// 		http.Error(w, "Failed to decode user input", http.StatusBadRequest)
-// 		return
-// 	}
-// 	defer r.Body.Close()
+// update user godoc
+// @Summary Update User
+// @Description Update user with provided detail by id
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Param input body models.UserEditForm true "User input"
+// @Success 200 {object} map[string]string "Success"
+// @Success 500 {object} map[string]string "Internal Server Error"
+// @Failure 404 {object} map[string]string "Not Found"
+// @Router /user/{id} [put]
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	userIDStr, ok := vars["id"]
+	if !ok {
+		response := map[string]string{"message": messageUserIdDetailNotFound}
+		helper.ResponseJSON(w, http.StatusInternalServerError, response)
+		return
+	}
 
-// 	if err := repositories.UpdateUser(&updatedUser); err != nil {
-// 		http.Error(w, "Failed to update user", http.StatusInternalServerError)
-// 		return
-// 	}
+	userID := helper.ParseUserID(userIDStr)
 
-// 	w.WriteHeader(http.StatusOK)
-// 	w.Write([]byte("User updated successfully"))
-// }
+	var updatedUser models.UserEditForm
+	if err := json.NewDecoder(r.Body).Decode(&updatedUser); err != nil {
+		response := map[string]string{"message": "Failed to decode user input"}
+		helper.ResponseJSON(w, http.StatusBadRequest, response)
+		return
+	}
+	defer r.Body.Close()
+
+	// validate username unique in other user
+	exist_user, _ := repositories.ReadUserByUsername(updatedUser.Username)
+	if exist_user != nil && exist_user.Id != userID {
+		// Handle error
+		response := map[string]string{"message": "Username already used"}
+		helper.ResponseJSON(w, http.StatusBadRequest, response)
+		return
+	}
+
+	if err := repositories.UpdateUser(userID, &updatedUser); err != nil {
+		response := map[string]string{"message": "Failed to update user"}
+		helper.ResponseJSON(w, http.StatusBadRequest, response)
+		return
+	}
+
+	response := map[string]interface{}{
+		"message": "success",
+	}
+	helper.ResponseJSON(w, http.StatusOK, response)
+}
 
 // delete user godoc
 // @Summary Delete User
@@ -151,7 +190,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userIDStr, ok := vars["id"]
 	if !ok {
-		response := map[string]string{"message": "User ID not found in URL"}
+		response := map[string]string{"message": messageUserIdDetailNotFound}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
