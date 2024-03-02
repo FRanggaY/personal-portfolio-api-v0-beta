@@ -1,4 +1,31 @@
 definitions:
+  models.School:
+    properties:
+      address:
+        type: string
+      code:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      is_external_image_url:
+        type: boolean
+      is_external_url:
+        type: boolean
+      name:
+        type: string
+      updated_at:
+        type: string
+      url:
+        type: string
+      userEducations:
+        items:
+          $ref: '#/definitions/models.UserEducation'
+        type: array
+    type: object
   models.UserCreateForm:
     properties:
       name:
@@ -14,6 +41,60 @@ definitions:
         type: string
       username:
         type: string
+    type: object
+  models.UserEducation:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      schoolId:
+        description: Foreign key to link user education to school
+        type: integer
+      updated_at:
+        type: string
+      userEducationTranslations:
+        items:
+          $ref: '#/definitions/models.UserEducationTranslation'
+        type: array
+      userID:
+        description: Foreign key to link user education to user
+        type: integer
+    type: object
+  models.UserEducationTranslation:
+    properties:
+      category:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      industry:
+        type: string
+      languageID:
+        description: Foreign key to link user education translation to language
+        type: integer
+      location:
+        type: string
+      location_type:
+        type: string
+      month_end:
+        type: integer
+      month_start:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+      userEducationID:
+        description: Foreign key to link user education translation to user education
+        type: integer
+      year_end:
+        type: integer
+      year_start:
+        type: integer
     type: object
   models.UserLoginForm:
     properties:
@@ -88,7 +169,7 @@ paths:
       - application/json
       responses:
         "201":
-          description: Success
+          description: Created
           schema:
             additionalProperties:
               type: string
@@ -102,6 +183,139 @@ paths:
       summary: Register a new user
       tags:
       - auth
+  /school:
+    get:
+      consumes:
+      - application/json
+      description: Get All School with the pagination need login
+      parameters:
+      - default: 5
+        description: Page size
+        in: query
+        name: size
+        type: integer
+      - default: 1
+        description: Page offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get All School
+      tags:
+      - schools
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new school with file upload support
+      parameters:
+      - description: School code
+        in: formData
+        name: code
+        required: true
+        type: string
+      - description: School name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: School image file
+        in: formData
+        name: image_file
+        required: true
+        type: file
+      - description: School URL
+        in: formData
+        name: url
+        type: string
+      - description: Is external URL
+        in: formData
+        name: is_external_url
+        type: boolean
+      - description: Is external image URL
+        in: formData
+        name: is_external_image_url
+        type: boolean
+      - description: School address
+        in: formData
+        name: address
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new school
+      tags:
+      - schools
+  /school/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve details of a school by its ID
+      parameters:
+      - description: School ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/models.School'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Read school
+      tags:
+      - schools
   /user:
     get:
       consumes:

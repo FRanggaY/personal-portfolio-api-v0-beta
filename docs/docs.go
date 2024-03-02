@@ -113,6 +113,57 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/school": {
+            "get": {
+                "description": "Get All School with the pagination need login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "schools"
+                ],
+                "summary": "Get All School",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 5,
+                        "description": "Page size",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
                         "description": "Success",
                         "schema": {
                             "type": "object",
@@ -123,6 +174,154 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new school with file upload support",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "schools"
+                ],
+                "summary": "Create a new school",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "School code",
+                        "name": "code",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "School name",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "School image file",
+                        "name": "image_file",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "School URL",
+                        "name": "url",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Is external URL",
+                        "name": "is_external_url",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Is external image URL",
+                        "name": "is_external_image_url",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "School address",
+                        "name": "address",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/school/{id}": {
+            "get": {
+                "description": "Retrieve details of a school by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "schools"
+                ],
+                "summary": "Read school",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "School ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/models.School"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -365,6 +564,47 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.School": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "is_external_image_url": {
+                    "type": "boolean"
+                },
+                "is_external_url": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "userEducations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.UserEducation"
+                    }
+                }
+            }
+        },
         "models.UserCreateForm": {
             "type": "object",
             "properties": {
@@ -387,6 +627,86 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "models.UserEducation": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "schoolId": {
+                    "description": "Foreign key to link user education to school",
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "userEducationTranslations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.UserEducationTranslation"
+                    }
+                },
+                "userID": {
+                    "description": "Foreign key to link user education to user",
+                    "type": "integer"
+                }
+            }
+        },
+        "models.UserEducationTranslation": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "industry": {
+                    "type": "string"
+                },
+                "languageID": {
+                    "description": "Foreign key to link user education translation to language",
+                    "type": "integer"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "location_type": {
+                    "type": "string"
+                },
+                "month_end": {
+                    "type": "integer"
+                },
+                "month_start": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "userEducationID": {
+                    "description": "Foreign key to link user education translation to user education",
+                    "type": "integer"
+                },
+                "year_end": {
+                    "type": "integer"
+                },
+                "year_start": {
+                    "type": "integer"
                 }
             }
         },

@@ -26,6 +26,9 @@ func main() {
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 	r.PathPrefix("/documentation/").Handler(httpSwagger.WrapHandler)
 
+	// static
+	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets/"))))
+
 	api := r.PathPrefix(basePathRoute).Subrouter()
 	api.HandleFunc("/login", handlers.Login).Methods("POST")
 	api.HandleFunc("/register", handlers.Register).Methods("POST")
@@ -39,6 +42,9 @@ func main() {
 	apiProtect.HandleFunc(userDetailRoute, handlers.UpdateUser).Methods("PUT")
 	apiProtect.HandleFunc(userDetailRoute, handlers.DeleteUser).Methods("DELETE")
 
+	apiProtect.HandleFunc("/school", handlers.GetFilteredPaginatedSchools).Methods("GET")
+	apiProtect.HandleFunc("/school", handlers.CreateSchool).Methods("POST")
+	apiProtect.HandleFunc("/school/{id}", handlers.ReadSchool).Methods("GET")
 	apiProtect.Use(middlewares.JWTMiddleware)
 
 	log.Fatal(http.ListenAndServe(":8080", r))

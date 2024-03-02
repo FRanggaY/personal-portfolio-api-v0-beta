@@ -22,10 +22,18 @@ func ParsePageNumber(pageNumberStr string) int {
 	return pageNumber
 }
 
-func ParseUserID(userIdString string) int64 {
-	userID, err := strconv.ParseInt(userIdString, 10, 64)
+func ParseIDStringToInt(IdString string) int64 {
+	id, err := strconv.ParseInt(IdString, 10, 64)
 	if err != nil {
 		return 0
 	}
-	return userID
+	return id
+}
+
+func ParseIDStringToBool(IdString string) bool {
+	id, err := strconv.ParseBool(IdString)
+	if err != nil {
+		return false
+	}
+	return id
 }
