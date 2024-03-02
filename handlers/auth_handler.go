@@ -90,7 +90,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param input body models.UserCreateForm true "User input"
-// @Success 201 {object} map[string]string "Success"
+// @Success 201 {object} map[string]string "Created"
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Router /register [post]
 func Register(w http.ResponseWriter, r *http.Request) {
@@ -119,7 +119,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := map[string]string{"message": "success"}
+	response := map[string]string{"message": "created"}
 	helper.ResponseJSON(w, http.StatusCreated, response)
 }
 
