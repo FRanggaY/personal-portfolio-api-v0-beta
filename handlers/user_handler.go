@@ -49,6 +49,7 @@ func GetFilteredPaginatedUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var filteredUsers []struct {
+		Id        int64     `json:"id"`
 		Username  string    `json:"username"`
 		Name      string    `json:"name"`
 		CreatedAt time.Time `json:"created_at"`
@@ -56,11 +57,13 @@ func GetFilteredPaginatedUsers(w http.ResponseWriter, r *http.Request) {
 	}
 	for _, user := range users {
 		filteredUsers = append(filteredUsers, struct {
+			Id        int64     `json:"id"`
 			Username  string    `json:"username"`
 			Name      string    `json:"name"`
 			CreatedAt time.Time `json:"created_at"`
 			UpdatedAt time.Time `json:"updated_at"`
 		}{
+			Id:        user.Id,
 			Username:  user.Username,
 			Name:      user.Name,
 			CreatedAt: user.CreatedAt,
@@ -102,7 +105,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID := helper.ParseUserID(userIDStr)
+	userID := helper.ParseIDStringToInt(userIDStr)
 	user, err := repositories.ReadUser(userID)
 	if err != nil {
 		response := map[string]string{"message": "User ID not found"}
@@ -113,6 +116,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	response := map[string]interface{}{
 		"message": "success",
 		"data": map[string]interface{}{
+			"id":         user.Id,
 			"username":   user.Username,
 			"name":       user.Name,
 			"created_at": user.CreatedAt,
@@ -144,7 +148,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID := helper.ParseUserID(userIDStr)
+	userID := helper.ParseIDStringToInt(userIDStr)
 
 	var updatedUser models.UserEditForm
 	if err := json.NewDecoder(r.Body).Decode(&updatedUser); err != nil {
@@ -195,7 +199,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID := helper.ParseUserID(userIDStr)
+	userID := helper.ParseIDStringToInt(userIDStr)
 	err := repositories.DeleteUser(userID)
 	if err != nil {
 		response := map[string]string{"message": "User ID not found"}
