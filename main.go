@@ -5,7 +5,8 @@ import (
 	"net/http"
 
 	"github.com/FRanggaY/personal-portfolio-api/docs"
-	"github.com/FRanggaY/personal-portfolio-api/handlers/authHandler"
+	"github.com/FRanggaY/personal-portfolio-api/handlers"
+	"github.com/FRanggaY/personal-portfolio-api/middlewares"
 	"github.com/FRanggaY/personal-portfolio-api/models"
 	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -16,17 +17,25 @@ func main() {
 
 	models.ConnectDatabase()
 
+	var basePathRoute = "/api/v1"
+
 	docs.SwaggerInfo.Title = "Swagger Personal Portfolio API"
 	docs.SwaggerInfo.Description = "This is a sample personal portfolio server."
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.BasePath = "/api/v1"
+	docs.SwaggerInfo.BasePath = basePathRoute
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 	r.PathPrefix("/documentation/").Handler(httpSwagger.WrapHandler)
 
-	api := r.PathPrefix("/api").Subrouter()
-	api.HandleFunc("/v1/login", authHandler.Login).Methods("POST")
-	api.HandleFunc("/v1/register", authHandler.Register).Methods("POST")
-	api.HandleFunc("/v1/logout", authHandler.Logout).Methods("GET")
+	api := r.PathPrefix(basePathRoute).Subrouter()
+	api.HandleFunc("/login", handlers.Login).Methods("POST")
+	api.HandleFunc("/register", handlers.Register).Methods("POST")
+	api.HandleFunc("/logout", handlers.Logout).Methods("GET")
+
+	apiProtect := r.PathPrefix(basePathRoute).Subrouter()
+	apiProtect.HandleFunc("/user", handlers.GetFilteredPaginatedUsers).Methods("GET")
+	apiProtect.HandleFunc("/user/{id}", handlers.GetUser).Methods("GET")
+	apiProtect.HandleFunc("/user/{id}", handlers.DeleteUser).Methods("DELETE")
+	apiProtect.Use(middlewares.JWTMiddleware)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }

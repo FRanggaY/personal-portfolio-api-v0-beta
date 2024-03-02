@@ -1,18 +1,38 @@
 package models
 
-import "time"
+import (
+	"time"
 
-type UserForm struct {
-	Name     string `gorm:"varchar(48),unique,not null" json:"name"`
-	Username string `gorm:"varchar(12),unique,not null" json:"username"`
-	Password string `gorm:"varchar(300),unique,not null" json:"password"`
+	"gorm.io/gorm"
+)
+
+type UserCreateForm struct {
+	Name     string `gorm:"varchar;not null;size:48" json:"name"`
+	Username string `gorm:"varchar;unique;not null;size:48" json:"username"`
+	Password string `gorm:"varchar;unique;not null;size:300" json:"password"`
+}
+
+type UserLoginForm struct {
+	Username string `gorm:"varchar;unique;not null;size:48" json:"username"`
+	Password string `gorm:"varchar;unique;not null;size:300" json:"password"`
 }
 
 type User struct {
 	Id        int64     `gorm:"primaryKey" json:"id"`
-	Name      string    `gorm:"varchar(48),unique,not null" json:"name"`
-	Username  string    `gorm:"varchar(12),unique,not null" json:"username"`
-	Password  string    `gorm:"varchar(300),unique,not null" json:"password"`
-	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updated_at"`
+	Name      string    `gorm:"varchar;not null;size:48" json:"name"`
+	Username  string    `gorm:"varchar;unique;not null;size:48" json:"username"`
+	Password  string    `gorm:"varchar;unique;not null;size:300" json:"password"`
+	CreatedAt time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoCreateTime" json:"created_at"`
+	UpdatedAt time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoUpdateTime" json:"updated_at"`
+
+	Positions   []UserPosition   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Attachments []UserAttachment `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Experiences []UserExperience `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Educations  []UserEducation  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+}
+
+func (User) BeforeUpdate(db *gorm.DB) error {
+	// manually updated at
+	db.Statement.SetColumn("UpdatedAt", time.Now())
+	return nil
 }
