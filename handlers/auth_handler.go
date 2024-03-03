@@ -36,7 +36,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	// validation
 	var user models.User
-	exist_user, err := repositories.ReadUserByUsername(userInput.Username)
+	userRepo := repositories.NewUserRepository()
+	exist_user, err := userRepo.ReadByUsername(userInput.Username)
 	if err != nil {
 		// Handle error
 		response := map[string]string{"message": "Username or password invalid"}
@@ -45,7 +46,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// check password valid or not
-	if err := repositories.CompareUserPassword(exist_user.Password, userInput.Password); err != nil {
+	if err := userRepo.CompareUserPassword(exist_user.Password, userInput.Password); err != nil {
 		response := map[string]string{"message": "Username or password invalid"}
 		helper.ResponseJSON(w, http.StatusUnauthorized, response)
 		return
@@ -108,7 +109,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	// validate username unique
-	exist_user, _ := repositories.ReadUserByUsername(userInput.Username)
+	userRepo := repositories.NewUserRepository()
+	exist_user, _ := userRepo.ReadByUsername(userInput.Username)
 	if exist_user != nil {
 		// Handle error
 		response := map[string]string{"message": "Username already used"}
@@ -117,15 +119,21 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// insert to database
-	if err := repositories.CreateUser(&userInput); err != nil {
+	if newUser, err := userRepo.Create(&userInput); err != nil {
 		// Handle error
 		response := map[string]string{"message": "Error creating new user"}
 		helper.ResponseJSON(w, http.StatusBadRequest, response)
 		return
+	} else {
+		response := map[string]interface{}{
+			"message": "success",
+			"data": map[string]interface{}{
+				"id": newUser.Id,
+			},
+		}
+		helper.ResponseJSON(w, http.StatusOK, response)
+		return
 	}
-
-	response := map[string]string{"message": "created"}
-	helper.ResponseJSON(w, http.StatusCreated, response)
 }
 
 // Logout godoc
@@ -161,7 +169,8 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 func Profile(w http.ResponseWriter, r *http.Request) {
 	jwtClaim, _ := helper.GetJWTClaim(r)
 
-	user, err := repositories.ReadUser(jwtClaim.Id)
+	userRepo := repositories.NewUserRepository()
+	user, err := userRepo.Read(jwtClaim.Id)
 	if err != nil {
 		response := map[string]string{"message": "User ID not found"}
 		helper.ResponseJSON(w, http.StatusNotFound, response)

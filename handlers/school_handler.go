@@ -77,15 +77,22 @@ func CreateSchool(w http.ResponseWriter, r *http.Request) {
 		IsExternalImageUrl: isExternalImageUrl,
 	}
 	// insert to database
-	if err := repositories.CreateSchool(&newSchool); err != nil {
+	schoolRepo := repositories.NewSchoolRepository()
+	if newSchool, err := schoolRepo.Create(&newSchool); err != nil {
 		// Handle error
 		response := map[string]string{"message": "Error creating new school"}
 		helper.ResponseJSON(w, http.StatusBadRequest, response)
 		return
+	} else {
+		response := map[string]interface{}{
+			"message": "success",
+			"data": map[string]interface{}{
+				"id": newSchool.Id,
+			},
+		}
+		helper.ResponseJSON(w, http.StatusOK, response)
+		return
 	}
-
-	response := map[string]string{"message": "created"}
-	helper.ResponseJSON(w, http.StatusCreated, response)
 }
 
 // get all school godoc
@@ -105,7 +112,8 @@ func GetFilteredPaginatedSchools(w http.ResponseWriter, r *http.Request) {
 	pageSize := helper.ParsePageSize(r.URL.Query().Get("size"))
 	pageNumber := helper.ParsePageNumber(r.URL.Query().Get("offset"))
 
-	totalCount, err := repositories.CountSchool()
+	schoolRepo := repositories.NewSchoolRepository()
+	totalCount, err := schoolRepo.Count()
 	if err != nil {
 		response := map[string]string{"message": "Failed to fetch total count"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
@@ -114,7 +122,7 @@ func GetFilteredPaginatedSchools(w http.ResponseWriter, r *http.Request) {
 
 	totalPage := int(math.Ceil(float64(totalCount) / float64(pageSize)))
 
-	schools, err := repositories.ReadSchoolsFilteredPaginated(pageSize, pageNumber)
+	schools, err := schoolRepo.ReadFilteredPaginated(pageSize, pageNumber)
 	if err != nil {
 		response := map[string]string{"message": "Failed to fetch schools"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
@@ -186,7 +194,8 @@ func ReadSchool(w http.ResponseWriter, r *http.Request) {
 
 	schoolID := helper.ParseIDStringToInt(schoolIDStr)
 
-	school, err := repositories.ReadSchool(schoolID)
+	schoolRepo := repositories.NewSchoolRepository()
+	school, err := schoolRepo.Read(schoolID)
 	if err != nil {
 		response := map[string]string{"message": "School ID not found"}
 		helper.ResponseJSON(w, http.StatusNotFound, response)

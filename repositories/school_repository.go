@@ -4,15 +4,21 @@ import (
 	"github.com/FRanggaY/personal-portfolio-api/models"
 )
 
-func CreateSchool(newSchool *models.School) error {
-	// Insert school into database
-	if err := models.DB.Create(&newSchool).Error; err != nil {
-		return err
-	}
-	return nil
+type SchoolRepository struct{}
+
+func NewSchoolRepository() *SchoolRepository {
+	return &SchoolRepository{}
 }
 
-func CountSchool() (int, error) {
+func (repo *SchoolRepository) Create(newSchool *models.School) (*models.School, error) {
+	// Insert school into database
+	if err := models.DB.Create(newSchool).Error; err != nil {
+		return nil, err
+	}
+	return newSchool, nil
+}
+
+func (repo *SchoolRepository) Count() (int, error) {
 	var count int64
 	query := models.DB.Model(&models.School{})
 	if err := query.Count(&count).Error; err != nil {
@@ -21,7 +27,7 @@ func CountSchool() (int, error) {
 	return int(count), nil
 }
 
-func ReadAllSchool() ([]models.School, error) {
+func (repo *SchoolRepository) ReadAll() ([]models.School, error) {
 	var schools []models.School
 	if err := models.DB.Find(&schools).Error; err != nil {
 		return nil, err
@@ -29,7 +35,7 @@ func ReadAllSchool() ([]models.School, error) {
 	return schools, nil
 }
 
-func ReadSchoolsFilteredPaginated(pageSize, pageNumber int) ([]models.School, error) {
+func (repo *SchoolRepository) ReadFilteredPaginated(pageSize, pageNumber int) ([]models.School, error) {
 	var schools []models.School
 
 	// default
@@ -40,7 +46,7 @@ func ReadSchoolsFilteredPaginated(pageSize, pageNumber int) ([]models.School, er
 		pageNumber = 1
 	}
 
-	// calculate off set
+	// calculate offset
 	offset := (pageNumber - 1) * pageSize
 
 	query := models.DB
@@ -52,7 +58,7 @@ func ReadSchoolsFilteredPaginated(pageSize, pageNumber int) ([]models.School, er
 	return schools, nil
 }
 
-func ReadSchool(id int64) (*models.School, error) {
+func (repo *SchoolRepository) Read(id int64) (*models.School, error) {
 	var school models.School
 	if err := models.DB.First(&school, id).Error; err != nil {
 		return nil, err

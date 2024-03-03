@@ -33,7 +33,8 @@ func GetFilteredPaginatedUsers(w http.ResponseWriter, r *http.Request) {
 	pageSize := helper.ParsePageSize(r.URL.Query().Get("size"))
 	pageNumber := helper.ParsePageNumber(r.URL.Query().Get("offset"))
 
-	totalCount, err := repositories.CountUsers(nameFilter)
+	userRepo := repositories.NewUserRepository()
+	totalCount, err := userRepo.Count(nameFilter)
 	if err != nil {
 		response := map[string]string{"message": "Failed to fetch total count"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
@@ -42,7 +43,7 @@ func GetFilteredPaginatedUsers(w http.ResponseWriter, r *http.Request) {
 
 	totalPage := int(math.Ceil(float64(totalCount) / float64(pageSize)))
 
-	users, err := repositories.ReadUsersFilteredPaginated(nameFilter, pageSize, pageNumber)
+	users, err := userRepo.ReadFilteredPaginated(nameFilter, pageSize, pageNumber)
 	if err != nil {
 		response := map[string]string{"message": "Failed to fetch users"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
@@ -112,8 +113,9 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	userRepo := repositories.NewUserRepository()
 	userID := helper.ParseIDStringToInt(userIDStr)
-	user, err := repositories.ReadUser(userID)
+	user, err := userRepo.Read(userID)
 	if err != nil {
 		response := map[string]string{"message": "User ID not found"}
 		helper.ResponseJSON(w, http.StatusNotFound, response)
@@ -165,8 +167,9 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
+	userRepo := repositories.NewUserRepository()
 	// validate username unique in other user
-	exist_user, _ := repositories.ReadUserByUsername(updatedUser.Username)
+	exist_user, _ := userRepo.ReadByUsername(updatedUser.Username)
 	if exist_user != nil && exist_user.Id != userID {
 		// Handle error
 		response := map[string]string{"message": "Username already used"}
@@ -174,7 +177,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := repositories.UpdateUser(userID, &updatedUser); err != nil {
+	if err := userRepo.Update(userID, &updatedUser); err != nil {
 		response := map[string]string{"message": "Failed to update user"}
 		helper.ResponseJSON(w, http.StatusBadRequest, response)
 		return
@@ -206,8 +209,9 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	userRepo := repositories.NewUserRepository()
 	userID := helper.ParseIDStringToInt(userIDStr)
-	err := repositories.DeleteUser(userID)
+	err := userRepo.Delete(userID)
 	if err != nil {
 		response := map[string]string{"message": "User ID not found"}
 		helper.ResponseJSON(w, http.StatusNotFound, response)

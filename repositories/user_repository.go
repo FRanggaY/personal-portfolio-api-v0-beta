@@ -5,7 +5,13 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func HashUserPassword(password string) (string, error) {
+type UserRepository struct{}
+
+func NewUserRepository() *UserRepository {
+	return &UserRepository{}
+}
+
+func (repo *UserRepository) HashUserPassword(password string) (string, error) {
 	// Generate hashed password
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -14,7 +20,7 @@ func HashUserPassword(password string) (string, error) {
 	return string(hashedPassword), nil
 }
 
-func CompareUserPassword(hashedPassword, plainPassword string) error {
+func (repo *UserRepository) CompareUserPassword(hashedPassword, plainPassword string) error {
 	// Compare hashed password with plain password
 	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(plainPassword))
 	if err != nil {
@@ -23,7 +29,7 @@ func CompareUserPassword(hashedPassword, plainPassword string) error {
 	return nil
 }
 
-func CountUsers(nameFilter string) (int, error) {
+func (repo *UserRepository) Count(nameFilter string) (int, error) {
 	var count int64
 	query := models.DB.Model(&models.User{})
 	if nameFilter != "" {
@@ -35,11 +41,11 @@ func CountUsers(nameFilter string) (int, error) {
 	return int(count), nil
 }
 
-func CreateUser(userInput *models.UserCreateForm) error {
+func (repo *UserRepository) Create(userInput *models.UserCreateForm) (*models.User, error) {
 	// Hash user's password
-	hashedPassword, err := HashUserPassword(userInput.Password)
+	hashedPassword, err := repo.HashUserPassword(userInput.Password)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	newUser := models.User{
@@ -50,12 +56,12 @@ func CreateUser(userInput *models.UserCreateForm) error {
 
 	// Insert user into database
 	if err := models.DB.Create(&newUser).Error; err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return &newUser, nil
 }
 
-func ReadAllUsers() ([]models.User, error) {
+func (repo *UserRepository) ReadAll() ([]models.User, error) {
 	var users []models.User
 	if err := models.DB.Find(&users).Error; err != nil {
 		return nil, err
@@ -63,7 +69,7 @@ func ReadAllUsers() ([]models.User, error) {
 	return users, nil
 }
 
-func ReadUsersFilteredPaginated(nameFilter string, pageSize, pageNumber int) ([]models.User, error) {
+func (repo *UserRepository) ReadFilteredPaginated(nameFilter string, pageSize, pageNumber int) ([]models.User, error) {
 	var users []models.User
 
 	// default
@@ -90,7 +96,7 @@ func ReadUsersFilteredPaginated(nameFilter string, pageSize, pageNumber int) ([]
 	return users, nil
 }
 
-func ReadUser(id int64) (*models.User, error) {
+func (repo *UserRepository) Read(id int64) (*models.User, error) {
 	var user models.User
 	if err := models.DB.First(&user, id).Error; err != nil {
 		return nil, err
@@ -98,7 +104,7 @@ func ReadUser(id int64) (*models.User, error) {
 	return &user, nil
 }
 
-func ReadUserByUsername(username string) (*models.User, error) {
+func (repo *UserRepository) ReadByUsername(username string) (*models.User, error) {
 	var user models.User
 	if err := models.DB.Where("username = ?", username).First(&user).Error; err != nil {
 		return nil, err
@@ -106,8 +112,8 @@ func ReadUserByUsername(username string) (*models.User, error) {
 	return &user, nil
 }
 
-func UpdateUser(id int64, updatedUser *models.UserEditForm) error {
-	existingUser, err := ReadUser(id)
+func (repo *UserRepository) Update(id int64, updatedUser *models.UserEditForm) error {
+	existingUser, err := repo.Read(id)
 	if err != nil {
 		return err
 	}
@@ -122,7 +128,7 @@ func UpdateUser(id int64, updatedUser *models.UserEditForm) error {
 	return nil
 }
 
-func DeleteUser(id int64) error {
+func (repo *UserRepository) Delete(id int64) error {
 	if err := models.DB.Delete(&models.User{}, id).Error; err != nil {
 		return err
 	}
