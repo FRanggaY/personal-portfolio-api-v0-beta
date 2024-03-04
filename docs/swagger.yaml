@@ -1,4 +1,31 @@
 definitions:
+  models.Company:
+    properties:
+      address:
+        type: string
+      code:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      is_external_image_url:
+        type: boolean
+      is_external_url:
+        type: boolean
+      name:
+        type: string
+      updated_at:
+        type: string
+      url:
+        type: string
+      userExperiences:
+        items:
+          $ref: '#/definitions/models.UserExperience'
+        type: array
+    type: object
   models.School:
     properties:
       address:
@@ -96,6 +123,60 @@ definitions:
       year_start:
         type: integer
     type: object
+  models.UserExperience:
+    properties:
+      companyID:
+        description: Foreign key to link user experience to company
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      updated_at:
+        type: string
+      userExperienceTranslations:
+        items:
+          $ref: '#/definitions/models.UserExperienceTranslation'
+        type: array
+      userID:
+        description: Foreign key to link user experience to user
+        type: integer
+    type: object
+  models.UserExperienceTranslation:
+    properties:
+      category:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      industry:
+        type: string
+      languageID:
+        description: Foreign key to link user experience translation to language
+        type: integer
+      location:
+        type: string
+      location_type:
+        type: string
+      month_end:
+        type: integer
+      month_start:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+      userExperienceID:
+        description: Foreign key to link user experience translation to user experience
+        type: integer
+      year_end:
+        type: integer
+      year_start:
+        type: integer
+    type: object
   models.UserLoginForm:
     properties:
       password:
@@ -106,6 +187,139 @@ definitions:
 info:
   contact: {}
 paths:
+  /company:
+    get:
+      consumes:
+      - application/json
+      description: Get All Company with the pagination need login
+      parameters:
+      - default: 5
+        description: Page size
+        in: query
+        name: size
+        type: integer
+      - default: 1
+        description: Page offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get All Company
+      tags:
+      - companies
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new company with file upload support
+      parameters:
+      - description: Company code
+        in: formData
+        name: code
+        required: true
+        type: string
+      - description: Company name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Company image file
+        in: formData
+        name: image_file
+        required: true
+        type: file
+      - description: Company URL
+        in: formData
+        name: url
+        type: string
+      - description: Is external URL
+        in: formData
+        name: is_external_url
+        type: boolean
+      - description: Is external image URL
+        in: formData
+        name: is_external_image_url
+        type: boolean
+      - description: Company address
+        in: formData
+        name: address
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new company
+      tags:
+      - companies
+  /company/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve details of a company by its ID
+      parameters:
+      - description: Company ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/models.Company'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Read company
+      tags:
+      - companies
   /login:
     post:
       consumes:

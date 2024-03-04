@@ -32,8 +32,8 @@ func ConnectDatabase() {
 	}
 
 	err = db.AutoMigrate(
-		&Language{},
-		&School{},
+		&Language{}, &User{},
+		&School{}, &Company{},
 	)
 	if err != nil {
 		log.Fatal("Error migrating database: ", err)
