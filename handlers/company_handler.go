@@ -53,6 +53,16 @@ func CreateCompany(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
+	companyRepo := repositories.NewCompanyRepository()
+	// validation name and code unique
+	exist_company, _ := companyRepo.ReadByNameOrCode(name, code)
+	if exist_company != nil {
+		// Handle error
+		response := map[string]string{"message": "Name or Code already used"}
+		helper.ResponseJSON(w, http.StatusBadRequest, response)
+		return
+	}
+
 	// validation location image
 	var directory = "./assets/images/company"
 	if err := os.MkdirAll(directory, 0755); err != nil {
@@ -77,7 +87,6 @@ func CreateCompany(w http.ResponseWriter, r *http.Request) {
 		IsExternalImageUrl: isExternalImageUrl,
 	}
 	// insert to database
-	companyRepo := repositories.NewCompanyRepository()
 	if newCompany, err := companyRepo.Create(&newCompany); err != nil {
 		// Handle error
 		response := map[string]string{"message": "Error creating new company"}

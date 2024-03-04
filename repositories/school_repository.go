@@ -65,3 +65,27 @@ func (repo *SchoolRepository) Read(id int64) (*models.School, error) {
 	}
 	return &school, nil
 }
+
+func (repo *SchoolRepository) ReadByCode(code string) (*models.School, error) {
+	var school models.School
+	if err := models.DB.Where("code = ?", code).First(&school).Error; err != nil {
+		return nil, err
+	}
+	return &school, nil
+}
+
+func (repo *SchoolRepository) ReadByName(name string) (*models.School, error) {
+	var school models.School
+	if err := models.DB.Where("name = ?", name).First(&school).Error; err != nil {
+		return nil, err
+	}
+	return &school, nil
+}
+
+func (repo *SchoolRepository) ReadByNameOrCode(name string, code string) (*models.School, error) {
+	var school models.School
+	if err := models.DB.Where("name = ? OR code = ?", name, code).First(&school).Error; err != nil {
+		return nil, err
+	}
+	return &school, nil
+}
