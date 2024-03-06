@@ -26,6 +26,33 @@ definitions:
           $ref: '#/definitions/models.UserExperience'
         type: array
     type: object
+  models.Language:
+    properties:
+      code:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      logo_url:
+        type: string
+      name:
+        type: string
+      skillTranslations:
+        items:
+          $ref: '#/definitions/models.SkillTranslation'
+        type: array
+      updated_at:
+        type: string
+      userEducationTranslations:
+        items:
+          $ref: '#/definitions/models.UserEducationTranslation'
+        type: array
+      userExperienceTranslations:
+        items:
+          $ref: '#/definitions/models.UserExperienceTranslation'
+        type: array
+    type: object
   models.School:
     properties:
       address:
@@ -52,6 +79,52 @@ definitions:
         items:
           $ref: '#/definitions/models.UserEducation'
         type: array
+    type: object
+  models.Skill:
+    properties:
+      code:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      is_external_image_url:
+        type: boolean
+      is_external_url:
+        type: boolean
+      name:
+        type: string
+      skillTranslations:
+        items:
+          $ref: '#/definitions/models.SkillTranslation'
+        type: array
+      updated_at:
+        type: string
+      url:
+        type: string
+      userSkills:
+        items:
+          $ref: '#/definitions/models.UserSkill'
+        type: array
+    type: object
+  models.SkillTranslation:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      languageID:
+        description: Foreign key to link user skill translation to language
+        type: integer
+      skillId:
+        description: Foreign key to link user skill translation to skill
+        type: integer
+      updated_at:
+        type: string
     type: object
   models.UserCreateForm:
     properties:
@@ -183,6 +256,21 @@ definitions:
         type: string
       username:
         type: string
+    type: object
+  models.UserSkill:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      skillId:
+        description: Foreign key to link user experience to skill
+        type: integer
+      updated_at:
+        type: string
+      userID:
+        description: Foreign key to link user experience to user
+        type: integer
     type: object
 info:
   contact: {}
@@ -320,6 +408,123 @@ paths:
       summary: Read company
       tags:
       - companies
+  /language:
+    get:
+      consumes:
+      - application/json
+      description: Get All Language with the pagination need login
+      parameters:
+      - default: 5
+        description: Page size
+        in: query
+        name: size
+        type: integer
+      - default: 1
+        description: Page offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get All Language
+      tags:
+      - languages
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new language with file upload support
+      parameters:
+      - description: Language code
+        in: formData
+        name: code
+        required: true
+        type: string
+      - description: Language name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Language logo file
+        in: formData
+        name: logo_url
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new language
+      tags:
+      - languages
+  /language/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve details of a language by its ID
+      parameters:
+      - description: Language ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/models.Language'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Read language
+      tags:
+      - languages
   /login:
     post:
       consumes:
@@ -547,6 +752,135 @@ paths:
       summary: Read school
       tags:
       - schools
+  /skill:
+    get:
+      consumes:
+      - application/json
+      description: Get All Skill with the pagination need login
+      parameters:
+      - default: 5
+        description: Page size
+        in: query
+        name: size
+        type: integer
+      - default: 1
+        description: Page offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get All Skill
+      tags:
+      - skills
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new skill with file upload support
+      parameters:
+      - description: Skill code
+        in: formData
+        name: code
+        required: true
+        type: string
+      - description: Skill name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Skill image file
+        in: formData
+        name: image_file
+        required: true
+        type: file
+      - description: Skill URL
+        in: formData
+        name: url
+        type: string
+      - description: Is external URL
+        in: formData
+        name: is_external_url
+        type: boolean
+      - description: Is external image URL
+        in: formData
+        name: is_external_image_url
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new skill
+      tags:
+      - skills
+  /skill/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve details of a skill by its ID
+      parameters:
+      - description: Skill ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/models.Skill'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Read skill
+      tags:
+      - skills
   /user:
     get:
       consumes:

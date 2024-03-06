@@ -40,6 +40,7 @@ func CreateCompany(w http.ResponseWriter, r *http.Request) {
 
 	code := r.FormValue("code")
 	name := r.FormValue("name")
+	url := r.FormValue("url")
 	address := r.FormValue("address")
 	isExternalUrl := helper.ParseIDStringToBool(r.FormValue("is_external_url"))
 	isExternalImageUrl := helper.ParseIDStringToBool(r.FormValue("is_external_image_url"))
@@ -82,6 +83,7 @@ func CreateCompany(w http.ResponseWriter, r *http.Request) {
 		Code:               code,
 		Name:               name,
 		ImageUrl:           imageUrl,
+		Url:                url,
 		Address:            address,
 		IsExternalUrl:      isExternalUrl,
 		IsExternalImageUrl: isExternalImageUrl,

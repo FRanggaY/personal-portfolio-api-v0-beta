@@ -28,15 +28,15 @@ func (repo *CompanyRepository) Count() (int, error) {
 }
 
 func (repo *CompanyRepository) ReadAll() ([]models.Company, error) {
-	var Companys []models.Company
-	if err := models.DB.Find(&Companys).Error; err != nil {
+	var companies []models.Company
+	if err := models.DB.Find(&companies).Error; err != nil {
 		return nil, err
 	}
-	return Companys, nil
+	return companies, nil
 }
 
 func (repo *CompanyRepository) ReadFilteredPaginated(pageSize, pageNumber int) ([]models.Company, error) {
-	var Companys []models.Company
+	var companies []models.Company
 
 	// default
 	if pageSize <= 0 {
@@ -52,18 +52,18 @@ func (repo *CompanyRepository) ReadFilteredPaginated(pageSize, pageNumber int) (
 	query := models.DB
 
 	// pagination
-	if err := query.Offset(offset).Limit(pageSize).Find(&Companys).Error; err != nil {
+	if err := query.Offset(offset).Limit(pageSize).Find(&companies).Error; err != nil {
 		return nil, err
 	}
-	return Companys, nil
+	return companies, nil
 }
 
 func (repo *CompanyRepository) Read(id int64) (*models.Company, error) {
-	var Company models.Company
-	if err := models.DB.First(&Company, id).Error; err != nil {
+	var company models.Company
+	if err := models.DB.First(&company, id).Error; err != nil {
 		return nil, err
 	}
-	return &Company, nil
+	return &company, nil
 }
 
 func (repo *CompanyRepository) ReadByCode(code string) (*models.Company, error) {
