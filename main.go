@@ -54,6 +54,10 @@ func main() {
 	apiProtect.HandleFunc("/language", handlers.GetFilteredPaginatedLanguages).Methods("GET")
 	apiProtect.HandleFunc("/language", handlers.CreateLanguage).Methods("POST")
 	apiProtect.HandleFunc("/language/{id}", handlers.ReadLanguage).Methods("GET")
+
+	apiProtect.HandleFunc("/skill", handlers.GetFilteredPaginatedSkills).Methods("GET")
+	apiProtect.HandleFunc("/skill", handlers.CreateSkill).Methods("POST")
+	apiProtect.HandleFunc("/skill/{id}", handlers.ReadSkill).Methods("GET")
 	apiProtect.Use(middlewares.JWTMiddleware)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
