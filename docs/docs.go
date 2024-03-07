@@ -875,6 +875,105 @@ const docTemplate = `{
                 }
             }
         },
+        "/skill-translation": {
+            "post": {
+                "description": "Create a new skill translation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "skills"
+                ],
+                "summary": "Create a new skill translation",
+                "parameters": [
+                    {
+                        "description": "Skill translation input",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SkillTranslationCreateForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/skill-translation/{id}": {
+            "delete": {
+                "description": "Delete user skill",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "skills"
+                ],
+                "summary": "Delete User Skill",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Skill Translation ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/skill/{id}": {
             "get": {
                 "description": "Retrieve details of a skill by its ID",
@@ -1000,6 +1099,188 @@ const docTemplate = `{
                 }
             }
         },
+        "/user-attachment": {
+            "post": {
+                "description": "Create a new user attachment with file upload support",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create a new user attachment",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "user_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User attachment title",
+                        "name": "title",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User attachment category",
+                        "name": "category",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "User attachment image file",
+                        "name": "image_file",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User attachment URL",
+                        "name": "url",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Is external URL",
+                        "name": "is_external_url",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Is external image URL",
+                        "name": "is_external_image_url",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user-position": {
+            "post": {
+                "description": "Create a new user position",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create a new user position",
+                "parameters": [
+                    {
+                        "description": "User position input",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UserPositionCreateForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user-position/{id}": {
+            "delete": {
+                "description": "Delete user position",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete User position",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User Position ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user-skill": {
             "post": {
                 "description": "Create a new user skill",
@@ -1015,27 +1296,13 @@ const docTemplate = `{
                 "summary": "Create a new user skill",
                 "parameters": [
                     {
-                        "description": "User input",
+                        "description": "User skill input",
                         "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/models.UserSkillCreateForm"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "user_id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Skill ID",
-                        "name": "skill_id",
-                        "in": "formData",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -1471,6 +1738,20 @@ const docTemplate = `{
                 }
             }
         },
+        "models.SkillTranslationCreateForm": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "language_id": {
+                    "type": "integer"
+                },
+                "skill_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.UserCreateForm": {
             "type": "object",
             "properties": {
@@ -1664,6 +1945,17 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "models.UserPositionCreateForm": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },

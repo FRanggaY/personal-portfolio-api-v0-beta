@@ -126,6 +126,15 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.SkillTranslationCreateForm:
+    properties:
+      description:
+        type: string
+      language_id:
+        type: integer
+      skill_id:
+        type: integer
+    type: object
   models.UserCreateForm:
     properties:
       name:
@@ -256,6 +265,13 @@ definitions:
         type: string
       username:
         type: string
+    type: object
+  models.UserPositionCreateForm:
+    properties:
+      title:
+        type: string
+      user_id:
+        type: integer
     type: object
   models.UserSkill:
     properties:
@@ -855,6 +871,71 @@ paths:
       summary: Create a new skill
       tags:
       - skills
+  /skill-translation:
+    post:
+      consumes:
+      - application/json
+      description: Create a new skill translation
+      parameters:
+      - description: Skill translation input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.SkillTranslationCreateForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new skill translation
+      tags:
+      - skills
+  /skill-translation/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user skill
+      parameters:
+      - description: Skill Translation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete User Skill
+      tags:
+      - skills
   /skill/{id}:
     get:
       consumes:
@@ -938,28 +1019,139 @@ paths:
       summary: Get All User
       tags:
       - users
+  /user-attachment:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new user attachment with file upload support
+      parameters:
+      - description: User ID
+        in: formData
+        name: user_id
+        required: true
+        type: string
+      - description: User attachment title
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: User attachment category
+        in: formData
+        name: category
+        required: true
+        type: string
+      - description: User attachment image file
+        in: formData
+        name: image_file
+        required: true
+        type: file
+      - description: User attachment URL
+        in: formData
+        name: url
+        type: string
+      - description: Is external URL
+        in: formData
+        name: is_external_url
+        type: boolean
+      - description: Is external image URL
+        in: formData
+        name: is_external_image_url
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new user attachment
+      tags:
+      - users
+  /user-position:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user position
+      parameters:
+      - description: User position input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserPositionCreateForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new user position
+      tags:
+      - users
+  /user-position/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user position
+      parameters:
+      - description: User Position ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete User position
+      tags:
+      - users
   /user-skill:
     post:
       consumes:
       - application/json
       description: Create a new user skill
       parameters:
-      - description: User input
+      - description: User skill input
         in: body
         name: input
         required: true
         schema:
           $ref: '#/definitions/models.UserSkillCreateForm'
-      - description: User ID
-        in: formData
-        name: user_id
-        required: true
-        type: string
-      - description: Skill ID
-        in: formData
-        name: skill_id
-        required: true
-        type: string
       produces:
       - application/json
       responses:
