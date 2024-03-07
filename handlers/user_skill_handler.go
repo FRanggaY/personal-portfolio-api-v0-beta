@@ -100,7 +100,7 @@ func DeleteUserSkill(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userSkillIDStr, ok := vars["id"]
 	if !ok {
-		response := map[string]string{"message": messageUserIdDetailNotFound}
+		response := map[string]string{"message": "User Skill not found"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
 		return
 	}

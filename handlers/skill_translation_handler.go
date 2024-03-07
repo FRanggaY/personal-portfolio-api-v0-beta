@@ -101,7 +101,7 @@ func DeleteSkillTranslation(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	skillTranslationIDStr, ok := vars["id"]
 	if !ok {
-		response := map[string]string{"message": messageUserIdDetailNotFound}
+		response := map[string]string{"message": "Skill Translation not found"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
