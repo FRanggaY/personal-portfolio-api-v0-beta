@@ -43,6 +43,9 @@ func main() {
 	apiProtect.HandleFunc(userDetailRoute, handlers.UpdateUser).Methods("PUT")
 	apiProtect.HandleFunc(userDetailRoute, handlers.DeleteUser).Methods("DELETE")
 
+	apiProtect.HandleFunc("user-skill", handlers.CreateUserSkill).Methods("POST")
+	apiProtect.HandleFunc("user-skill/{id}", handlers.DeleteUserSkill).Methods("DELETE")
+
 	apiProtect.HandleFunc("/school", handlers.GetFilteredPaginatedSchools).Methods("GET")
 	apiProtect.HandleFunc("/school", handlers.CreateSchool).Methods("POST")
 	apiProtect.HandleFunc("/school/{id}", handlers.ReadSchool).Methods("GET")

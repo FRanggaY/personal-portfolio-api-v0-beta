@@ -272,6 +272,13 @@ definitions:
         description: Foreign key to link user experience to user
         type: integer
     type: object
+  models.UserSkillCreateForm:
+    properties:
+      skill_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
 info:
   contact: {}
 paths:
@@ -929,6 +936,81 @@ paths:
               type: string
             type: object
       summary: Get All User
+      tags:
+      - users
+  /user-skill:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user skill
+      parameters:
+      - description: User input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserSkillCreateForm'
+      - description: User ID
+        in: formData
+        name: user_id
+        required: true
+        type: string
+      - description: Skill ID
+        in: formData
+        name: skill_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new user skill
+      tags:
+      - users
+  /user-skill/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user skill
+      parameters:
+      - description: User Skill ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete User Skill
       tags:
       - users
   /user/{id}:

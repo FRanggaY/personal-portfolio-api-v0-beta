@@ -12,6 +12,11 @@ type UserCreateForm struct {
 	Password string `gorm:"varchar;unique;not null;size:300" json:"password"`
 }
 
+type UserSkillCreateForm struct {
+	UserId  int64 `gorm:"int64;not null" json:"user_id"`
+	SkillId int64 `gorm:"int64;not null" json:"skill_id"`
+}
+
 type UserEditForm struct {
 	Name     string `gorm:"varchar;not null;size:48" json:"name"`
 	Username string `gorm:"varchar;unique;not null;size:48" json:"username"`
