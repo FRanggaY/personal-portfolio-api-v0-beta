@@ -46,6 +46,8 @@ func main() {
 	apiProtect.HandleFunc("user-skill", handlers.CreateUserSkill).Methods("POST")
 	apiProtect.HandleFunc("user-skill/{id}", handlers.DeleteUserSkill).Methods("DELETE")
 
+	apiProtect.HandleFunc("user-attachment", handlers.CreateUserAttachment).Methods("POST")
+
 	apiProtect.HandleFunc("/school", handlers.GetFilteredPaginatedSchools).Methods("GET")
 	apiProtect.HandleFunc("/school", handlers.CreateSchool).Methods("POST")
 	apiProtect.HandleFunc("/school/{id}", handlers.ReadSchool).Methods("GET")
