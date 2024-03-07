@@ -6,6 +6,12 @@ import (
 	"gorm.io/gorm"
 )
 
+type SkillTranslationCreateForm struct {
+	LanguageID  int64  `gorm:"int64;not null" json:"language_id"`
+	SkillId     int64  `gorm:"int64;not null" json:"skill_id"`
+	Description string `gorm:"varchar;not null;size:300" json:"description"`
+}
+
 type Skill struct {
 	Id                 int64     `gorm:"primaryKey" json:"id"`
 	Code               string    `gorm:"varchar;unique;not null;size:5" json:"code"`
