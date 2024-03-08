@@ -22,6 +22,11 @@ type UserSkillCreateForm struct {
 	SkillId int64 `gorm:"int64;not null" json:"skill_id"`
 }
 
+type UserExperienceCreateForm struct {
+	UserId    int64 `gorm:"int64;not null" json:"user_id"`
+	CompanyId int64 `gorm:"int64;not null" json:"company_id"`
+}
+
 type UserPositionCreateForm struct {
 	UserId int64  `gorm:"int64;not null" json:"user_id"`
 	Title  string `gorm:"varchar;not null;size:64" json:"title"`
