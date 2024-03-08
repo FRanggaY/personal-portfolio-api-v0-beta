@@ -36,7 +36,7 @@ func ConnectDatabase() {
 		&School{}, &Company{},
 		&Skill{}, &UserSkill{}, &SkillTranslation{},
 		&UserPosition{}, &UserAttachment{},
-		&UserExperience{},
+		&UserExperience{}, &UserExperienceTranslation{},
 		&UserEducation{},
 	)
 	if err != nil {
