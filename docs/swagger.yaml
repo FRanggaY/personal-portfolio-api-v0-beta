@@ -170,6 +170,13 @@ definitions:
         description: Foreign key to link user education to user
         type: integer
     type: object
+  models.UserEducationCreateForm:
+    properties:
+      school_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
   models.UserEducationTranslation:
     properties:
       category:
@@ -180,8 +187,6 @@ definitions:
         type: string
       id:
         type: integer
-      industry:
-        type: string
       languageID:
         description: Foreign key to link user education translation to language
         type: integer
@@ -205,6 +210,31 @@ definitions:
       year_start:
         type: integer
     type: object
+  models.UserEducationTranslationCreateForm:
+    properties:
+      category:
+        type: string
+      description:
+        type: string
+      language_id:
+        type: integer
+      location:
+        type: string
+      location_type:
+        type: string
+      month_end:
+        type: integer
+      month_start:
+        type: integer
+      title:
+        type: string
+      user_education_id:
+        type: integer
+      year_end:
+        type: integer
+      year_start:
+        type: integer
+    type: object
   models.UserExperience:
     properties:
       companyID:
@@ -222,6 +252,13 @@ definitions:
         type: array
       userID:
         description: Foreign key to link user experience to user
+        type: integer
+    type: object
+  models.UserExperienceCreateForm:
+    properties:
+      company_id:
+        type: integer
+      user_id:
         type: integer
     type: object
   models.UserExperienceTranslation:
@@ -253,6 +290,33 @@ definitions:
         type: string
       userExperienceID:
         description: Foreign key to link user experience translation to user experience
+        type: integer
+      year_end:
+        type: integer
+      year_start:
+        type: integer
+    type: object
+  models.UserExperienceTranslationCreateForm:
+    properties:
+      category:
+        type: string
+      description:
+        type: string
+      industry:
+        type: string
+      language_id:
+        type: integer
+      location:
+        type: string
+      location_type:
+        type: string
+      month_end:
+        type: integer
+      month_start:
+        type: integer
+      title:
+        type: string
+      user_experience_id:
         type: integer
       year_end:
         type: integer
@@ -1073,6 +1137,266 @@ paths:
               type: string
             type: object
       summary: Create a new user attachment
+      tags:
+      - users
+  /user-education:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user education
+      parameters:
+      - description: User education input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserEducationCreateForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new user education
+      tags:
+      - users
+  /user-education-translation:
+    post:
+      consumes:
+      - application/json
+      description: Create a new User Education Translation with file upload support
+      parameters:
+      - description: User skill input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserEducationTranslationCreateForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new User Education Translation
+      tags:
+      - users
+  /user-education-translation/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user Education Translation
+      parameters:
+      - description: User Education Translation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete User Education Translation
+      tags:
+      - users
+  /user-education/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user Education
+      parameters:
+      - description: User Education ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete User Education
+      tags:
+      - users
+  /user-experience:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user experience
+      parameters:
+      - description: User experience input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserExperienceCreateForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new user experience
+      tags:
+      - users
+  /user-experience-translation:
+    post:
+      consumes:
+      - application/json
+      description: Create a new User Experience Translation with file upload support
+      parameters:
+      - description: User skill input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserExperienceTranslationCreateForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new User Experience Translation
+      tags:
+      - users
+  /user-experience-translation/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user Experience Translation
+      parameters:
+      - description: User Experience Translation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete User Experience Translation
+      tags:
+      - users
+  /user-experience/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user Experience
+      parameters:
+      - description: User Experience ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete User Experience
       tags:
       - users
   /user-position:

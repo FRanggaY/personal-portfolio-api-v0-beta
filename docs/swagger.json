@@ -1171,6 +1171,402 @@
                 }
             }
         },
+        "/user-education": {
+            "post": {
+                "description": "Create a new user education",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create a new user education",
+                "parameters": [
+                    {
+                        "description": "User education input",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UserEducationCreateForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user-education-translation": {
+            "post": {
+                "description": "Create a new User Education Translation with file upload support",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create a new User Education Translation",
+                "parameters": [
+                    {
+                        "description": "User skill input",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UserEducationTranslationCreateForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user-education-translation/{id}": {
+            "delete": {
+                "description": "Delete user Education Translation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete User Education Translation",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User Education Translation ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user-education/{id}": {
+            "delete": {
+                "description": "Delete user Education",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete User Education",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User Education ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user-experience": {
+            "post": {
+                "description": "Create a new user experience",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create a new user experience",
+                "parameters": [
+                    {
+                        "description": "User experience input",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UserExperienceCreateForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user-experience-translation": {
+            "post": {
+                "description": "Create a new User Experience Translation with file upload support",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create a new User Experience Translation",
+                "parameters": [
+                    {
+                        "description": "User skill input",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UserExperienceTranslationCreateForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user-experience-translation/{id}": {
+            "delete": {
+                "description": "Delete user Experience Translation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete User Experience Translation",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User Experience Translation ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user-experience/{id}": {
+            "delete": {
+                "description": "Delete user Experience",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete User Experience",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User Experience ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user-position": {
             "post": {
                 "description": "Create a new user position",
@@ -1794,6 +2190,17 @@
                 }
             }
         },
+        "models.UserEducationCreateForm": {
+            "type": "object",
+            "properties": {
+                "school_id": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.UserEducationTranslation": {
             "type": "object",
             "properties": {
@@ -1808,9 +2215,6 @@
                 },
                 "id": {
                     "type": "integer"
-                },
-                "industry": {
-                    "type": "string"
                 },
                 "languageID": {
                     "description": "Foreign key to link user education translation to language",
@@ -1846,6 +2250,44 @@
                 }
             }
         },
+        "models.UserEducationTranslationCreateForm": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "language_id": {
+                    "type": "integer"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "location_type": {
+                    "type": "string"
+                },
+                "month_end": {
+                    "type": "integer"
+                },
+                "month_start": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "user_education_id": {
+                    "type": "integer"
+                },
+                "year_end": {
+                    "type": "integer"
+                },
+                "year_start": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.UserExperience": {
             "type": "object",
             "properties": {
@@ -1870,6 +2312,17 @@
                 },
                 "userID": {
                     "description": "Foreign key to link user experience to user",
+                    "type": "integer"
+                }
+            }
+        },
+        "models.UserExperienceCreateForm": {
+            "type": "object",
+            "properties": {
+                "company_id": {
+                    "type": "integer"
+                },
+                "user_id": {
                     "type": "integer"
                 }
             }
@@ -1916,6 +2369,47 @@
                 },
                 "userExperienceID": {
                     "description": "Foreign key to link user experience translation to user experience",
+                    "type": "integer"
+                },
+                "year_end": {
+                    "type": "integer"
+                },
+                "year_start": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.UserExperienceTranslationCreateForm": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "industry": {
+                    "type": "string"
+                },
+                "language_id": {
+                    "type": "integer"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "location_type": {
+                    "type": "string"
+                },
+                "month_end": {
+                    "type": "integer"
+                },
+                "month_start": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "user_experience_id": {
                     "type": "integer"
                 },
                 "year_end": {

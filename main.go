@@ -52,6 +52,12 @@ func main() {
 	apiProtect.HandleFunc("user-education", handlers.CreateUserEducation).Methods("POST")
 	apiProtect.HandleFunc("user-education/{id}", handlers.DeleteUserEducation).Methods("DELETE")
 
+	apiProtect.HandleFunc("user-experience-translation", handlers.CreateUserExperienceTranslation).Methods("POST")
+	apiProtect.HandleFunc("user-experience-translation/{id}", handlers.DeleteUserExperienceTranslation).Methods("DELETE")
+
+	apiProtect.HandleFunc("user-education-translation", handlers.CreateUserEducationTranslation).Methods("POST")
+	apiProtect.HandleFunc("user-education-translation/{id}", handlers.DeleteUserEducationTranslation).Methods("DELETE")
+
 	apiProtect.HandleFunc("user-attachment", handlers.CreateUserAttachment).Methods("POST")
 
 	apiProtect.HandleFunc("/school", handlers.GetFilteredPaginatedSchools).Methods("GET")
