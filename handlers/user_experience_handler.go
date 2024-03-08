@@ -12,12 +12,12 @@ import (
 )
 
 // CreateUserExperience godoc
-// @Summary Create a new user position
-// @Description Create a new user position
+// @Summary Create a new user experience
+// @Description Create a new user experience
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param input body models.UserExperienceCreateForm true "User position input"
+// @Param input body models.UserExperienceCreateForm true "User experience input"
 // @Success 201 {object} map[string]string "Created"
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Router /user-experience [post]
