@@ -1175,7 +1175,7 @@ paths:
       - application/json
       description: Create a new User Education Translation with file upload support
       parameters:
-      - description: User skill input
+      - description: User education input
         in: body
         name: input
         required: true
@@ -1305,7 +1305,7 @@ paths:
       - application/json
       description: Create a new User Experience Translation with file upload support
       parameters:
-      - description: User skill input
+      - description: User experience input
         in: body
         name: input
         required: true

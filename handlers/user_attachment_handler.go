@@ -74,7 +74,7 @@ func CreateUserAttachment(w http.ResponseWriter, r *http.Request) {
 
 	filename := header.Filename
 	extension := filepath.Ext(filename)
-	finalFilename := helper.GetStringTimeNow() + "_" + title + extension
+	finalFilename := helper.GetStringTimeNow() + "_" + userId + "_" + title + extension
 	imageUrl, _ := helper.UploadFile(file, directory, finalFilename)
 
 	// Create a new user attachment record

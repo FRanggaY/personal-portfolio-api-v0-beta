@@ -1243,7 +1243,7 @@ const docTemplate = `{
                 "summary": "Create a new User Education Translation",
                 "parameters": [
                     {
-                        "description": "User skill input",
+                        "description": "User education input",
                         "name": "input",
                         "in": "body",
                         "required": true,
@@ -1441,7 +1441,7 @@ const docTemplate = `{
                 "summary": "Create a new User Experience Translation",
                 "parameters": [
                     {
-                        "description": "User skill input",
+                        "description": "User experience input",
                         "name": "input",
                         "in": "body",
                         "required": true,

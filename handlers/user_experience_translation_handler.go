@@ -17,7 +17,7 @@ import (
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param input body models.UserExperienceTranslationCreateForm true "User skill input"
+// @Param input body models.UserExperienceTranslationCreateForm true "User experience input"
 // @Success 201 {object} map[string]string "Created"
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Router /user-experience-translation [post]
@@ -26,7 +26,7 @@ func CreateUserExperienceTranslation(w http.ResponseWriter, r *http.Request) {
 	var userExperienceTranslationInput models.UserExperienceTranslationCreateForm
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&userExperienceTranslationInput); err != nil {
-		log.Fatal("Error decoding new user skill: ")
+		log.Fatal("Error decoding new user experience: ")
 	}
 	defer r.Body.Close()
 
@@ -72,8 +72,8 @@ func CreateUserExperienceTranslation(w http.ResponseWriter, r *http.Request) {
 		Industry:         userExperienceTranslationInput.Industry,
 		MonthStart:       userExperienceTranslationInput.MonthStart,
 		MonthEnd:         userExperienceTranslationInput.MonthEnd,
-		YearStart:        userExperienceTranslationInput.YearStart,
-		YearEnd:          userExperienceTranslationInput.YearEnd,
+		YearStart:        uint(userExperienceTranslationInput.YearStart),
+		YearEnd:          uint(userExperienceTranslationInput.YearEnd),
 	}
 	// insert to database
 	if newUserExperienceTranslation, err := userExperienceTranslationRepo.Create(&newUserExperienceTranslationData); err != nil {

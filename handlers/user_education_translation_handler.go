@@ -17,7 +17,7 @@ import (
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param input body models.UserEducationTranslationCreateForm true "User skill input"
+// @Param input body models.UserEducationTranslationCreateForm true "User education input"
 // @Success 201 {object} map[string]string "Created"
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Router /user-education-translation [post]
@@ -26,7 +26,8 @@ func CreateUserEducationTranslation(w http.ResponseWriter, r *http.Request) {
 	var userEducationTranslationInput models.UserEducationTranslationCreateForm
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&userEducationTranslationInput); err != nil {
-		log.Fatal("Error decoding new user skill: ")
+		print(err)
+		log.Fatal("Error decoding new user education: ")
 	}
 	defer r.Body.Close()
 
@@ -71,8 +72,8 @@ func CreateUserEducationTranslation(w http.ResponseWriter, r *http.Request) {
 		LocationType:    userEducationTranslationInput.LocationType,
 		MonthStart:      userEducationTranslationInput.MonthStart,
 		MonthEnd:        userEducationTranslationInput.MonthEnd,
-		YearStart:       userEducationTranslationInput.YearStart,
-		YearEnd:         userEducationTranslationInput.YearEnd,
+		YearStart:       uint(userEducationTranslationInput.YearStart),
+		YearEnd:         uint(userEducationTranslationInput.YearEnd),
 	}
 	// insert to database
 	if newUserEducationTranslation, err := userEducationTranslationRepo.Create(&newUserEducationTranslationData); err != nil {

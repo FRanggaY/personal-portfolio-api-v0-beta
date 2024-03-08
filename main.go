@@ -43,22 +43,25 @@ func main() {
 	apiProtect.HandleFunc(userDetailRoute, handlers.UpdateUser).Methods("PUT")
 	apiProtect.HandleFunc(userDetailRoute, handlers.DeleteUser).Methods("DELETE")
 
-	apiProtect.HandleFunc("user-skill", handlers.CreateUserSkill).Methods("POST")
-	apiProtect.HandleFunc("user-skill/{id}", handlers.DeleteUserSkill).Methods("DELETE")
+	apiProtect.HandleFunc("/user-skill", handlers.CreateUserSkill).Methods("POST")
+	apiProtect.HandleFunc("/user-skill/{id}", handlers.DeleteUserSkill).Methods("DELETE")
 
-	apiProtect.HandleFunc("user-experience", handlers.CreateUserExperience).Methods("POST")
-	apiProtect.HandleFunc("user-experience/{id}", handlers.DeleteUserExperience).Methods("DELETE")
+	apiProtect.HandleFunc("/user-experience", handlers.CreateUserExperience).Methods("POST")
+	apiProtect.HandleFunc("/user-experience/{id}", handlers.DeleteUserExperience).Methods("DELETE")
 
-	apiProtect.HandleFunc("user-education", handlers.CreateUserEducation).Methods("POST")
-	apiProtect.HandleFunc("user-education/{id}", handlers.DeleteUserEducation).Methods("DELETE")
+	apiProtect.HandleFunc("/user-position", handlers.CreateUserPosition).Methods("POST")
+	apiProtect.HandleFunc("/user-position/{id}", handlers.DeleteUserPosition).Methods("DELETE")
 
-	apiProtect.HandleFunc("user-experience-translation", handlers.CreateUserExperienceTranslation).Methods("POST")
-	apiProtect.HandleFunc("user-experience-translation/{id}", handlers.DeleteUserExperienceTranslation).Methods("DELETE")
+	apiProtect.HandleFunc("/user-education", handlers.CreateUserEducation).Methods("POST")
+	apiProtect.HandleFunc("/user-education/{id}", handlers.DeleteUserEducation).Methods("DELETE")
 
-	apiProtect.HandleFunc("user-education-translation", handlers.CreateUserEducationTranslation).Methods("POST")
-	apiProtect.HandleFunc("user-education-translation/{id}", handlers.DeleteUserEducationTranslation).Methods("DELETE")
+	apiProtect.HandleFunc("/user-experience-translation", handlers.CreateUserExperienceTranslation).Methods("POST")
+	apiProtect.HandleFunc("/user-experience-translation/{id}", handlers.DeleteUserExperienceTranslation).Methods("DELETE")
 
-	apiProtect.HandleFunc("user-attachment", handlers.CreateUserAttachment).Methods("POST")
+	apiProtect.HandleFunc("/user-education-translation", handlers.CreateUserEducationTranslation).Methods("POST")
+	apiProtect.HandleFunc("/user-education-translation/{id}", handlers.DeleteUserEducationTranslation).Methods("DELETE")
+
+	apiProtect.HandleFunc("/user-attachment", handlers.CreateUserAttachment).Methods("POST")
 
 	apiProtect.HandleFunc("/school", handlers.GetFilteredPaginatedSchools).Methods("GET")
 	apiProtect.HandleFunc("/school", handlers.CreateSchool).Methods("POST")
@@ -76,8 +79,8 @@ func main() {
 	apiProtect.HandleFunc("/skill", handlers.CreateSkill).Methods("POST")
 	apiProtect.HandleFunc("/skill/{id}", handlers.ReadSkill).Methods("GET")
 
-	apiProtect.HandleFunc("skill-translation", handlers.CreateSkillTranslation).Methods("POST")
-	apiProtect.HandleFunc("skill-translation/{id}", handlers.DeleteSkillTranslation).Methods("DELETE")
+	apiProtect.HandleFunc("/skill-translation", handlers.CreateSkillTranslation).Methods("POST")
+	apiProtect.HandleFunc("/skill-translation/{id}", handlers.DeleteSkillTranslation).Methods("DELETE")
 	apiProtect.Use(middlewares.JWTMiddleware)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
