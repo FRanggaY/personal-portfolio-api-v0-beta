@@ -6,6 +6,11 @@ import (
 	"gorm.io/gorm"
 )
 
+type UserPositionCreateForm struct {
+	UserId int64  `gorm:"int64;not null" json:"user_id"`
+	Title  string `gorm:"varchar;not null;size:64" json:"title"`
+}
+
 type UserPosition struct {
 	Id        int64     `gorm:"primaryKey" json:"id"`
 	UserID    uint      // Foreign key to link user position to user

@@ -6,6 +6,11 @@ import (
 	"gorm.io/gorm"
 )
 
+type UserEducationCreateForm struct {
+	UserId   int64 `gorm:"int64;not null" json:"user_id"`
+	SchoolId int64 `gorm:"int64;not null" json:"school_id"`
+}
+
 type UserEducation struct {
 	Id        int64     `gorm:"primaryKey" json:"id"`
 	UserID    uint      // Foreign key to link user education to user

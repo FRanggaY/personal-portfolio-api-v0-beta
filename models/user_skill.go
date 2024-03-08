@@ -6,6 +6,11 @@ import (
 	"gorm.io/gorm"
 )
 
+type UserSkillCreateForm struct {
+	UserId  int64 `gorm:"int64;not null" json:"user_id"`
+	SkillId int64 `gorm:"int64;not null" json:"skill_id"`
+}
+
 type UserSkill struct {
 	Id        int64     `gorm:"primaryKey" json:"id"`
 	UserID    uint      // Foreign key to link user experience to user
