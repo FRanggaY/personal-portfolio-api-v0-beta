@@ -29,11 +29,11 @@ func (repo *UserRepository) CompareUserPassword(hashedPassword, plainPassword st
 	return nil
 }
 
-func (repo *UserRepository) Count(nameFilter string) (int, error) {
+func (repo *UserRepository) Count(name string) (int, error) {
 	var count int64
 	query := models.DB.Model(&models.User{})
-	if nameFilter != "" {
-		query = query.Where("name LIKE ?", "%"+nameFilter+"%")
+	if name != "" {
+		query = query.Where("name LIKE ?", "%"+name+"%")
 	}
 	if err := query.Count(&count).Error; err != nil {
 		return 0, err
@@ -48,29 +48,29 @@ func (repo *UserRepository) Create(userInput *models.UserCreateForm) (*models.Us
 		return nil, err
 	}
 
-	newUser := models.User{
+	newData := models.User{
 		Username: userInput.Username,
 		Name:     userInput.Name,
 		Password: hashedPassword,
 	}
 
 	// Insert user into database
-	if err := models.DB.Create(&newUser).Error; err != nil {
+	if err := models.DB.Create(&newData).Error; err != nil {
 		return nil, err
 	}
-	return &newUser, nil
+	return &newData, nil
 }
 
 func (repo *UserRepository) ReadAll() ([]models.User, error) {
-	var users []models.User
-	if err := models.DB.Find(&users).Error; err != nil {
+	var datas []models.User
+	if err := models.DB.Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return users, nil
+	return datas, nil
 }
 
 func (repo *UserRepository) ReadFilteredPaginated(nameFilter string, pageSize, pageNumber int) ([]models.User, error) {
-	var users []models.User
+	var datas []models.User
 
 	// default
 	if pageSize <= 0 {
@@ -90,38 +90,38 @@ func (repo *UserRepository) ReadFilteredPaginated(nameFilter string, pageSize, p
 	}
 
 	// pagination
-	if err := query.Offset(offset).Limit(pageSize).Find(&users).Error; err != nil {
+	if err := query.Offset(offset).Limit(pageSize).Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return users, nil
+	return datas, nil
 }
 
 func (repo *UserRepository) Read(id int64) (*models.User, error) {
-	var user models.User
-	if err := models.DB.First(&user, id).Error; err != nil {
+	var data models.User
+	if err := models.DB.First(&data, id).Error; err != nil {
 		return nil, err
 	}
-	return &user, nil
+	return &data, nil
 }
 
 func (repo *UserRepository) ReadByUsername(username string) (*models.User, error) {
-	var user models.User
-	if err := models.DB.Where("username = ?", username).First(&user).Error; err != nil {
+	var data models.User
+	if err := models.DB.Where("username = ?", username).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &user, nil
+	return &data, nil
 }
 
 func (repo *UserRepository) Update(id int64, updatedUser *models.UserEditForm) error {
-	existingUser, err := repo.Read(id)
+	existingData, err := repo.Read(id)
 	if err != nil {
 		return err
 	}
 
-	existingUser.Name = updatedUser.Name
-	existingUser.Username = updatedUser.Username
+	existingData.Name = updatedUser.Name
+	existingData.Username = updatedUser.Username
 
-	if err := models.DB.Save(existingUser).Error; err != nil {
+	if err := models.DB.Save(existingData).Error; err != nil {
 		return err
 	}
 

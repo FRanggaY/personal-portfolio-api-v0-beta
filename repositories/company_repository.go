@@ -10,12 +10,11 @@ func NewCompanyRepository() *CompanyRepository {
 	return &CompanyRepository{}
 }
 
-func (repo *CompanyRepository) Create(newCompany *models.Company) (*models.Company, error) {
-	// Insert Company into database
-	if err := models.DB.Create(newCompany).Error; err != nil {
+func (repo *CompanyRepository) Create(newData *models.Company) (*models.Company, error) {
+	if err := models.DB.Create(newData).Error; err != nil {
 		return nil, err
 	}
-	return newCompany, nil
+	return newData, nil
 }
 
 func (repo *CompanyRepository) Count() (int, error) {
@@ -28,15 +27,15 @@ func (repo *CompanyRepository) Count() (int, error) {
 }
 
 func (repo *CompanyRepository) ReadAll() ([]models.Company, error) {
-	var companies []models.Company
-	if err := models.DB.Find(&companies).Error; err != nil {
+	var datas []models.Company
+	if err := models.DB.Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return companies, nil
+	return datas, nil
 }
 
 func (repo *CompanyRepository) ReadFilteredPaginated(pageSize, pageNumber int) ([]models.Company, error) {
-	var companies []models.Company
+	var datas []models.Company
 
 	// default
 	if pageSize <= 0 {
@@ -52,40 +51,40 @@ func (repo *CompanyRepository) ReadFilteredPaginated(pageSize, pageNumber int) (
 	query := models.DB
 
 	// pagination
-	if err := query.Offset(offset).Limit(pageSize).Find(&companies).Error; err != nil {
+	if err := query.Offset(offset).Limit(pageSize).Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return companies, nil
+	return datas, nil
 }
 
 func (repo *CompanyRepository) Read(id int64) (*models.Company, error) {
-	var company models.Company
-	if err := models.DB.First(&company, id).Error; err != nil {
+	var data models.Company
+	if err := models.DB.First(&data, id).Error; err != nil {
 		return nil, err
 	}
-	return &company, nil
+	return &data, nil
 }
 
 func (repo *CompanyRepository) ReadByCode(code string) (*models.Company, error) {
-	var company models.Company
-	if err := models.DB.Where("code = ?", code).First(&company).Error; err != nil {
+	var data models.Company
+	if err := models.DB.Where("code = ?", code).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &company, nil
+	return &data, nil
 }
 
 func (repo *CompanyRepository) ReadByName(name string) (*models.Company, error) {
-	var company models.Company
-	if err := models.DB.Where("name = ?", name).First(&company).Error; err != nil {
+	var data models.Company
+	if err := models.DB.Where("name = ?", name).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &company, nil
+	return &data, nil
 }
 
 func (repo *CompanyRepository) ReadByNameOrCode(name string, code string) (*models.Company, error) {
-	var company models.Company
-	if err := models.DB.Where("name = ? OR code = ?", name, code).First(&company).Error; err != nil {
+	var data models.Company
+	if err := models.DB.Where("name = ? OR code = ?", name, code).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &company, nil
+	return &data, nil
 }

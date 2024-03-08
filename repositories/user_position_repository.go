@@ -10,12 +10,11 @@ func NewUserPositionRepository() *UserPositionRepository {
 	return &UserPositionRepository{}
 }
 
-func (repo *UserPositionRepository) Create(newUserPosition *models.UserPosition) (*models.UserPosition, error) {
-	// Insert skill into database
-	if err := models.DB.Create(newUserPosition).Error; err != nil {
+func (repo *UserPositionRepository) Create(newData *models.UserPosition) (*models.UserPosition, error) {
+	if err := models.DB.Create(newData).Error; err != nil {
 		return nil, err
 	}
-	return newUserPosition, nil
+	return newData, nil
 }
 
 func (repo *UserPositionRepository) Count(userId *int64) (int, error) {
@@ -34,20 +33,20 @@ func (repo *UserPositionRepository) Count(userId *int64) (int, error) {
 
 func (repo *UserPositionRepository) ReadAll(userId *int64) ([]models.UserPosition, error) {
 	query := models.DB
-	var userPositions []models.UserPosition
+	var datas []models.UserPosition
 
 	if userId != nil {
 		query = query.Where("user_id LIKE ?", userId)
 	}
 
-	if err := query.Find(&userPositions).Error; err != nil {
+	if err := query.Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return userPositions, nil
+	return datas, nil
 }
 
 func (repo *UserPositionRepository) ReadFilteredPaginated(userId *int64, pageSize, pageNumber int) ([]models.UserPosition, error) {
-	var userPositions []models.UserPosition
+	var datas []models.UserPosition
 
 	// default
 	if pageSize <= 0 {
@@ -66,18 +65,18 @@ func (repo *UserPositionRepository) ReadFilteredPaginated(userId *int64, pageSiz
 	}
 
 	// pagination
-	if err := query.Offset(offset).Limit(pageSize).Find(&userPositions).Error; err != nil {
+	if err := query.Offset(offset).Limit(pageSize).Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return userPositions, nil
+	return datas, nil
 }
 
 func (repo *UserPositionRepository) Read(id int64) (*models.UserPosition, error) {
-	var userPosition models.UserPosition
-	if err := models.DB.First(&userPosition, id).Error; err != nil {
+	var data models.UserPosition
+	if err := models.DB.First(&data, id).Error; err != nil {
 		return nil, err
 	}
-	return &userPosition, nil
+	return &data, nil
 }
 
 func (repo *UserPositionRepository) Delete(id int64) error {

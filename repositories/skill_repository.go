@@ -10,12 +10,11 @@ func NewSkillRepository() *SkillRepository {
 	return &SkillRepository{}
 }
 
-func (repo *SkillRepository) Create(newSkill *models.Skill) (*models.Skill, error) {
-	// Insert skill into database
-	if err := models.DB.Create(newSkill).Error; err != nil {
+func (repo *SkillRepository) Create(newData *models.Skill) (*models.Skill, error) {
+	if err := models.DB.Create(newData).Error; err != nil {
 		return nil, err
 	}
-	return newSkill, nil
+	return newData, nil
 }
 
 func (repo *SkillRepository) Count() (int, error) {
@@ -28,15 +27,15 @@ func (repo *SkillRepository) Count() (int, error) {
 }
 
 func (repo *SkillRepository) ReadAll() ([]models.Skill, error) {
-	var skills []models.Skill
-	if err := models.DB.Find(&skills).Error; err != nil {
+	var datas []models.Skill
+	if err := models.DB.Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return skills, nil
+	return datas, nil
 }
 
 func (repo *SkillRepository) ReadFilteredPaginated(pageSize, pageNumber int) ([]models.Skill, error) {
-	var skills []models.Skill
+	var datas []models.Skill
 
 	// default
 	if pageSize <= 0 {
@@ -52,40 +51,40 @@ func (repo *SkillRepository) ReadFilteredPaginated(pageSize, pageNumber int) ([]
 	query := models.DB
 
 	// pagination
-	if err := query.Offset(offset).Limit(pageSize).Find(&skills).Error; err != nil {
+	if err := query.Offset(offset).Limit(pageSize).Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return skills, nil
+	return datas, nil
 }
 
 func (repo *SkillRepository) Read(id int64) (*models.Skill, error) {
-	var skill models.Skill
-	if err := models.DB.First(&skill, id).Error; err != nil {
+	var data models.Skill
+	if err := models.DB.First(&data, id).Error; err != nil {
 		return nil, err
 	}
-	return &skill, nil
+	return &data, nil
 }
 
 func (repo *SkillRepository) ReadByCode(code string) (*models.Skill, error) {
-	var skill models.Skill
-	if err := models.DB.Where("code = ?", code).First(&skill).Error; err != nil {
+	var data models.Skill
+	if err := models.DB.Where("code = ?", code).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &skill, nil
+	return &data, nil
 }
 
 func (repo *SkillRepository) ReadByName(name string) (*models.Skill, error) {
-	var skill models.Skill
-	if err := models.DB.Where("name = ?", name).First(&skill).Error; err != nil {
+	var data models.Skill
+	if err := models.DB.Where("name = ?", name).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &skill, nil
+	return &data, nil
 }
 
 func (repo *SkillRepository) ReadByNameOrCode(name string, code string) (*models.Skill, error) {
-	var skill models.Skill
-	if err := models.DB.Where("name = ? OR code = ?", name, code).First(&skill).Error; err != nil {
+	var data models.Skill
+	if err := models.DB.Where("name = ? OR code = ?", name, code).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &skill, nil
+	return &data, nil
 }

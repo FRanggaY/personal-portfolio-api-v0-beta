@@ -10,12 +10,11 @@ func NewLanguageRepository() *LanguageRepository {
 	return &LanguageRepository{}
 }
 
-func (repo *LanguageRepository) Create(newLanguage *models.Language) (*models.Language, error) {
-	// Insert Language into database
-	if err := models.DB.Create(newLanguage).Error; err != nil {
+func (repo *LanguageRepository) Create(newData *models.Language) (*models.Language, error) {
+	if err := models.DB.Create(newData).Error; err != nil {
 		return nil, err
 	}
-	return newLanguage, nil
+	return newData, nil
 }
 
 func (repo *LanguageRepository) Count() (int, error) {
@@ -28,15 +27,15 @@ func (repo *LanguageRepository) Count() (int, error) {
 }
 
 func (repo *LanguageRepository) ReadAll() ([]models.Language, error) {
-	var languages []models.Language
-	if err := models.DB.Find(&languages).Error; err != nil {
+	var datas []models.Language
+	if err := models.DB.Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return languages, nil
+	return datas, nil
 }
 
 func (repo *LanguageRepository) ReadFilteredPaginated(pageSize, pageNumber int) ([]models.Language, error) {
-	var languages []models.Language
+	var datas []models.Language
 
 	// default
 	if pageSize <= 0 {
@@ -52,40 +51,40 @@ func (repo *LanguageRepository) ReadFilteredPaginated(pageSize, pageNumber int) 
 	query := models.DB
 
 	// pagination
-	if err := query.Offset(offset).Limit(pageSize).Find(&languages).Error; err != nil {
+	if err := query.Offset(offset).Limit(pageSize).Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return languages, nil
+	return datas, nil
 }
 
 func (repo *LanguageRepository) Read(id int64) (*models.Language, error) {
-	var language models.Language
-	if err := models.DB.First(&language, id).Error; err != nil {
+	var data models.Language
+	if err := models.DB.First(&data, id).Error; err != nil {
 		return nil, err
 	}
-	return &language, nil
+	return &data, nil
 }
 
 func (repo *LanguageRepository) ReadByCode(code string) (*models.Language, error) {
-	var language models.Language
-	if err := models.DB.Where("code = ?", code).First(&language).Error; err != nil {
+	var data models.Language
+	if err := models.DB.Where("code = ?", code).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &language, nil
+	return &data, nil
 }
 
 func (repo *LanguageRepository) ReadByName(name string) (*models.Language, error) {
-	var language models.Language
-	if err := models.DB.Where("name = ?", name).First(&language).Error; err != nil {
+	var data models.Language
+	if err := models.DB.Where("name = ?", name).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &language, nil
+	return &data, nil
 }
 
 func (repo *LanguageRepository) ReadByNameOrCode(name string, code string) (*models.Language, error) {
-	var language models.Language
-	if err := models.DB.Where("name = ? OR code = ?", name, code).First(&language).Error; err != nil {
+	var data models.Language
+	if err := models.DB.Where("name = ? OR code = ?", name, code).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &language, nil
+	return &data, nil
 }

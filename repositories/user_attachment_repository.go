@@ -10,12 +10,11 @@ func NewUserAttachmentRepository() *UserAttachmentRepository {
 	return &UserAttachmentRepository{}
 }
 
-func (repo *UserAttachmentRepository) Create(newUserAttachment *models.UserAttachment) (*models.UserAttachment, error) {
-	// Insert skill into database
-	if err := models.DB.Create(newUserAttachment).Error; err != nil {
+func (repo *UserAttachmentRepository) Create(newData *models.UserAttachment) (*models.UserAttachment, error) {
+	if err := models.DB.Create(newData).Error; err != nil {
 		return nil, err
 	}
-	return newUserAttachment, nil
+	return newData, nil
 }
 
 func (repo *UserAttachmentRepository) Count(userId *int64, category *string) (int, error) {
@@ -38,7 +37,7 @@ func (repo *UserAttachmentRepository) Count(userId *int64, category *string) (in
 
 func (repo *UserAttachmentRepository) ReadAll(userId *int64, category *string) ([]models.UserAttachment, error) {
 	query := models.DB
-	var userAttachments []models.UserAttachment
+	var datas []models.UserAttachment
 
 	if userId != nil {
 		query = query.Where("user_id LIKE ?", userId)
@@ -48,14 +47,14 @@ func (repo *UserAttachmentRepository) ReadAll(userId *int64, category *string) (
 		query = query.Where("category LIKE ?", category)
 	}
 
-	if err := query.Find(&userAttachments).Error; err != nil {
+	if err := query.Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return userAttachments, nil
+	return datas, nil
 }
 
 func (repo *UserAttachmentRepository) ReadFilteredPaginated(userId *int64, category *string, pageSize, pageNumber int) ([]models.UserAttachment, error) {
-	var userAttachments []models.UserAttachment
+	var datas []models.UserAttachment
 
 	// default
 	if pageSize <= 0 {
@@ -78,18 +77,18 @@ func (repo *UserAttachmentRepository) ReadFilteredPaginated(userId *int64, categ
 	}
 
 	// pagination
-	if err := query.Offset(offset).Limit(pageSize).Find(&userAttachments).Error; err != nil {
+	if err := query.Offset(offset).Limit(pageSize).Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return userAttachments, nil
+	return datas, nil
 }
 
 func (repo *UserAttachmentRepository) Read(id int64) (*models.UserAttachment, error) {
-	var userAttachment models.UserAttachment
-	if err := models.DB.First(&userAttachment, id).Error; err != nil {
+	var data models.UserAttachment
+	if err := models.DB.First(&data, id).Error; err != nil {
 		return nil, err
 	}
-	return &userAttachment, nil
+	return &data, nil
 }
 
 func (repo *UserAttachmentRepository) Delete(id int64) error {

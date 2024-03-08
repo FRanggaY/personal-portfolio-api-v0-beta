@@ -10,12 +10,11 @@ func NewSchoolRepository() *SchoolRepository {
 	return &SchoolRepository{}
 }
 
-func (repo *SchoolRepository) Create(newSchool *models.School) (*models.School, error) {
-	// Insert school into database
-	if err := models.DB.Create(newSchool).Error; err != nil {
+func (repo *SchoolRepository) Create(newData *models.School) (*models.School, error) {
+	if err := models.DB.Create(newData).Error; err != nil {
 		return nil, err
 	}
-	return newSchool, nil
+	return newData, nil
 }
 
 func (repo *SchoolRepository) Count() (int, error) {
@@ -28,15 +27,15 @@ func (repo *SchoolRepository) Count() (int, error) {
 }
 
 func (repo *SchoolRepository) ReadAll() ([]models.School, error) {
-	var schools []models.School
-	if err := models.DB.Find(&schools).Error; err != nil {
+	var datas []models.School
+	if err := models.DB.Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return schools, nil
+	return datas, nil
 }
 
 func (repo *SchoolRepository) ReadFilteredPaginated(pageSize, pageNumber int) ([]models.School, error) {
-	var schools []models.School
+	var datas []models.School
 
 	// default
 	if pageSize <= 0 {
@@ -52,40 +51,40 @@ func (repo *SchoolRepository) ReadFilteredPaginated(pageSize, pageNumber int) ([
 	query := models.DB
 
 	// pagination
-	if err := query.Offset(offset).Limit(pageSize).Find(&schools).Error; err != nil {
+	if err := query.Offset(offset).Limit(pageSize).Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return schools, nil
+	return datas, nil
 }
 
 func (repo *SchoolRepository) Read(id int64) (*models.School, error) {
-	var school models.School
-	if err := models.DB.First(&school, id).Error; err != nil {
+	var data models.School
+	if err := models.DB.First(&data, id).Error; err != nil {
 		return nil, err
 	}
-	return &school, nil
+	return &data, nil
 }
 
 func (repo *SchoolRepository) ReadByCode(code string) (*models.School, error) {
-	var school models.School
-	if err := models.DB.Where("code = ?", code).First(&school).Error; err != nil {
+	var data models.School
+	if err := models.DB.Where("code = ?", code).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &school, nil
+	return &data, nil
 }
 
 func (repo *SchoolRepository) ReadByName(name string) (*models.School, error) {
-	var school models.School
-	if err := models.DB.Where("name = ?", name).First(&school).Error; err != nil {
+	var data models.School
+	if err := models.DB.Where("name = ?", name).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &school, nil
+	return &data, nil
 }
 
 func (repo *SchoolRepository) ReadByNameOrCode(name string, code string) (*models.School, error) {
-	var school models.School
-	if err := models.DB.Where("name = ? OR code = ?", name, code).First(&school).Error; err != nil {
+	var data models.School
+	if err := models.DB.Where("name = ? OR code = ?", name, code).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &school, nil
+	return &data, nil
 }

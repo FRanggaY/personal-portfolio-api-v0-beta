@@ -10,12 +10,11 @@ func NewSkillTranslationRepository() *SkillTranslationRepository {
 	return &SkillTranslationRepository{}
 }
 
-func (repo *SkillTranslationRepository) Create(newSkillTranslation *models.SkillTranslation) (*models.SkillTranslation, error) {
-	// Insert skill into database
-	if err := models.DB.Create(newSkillTranslation).Error; err != nil {
+func (repo *SkillTranslationRepository) Create(newData *models.SkillTranslation) (*models.SkillTranslation, error) {
+	if err := models.DB.Create(newData).Error; err != nil {
 		return nil, err
 	}
-	return newSkillTranslation, nil
+	return newData, nil
 }
 
 func (repo *SkillTranslationRepository) Count(languageId *int64) (int, error) {
@@ -34,20 +33,20 @@ func (repo *SkillTranslationRepository) Count(languageId *int64) (int, error) {
 
 func (repo *SkillTranslationRepository) ReadAll(languageId *int64) ([]models.SkillTranslation, error) {
 	query := models.DB
-	var skillTranslations []models.SkillTranslation
+	var datas []models.SkillTranslation
 
 	if languageId != nil {
 		query = query.Where("language_id LIKE ?", languageId)
 	}
 
-	if err := query.Find(&skillTranslations).Error; err != nil {
+	if err := query.Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return skillTranslations, nil
+	return datas, nil
 }
 
 func (repo *SkillTranslationRepository) ReadFilteredPaginated(languageId *int64, pageSize, pageNumber int) ([]models.SkillTranslation, error) {
-	var skillTranslations []models.SkillTranslation
+	var datas []models.SkillTranslation
 
 	// default
 	if pageSize <= 0 {
@@ -66,26 +65,26 @@ func (repo *SkillTranslationRepository) ReadFilteredPaginated(languageId *int64,
 	}
 
 	// pagination
-	if err := query.Offset(offset).Limit(pageSize).Find(&skillTranslations).Error; err != nil {
+	if err := query.Offset(offset).Limit(pageSize).Find(&datas).Error; err != nil {
 		return nil, err
 	}
-	return skillTranslations, nil
+	return datas, nil
 }
 
 func (repo *SkillTranslationRepository) Read(id int64) (*models.SkillTranslation, error) {
-	var skillTranslation models.SkillTranslation
-	if err := models.DB.First(&skillTranslation, id).Error; err != nil {
+	var data models.SkillTranslation
+	if err := models.DB.First(&data, id).Error; err != nil {
 		return nil, err
 	}
-	return &skillTranslation, nil
+	return &data, nil
 }
 
 func (repo *SkillTranslationRepository) ReadByLanguageIdSkillId(languageId int64, skillId int64) (*models.SkillTranslation, error) {
-	var skillTranslation models.SkillTranslation
-	if err := models.DB.Where("language_id = ? AND skill_id = ?", languageId, skillId).First(&skillTranslation).Error; err != nil {
+	var data models.SkillTranslation
+	if err := models.DB.Where("language_id = ? AND skill_id = ?", languageId, skillId).First(&data).Error; err != nil {
 		return nil, err
 	}
-	return &skillTranslation, nil
+	return &data, nil
 }
 
 func (repo *SkillTranslationRepository) Delete(id int64) error {
