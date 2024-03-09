@@ -51,7 +51,7 @@ func GetFilteredPaginatedUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var filteredUsers []struct {
-		Id        int64     `json:"id"`
+		ID        int64     `json:"id"`
 		Username  string    `json:"username"`
 		Name      string    `json:"name"`
 		CreatedAt time.Time `json:"created_at"`
@@ -59,13 +59,13 @@ func GetFilteredPaginatedUsers(w http.ResponseWriter, r *http.Request) {
 	}
 	for _, user := range users {
 		filteredUsers = append(filteredUsers, struct {
-			Id        int64     `json:"id"`
+			ID        int64     `json:"id"`
 			Username  string    `json:"username"`
 			Name      string    `json:"name"`
 			CreatedAt time.Time `json:"created_at"`
 			UpdatedAt time.Time `json:"updated_at"`
 		}{
-			Id:        user.Id,
+			ID:        user.ID,
 			Username:  user.Username,
 			Name:      user.Name,
 			CreatedAt: user.CreatedAt,
@@ -125,7 +125,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	response := map[string]interface{}{
 		"message": "success",
 		"data": map[string]interface{}{
-			"id":         user.Id,
+			"id":         user.ID,
 			"username":   user.Username,
 			"name":       user.Name,
 			"created_at": user.CreatedAt,
@@ -170,7 +170,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	userRepo := repositories.NewUserRepository()
 	// validate username unique in other user
 	exist_user, _ := userRepo.ReadByUsername(updatedUser.Username)
-	if exist_user != nil && exist_user.Id != userID {
+	if exist_user != nil && exist_user.ID != userID {
 		// Handle error
 		response := map[string]string{"message": "Username already used"}
 		helper.ResponseJSON(w, http.StatusBadRequest, response)

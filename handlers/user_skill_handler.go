@@ -36,7 +36,7 @@ func CreateUserSkill(w http.ResponseWriter, r *http.Request) {
 	userSkillRepo := repositories.NewUserSkillRepository()
 
 	// validate user id
-	_, user_err := userRepo.Read(userSkillInput.UserId)
+	_, user_err := userRepo.Read(userSkillInput.UserID)
 	if user_err != nil {
 		// Handle error
 		response := map[string]string{"message": "User ID not found"}
@@ -45,7 +45,7 @@ func CreateUserSkill(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate skill id
-	_, skill_err := skillRepo.Read(userSkillInput.SkillId)
+	_, skill_err := skillRepo.Read(userSkillInput.SkillID)
 	if skill_err != nil {
 		// Handle error
 		response := map[string]string{"message": "Skill ID not found"}
@@ -54,7 +54,7 @@ func CreateUserSkill(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate user id and skill id
-	exist_data, _ := userSkillRepo.ReadByUserIdSkillId(userSkillInput.UserId, userSkillInput.SkillId)
+	exist_data, _ := userSkillRepo.ReadByUserIdSkillId(userSkillInput.UserID, userSkillInput.SkillID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Skill already added"}
@@ -63,8 +63,8 @@ func CreateUserSkill(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newUserSkillData := models.UserSkill{
-		UserID:  uint(userSkillInput.UserId),
-		SkillId: uint(userSkillInput.SkillId),
+		UserID:  uint(userSkillInput.UserID),
+		SkillID: uint(userSkillInput.SkillID),
 	}
 
 	// insert to database
@@ -77,7 +77,7 @@ func CreateUserSkill(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{
 			"message": "success",
 			"data": map[string]interface{}{
-				"id": newUserSkill.Id,
+				"id": newUserSkill.ID,
 			},
 		}
 		helper.ResponseJSON(w, http.StatusOK, response)

@@ -7,7 +7,7 @@ import (
 )
 
 type School struct {
-	Id                 int64     `gorm:"primaryKey" json:"id"`
+	ID                 int64     `gorm:"primaryKey" json:"id"`
 	Code               string    `gorm:"varchar;unique;not null;size:5" json:"code"`
 	Name               string    `gorm:"varchar;unique;not null;size:64" json:"name"`
 	ImageUrl           string    `gorm:"varchar;size:300" json:"image_url"`

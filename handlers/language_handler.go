@@ -86,7 +86,7 @@ func CreateLanguage(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{
 			"message": "success",
 			"data": map[string]interface{}{
-				"id": newLanguage.Id,
+				"id": newLanguage.ID,
 			},
 		}
 		helper.ResponseJSON(w, http.StatusOK, response)
@@ -129,7 +129,7 @@ func GetFilteredPaginatedLanguages(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var filteredLanguages []struct {
-		Id        int64     `json:"id"`
+		ID        int64     `json:"id"`
 		Code      string    `json:"code"`
 		Name      string    `json:"name"`
 		LogoUrl   string    `json:"logo_url"`
@@ -138,14 +138,14 @@ func GetFilteredPaginatedLanguages(w http.ResponseWriter, r *http.Request) {
 	}
 	for _, language := range languages {
 		filteredLanguages = append(filteredLanguages, struct {
-			Id        int64     `json:"id"`
+			ID        int64     `json:"id"`
 			Code      string    `json:"code"`
 			Name      string    `json:"name"`
 			LogoUrl   string    `json:"logo_url"`
 			CreatedAt time.Time `json:"created_at"`
 			UpdatedAt time.Time `json:"updated_at"`
 		}{
-			Id:        language.Id,
+			ID:        language.ID,
 			Code:      language.Code,
 			Name:      language.Name,
 			LogoUrl:   language.LogoUrl,
@@ -209,7 +209,7 @@ func ReadLanguage(w http.ResponseWriter, r *http.Request) {
 	response := map[string]interface{}{
 		"message": "success",
 		"data": map[string]interface{}{
-			"id":         language.Id,
+			"id":         language.ID,
 			"code":       language.Code,
 			"name":       language.Name,
 			"created_at": language.CreatedAt,

@@ -23,7 +23,7 @@ type UserLoginForm struct {
 }
 
 type User struct {
-	Id        int64     `gorm:"primaryKey" json:"id"`
+	ID        int64     `gorm:"primaryKey" json:"id"`
 	Name      string    `gorm:"varchar;not null;size:48" json:"name"`
 	Username  string    `gorm:"varchar;unique;not null;size:48" json:"username"`
 	Password  string    `gorm:"varchar;unique;not null;size:300" json:"password"`

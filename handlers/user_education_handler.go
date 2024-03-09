@@ -36,7 +36,7 @@ func CreateUserEducation(w http.ResponseWriter, r *http.Request) {
 	userEducationRepo := repositories.NewUserEducationRepository()
 
 	// validate user id
-	_, user_err := userRepo.Read(userEducationInput.UserId)
+	_, user_err := userRepo.Read(userEducationInput.UserID)
 	if user_err != nil {
 		// Handle error
 		response := map[string]string{"message": "User ID not found"}
@@ -45,7 +45,7 @@ func CreateUserEducation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate school id
-	_, school_err := schoolRepo.Read(userEducationInput.SchoolId)
+	_, school_err := schoolRepo.Read(userEducationInput.SchoolID)
 	if school_err != nil {
 		// Handle error
 		response := map[string]string{"message": "School ID not found"}
@@ -54,7 +54,7 @@ func CreateUserEducation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate user id and school id
-	exist_data, _ := userEducationRepo.ReadByUserIdSchoolId(userEducationInput.UserId, userEducationInput.SchoolId)
+	exist_data, _ := userEducationRepo.ReadByUserIdSchoolId(userEducationInput.UserID, userEducationInput.SchoolID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Education already added"}
@@ -63,8 +63,8 @@ func CreateUserEducation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newUserEducationData := models.UserEducation{
-		UserID:   uint(userEducationInput.UserId),
-		SchoolId: uint(userEducationInput.SchoolId),
+		UserID:   uint(userEducationInput.UserID),
+		SchoolId: uint(userEducationInput.SchoolID),
 	}
 
 	// insert to database
@@ -77,7 +77,7 @@ func CreateUserEducation(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{
 			"message": "success",
 			"data": map[string]interface{}{
-				"id": newUserEducation.Id,
+				"id": newUserEducation.ID,
 			},
 		}
 		helper.ResponseJSON(w, http.StatusOK, response)

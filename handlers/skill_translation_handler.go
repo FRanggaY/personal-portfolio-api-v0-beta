@@ -45,7 +45,7 @@ func CreateSkillTranslation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate skill id
-	_, skill_err := skillRepo.Read(skillTranslationInput.SkillId)
+	_, skill_err := skillRepo.Read(skillTranslationInput.SkillID)
 	if skill_err != nil {
 		// Handle error
 		response := map[string]string{"message": "Skill ID not found"}
@@ -54,7 +54,7 @@ func CreateSkillTranslation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate lang id and skill id
-	exist_data, _ := skillTranslationRepo.ReadByLanguageIdSkillId(skillTranslationInput.LanguageID, skillTranslationInput.SkillId)
+	exist_data, _ := skillTranslationRepo.ReadByLanguageIdSkillId(skillTranslationInput.LanguageID, skillTranslationInput.SkillID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Skill Translation already added"}
@@ -64,7 +64,7 @@ func CreateSkillTranslation(w http.ResponseWriter, r *http.Request) {
 
 	newSkillTranslationData := models.SkillTranslation{
 		LanguageID:  uint(skillTranslationInput.LanguageID),
-		SkillId:     uint(skillTranslationInput.SkillId),
+		SkillID:     uint(skillTranslationInput.SkillID),
 		Description: skillTranslationInput.Description,
 	}
 
@@ -78,7 +78,7 @@ func CreateSkillTranslation(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{
 			"message": "success",
 			"data": map[string]interface{}{
-				"id": newSkillTranslation.Id,
+				"id": newSkillTranslation.ID,
 			},
 		}
 		helper.ResponseJSON(w, http.StatusOK, response)

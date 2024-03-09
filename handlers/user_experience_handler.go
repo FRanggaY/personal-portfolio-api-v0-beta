@@ -36,7 +36,7 @@ func CreateUserExperience(w http.ResponseWriter, r *http.Request) {
 	userExperienceRepo := repositories.NewUserExperienceRepository()
 
 	// validate user id
-	_, user_err := userRepo.Read(userExperienceInput.UserId)
+	_, user_err := userRepo.Read(userExperienceInput.UserID)
 	if user_err != nil {
 		// Handle error
 		response := map[string]string{"message": "User ID not found"}
@@ -45,7 +45,7 @@ func CreateUserExperience(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate company id
-	_, company_err := companyRepo.Read(userExperienceInput.CompanyId)
+	_, company_err := companyRepo.Read(userExperienceInput.CompanyID)
 	if company_err != nil {
 		// Handle error
 		response := map[string]string{"message": "Company ID not found"}
@@ -54,7 +54,7 @@ func CreateUserExperience(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate user id and company id
-	exist_data, _ := userExperienceRepo.ReadByUserIdCompanyId(userExperienceInput.UserId, userExperienceInput.CompanyId)
+	exist_data, _ := userExperienceRepo.ReadByUserIdCompanyId(userExperienceInput.UserID, userExperienceInput.CompanyID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Experience already added"}
@@ -63,8 +63,8 @@ func CreateUserExperience(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newUserExperienceData := models.UserExperience{
-		UserID:    uint(userExperienceInput.UserId),
-		CompanyID: uint(userExperienceInput.CompanyId),
+		UserID:    uint(userExperienceInput.UserID),
+		CompanyID: uint(userExperienceInput.CompanyID),
 	}
 
 	// insert to database
@@ -77,7 +77,7 @@ func CreateUserExperience(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{
 			"message": "success",
 			"data": map[string]interface{}{
-				"id": newUserExperience.Id,
+				"id": newUserExperience.ID,
 			},
 		}
 		helper.ResponseJSON(w, http.StatusOK, response)

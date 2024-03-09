@@ -21,7 +21,7 @@ type UserEducationTranslationCreateForm struct {
 }
 
 type UserEducationTranslation struct {
-	Id              int64     `gorm:"primaryKey" json:"id"`
+	ID              int64     `gorm:"primaryKey" json:"id"`
 	LanguageID      uint      // Foreign key to link user education translation to language
 	UserEducationID uint      // Foreign key to link user education translation to user education
 	Title           string    `gorm:"varchar;not null;size:64" json:"title"`

@@ -98,7 +98,7 @@ func CreateCompany(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{
 			"message": "success",
 			"data": map[string]interface{}{
-				"id": newCompany.Id,
+				"id": newCompany.ID,
 			},
 		}
 		helper.ResponseJSON(w, http.StatusOK, response)
@@ -141,7 +141,7 @@ func GetFilteredPaginatedCompanies(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var filteredCompanies []struct {
-		Id        int64     `json:"id"`
+		ID        int64     `json:"id"`
 		Code      string    `json:"code"`
 		Name      string    `json:"name"`
 		CreatedAt time.Time `json:"created_at"`
@@ -149,13 +149,13 @@ func GetFilteredPaginatedCompanies(w http.ResponseWriter, r *http.Request) {
 	}
 	for _, company := range companies {
 		filteredCompanies = append(filteredCompanies, struct {
-			Id        int64     `json:"id"`
+			ID        int64     `json:"id"`
 			Code      string    `json:"code"`
 			Name      string    `json:"name"`
 			CreatedAt time.Time `json:"created_at"`
 			UpdatedAt time.Time `json:"updated_at"`
 		}{
-			Id:        company.Id,
+			ID:        company.ID,
 			Code:      company.Code,
 			Name:      company.Name,
 			CreatedAt: company.CreatedAt,
@@ -218,7 +218,7 @@ func ReadCompany(w http.ResponseWriter, r *http.Request) {
 	response := map[string]interface{}{
 		"message": "success",
 		"data": map[string]interface{}{
-			"id":                    company.Id,
+			"id":                    company.ID,
 			"code":                  company.Code,
 			"name":                  company.Name,
 			"is_external_url":       company.IsExternalUrl,

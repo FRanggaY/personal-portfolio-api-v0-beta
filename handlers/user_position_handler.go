@@ -35,7 +35,7 @@ func CreateUserPosition(w http.ResponseWriter, r *http.Request) {
 	userPositionRepo := repositories.NewUserPositionRepository()
 
 	// validate user id
-	_, user_err := userRepo.Read(userPositionInput.UserId)
+	_, user_err := userRepo.Read(userPositionInput.UserID)
 	if user_err != nil {
 		// Handle error
 		response := map[string]string{"message": "User ID not found"}
@@ -44,7 +44,7 @@ func CreateUserPosition(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newUserPositionData := models.UserPosition{
-		UserID: uint(userPositionInput.UserId),
+		UserID: uint(userPositionInput.UserID),
 		Title:  userPositionInput.Title,
 	}
 
@@ -58,7 +58,7 @@ func CreateUserPosition(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{
 			"message": "success",
 			"data": map[string]interface{}{
-				"id": newUserPosition.Id,
+				"id": newUserPosition.ID,
 			},
 		}
 		helper.ResponseJSON(w, http.StatusOK, response)

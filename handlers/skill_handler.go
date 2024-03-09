@@ -95,7 +95,7 @@ func CreateSkill(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{
 			"message": "success",
 			"data": map[string]interface{}{
-				"id": newSkill.Id,
+				"id": newSkill.ID,
 			},
 		}
 		helper.ResponseJSON(w, http.StatusOK, response)
@@ -138,7 +138,7 @@ func GetFilteredPaginatedSkills(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var filteredSkills []struct {
-		Id        int64     `json:"id"`
+		ID        int64     `json:"id"`
 		Code      string    `json:"code"`
 		Name      string    `json:"name"`
 		CreatedAt time.Time `json:"created_at"`
@@ -146,13 +146,13 @@ func GetFilteredPaginatedSkills(w http.ResponseWriter, r *http.Request) {
 	}
 	for _, skill := range skills {
 		filteredSkills = append(filteredSkills, struct {
-			Id        int64     `json:"id"`
+			ID        int64     `json:"id"`
 			Code      string    `json:"code"`
 			Name      string    `json:"name"`
 			CreatedAt time.Time `json:"created_at"`
 			UpdatedAt time.Time `json:"updated_at"`
 		}{
-			Id:        skill.Id,
+			ID:        skill.ID,
 			Code:      skill.Code,
 			Name:      skill.Name,
 			CreatedAt: skill.CreatedAt,
@@ -215,7 +215,7 @@ func ReadSkill(w http.ResponseWriter, r *http.Request) {
 	response := map[string]interface{}{
 		"message": "success",
 		"data": map[string]interface{}{
-			"id":                    skill.Id,
+			"id":                    skill.ID,
 			"code":                  skill.Code,
 			"name":                  skill.Name,
 			"is_external_url":       skill.IsExternalUrl,

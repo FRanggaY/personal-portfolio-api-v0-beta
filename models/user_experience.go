@@ -7,11 +7,11 @@ import (
 )
 
 type UserExperienceCreateForm struct {
-	UserId    int64 `gorm:"int64;not null" json:"user_id"`
-	CompanyId int64 `gorm:"int64;not null" json:"company_id"`
+	UserID    int64 `gorm:"int64;not null" json:"user_id"`
+	CompanyID int64 `gorm:"int64;not null" json:"company_id"`
 }
 type UserExperience struct {
-	Id        int64     `gorm:"primaryKey" json:"id"`
+	ID        int64     `gorm:"primaryKey" json:"id"`
 	UserID    uint      // Foreign key to link user experience to user
 	CompanyID uint      // Foreign key to link user experience to company
 	CreatedAt time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoCreateTime" json:"created_at"`

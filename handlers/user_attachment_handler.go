@@ -35,7 +35,7 @@ func CreateUserAttachment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userId := r.FormValue("user_id")
+	userIDStr := r.FormValue("user_id")
 	title := r.FormValue("title")
 	category := r.FormValue("category")
 	url := r.FormValue("url")
@@ -53,7 +53,7 @@ func CreateUserAttachment(w http.ResponseWriter, r *http.Request) {
 
 	userRepo := repositories.NewUserRepository()
 	userAttachmentRepo := repositories.NewUserAttachmentRepository()
-	userID := helper.ParseIDStringToInt(userId)
+	userID := helper.ParseIDStringToInt(userIDStr)
 	// validation name and code unique
 	_, err_user := userRepo.Read(userID)
 	if err_user != nil {
@@ -74,7 +74,7 @@ func CreateUserAttachment(w http.ResponseWriter, r *http.Request) {
 
 	filename := header.Filename
 	extension := filepath.Ext(filename)
-	finalFilename := helper.GetStringTimeNow() + "_" + userId + "_" + title + extension
+	finalFilename := helper.GetStringTimeNow() + "_" + userIDStr + "_" + title + extension
 	imageUrl, _ := helper.UploadFile(file, directory, finalFilename)
 
 	// Create a new user attachment record
@@ -97,7 +97,7 @@ func CreateUserAttachment(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{
 			"message": "success",
 			"data": map[string]interface{}{
-				"id": newUserAttachment.Id,
+				"id": newUserAttachment.ID,
 			},
 		}
 		helper.ResponseJSON(w, http.StatusOK, response)

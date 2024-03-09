@@ -85,7 +85,7 @@ func CreateUserExperienceTranslation(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{
 			"message": "success",
 			"data": map[string]interface{}{
-				"id": newUserExperienceTranslation.Id,
+				"id": newUserExperienceTranslation.ID,
 			},
 		}
 		helper.ResponseJSON(w, http.StatusOK, response)

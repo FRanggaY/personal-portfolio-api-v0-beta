@@ -7,7 +7,7 @@ import (
 )
 
 type Language struct {
-	Id        int64     `gorm:"primaryKey" json:"id"`
+	ID        int64     `gorm:"primaryKey" json:"id"`
 	Code      string    `gorm:"varchar;size:5;unique;not null" json:"code"`
 	Name      string    `gorm:"varchar;size:32;unique;not null" json:"name"`
 	LogoUrl   string    `gorm:"varchar;size:300" json:"logo_url"`

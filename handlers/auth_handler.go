@@ -55,7 +55,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// create token jwt (expired 24 hour)
 	expTime := time.Now().Add(24 * time.Hour)
 	claims := &config.JWTClaim{
-		Id:       exist_user.Id,
+		Id:       exist_user.ID,
 		Username: user.Username,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "go-jwt-mux",
@@ -128,7 +128,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{
 			"message": "success",
 			"data": map[string]interface{}{
-				"id": newUser.Id,
+				"id": newUser.ID,
 			},
 		}
 		helper.ResponseJSON(w, http.StatusOK, response)
@@ -180,7 +180,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	response := map[string]interface{}{
 		"message": "success",
 		"data": map[string]interface{}{
-			"id":       user.Id,
+			"id":       user.ID,
 			"username": user.Username,
 			"name":     user.Name,
 		},

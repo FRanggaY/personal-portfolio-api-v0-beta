@@ -7,7 +7,7 @@ import (
 )
 
 type UserAttachment struct {
-	Id                 int64     `gorm:"primaryKey" json:"id"`
+	ID                 int64     `gorm:"primaryKey" json:"id"`
 	UserID             uint      // Foreign key to link user attachment to user
 	Title              string    `gorm:"varchar;not null;size:64" json:"title"`
 	Category           string    `gorm:"varchar;size:36" json:"category"`

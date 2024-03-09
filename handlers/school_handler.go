@@ -98,7 +98,7 @@ func CreateSchool(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{
 			"message": "success",
 			"data": map[string]interface{}{
-				"id": newSchool.Id,
+				"id": newSchool.ID,
 			},
 		}
 		helper.ResponseJSON(w, http.StatusOK, response)
@@ -141,7 +141,7 @@ func GetFilteredPaginatedSchools(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var filteredSchools []struct {
-		Id        int64     `json:"id"`
+		ID        int64     `json:"id"`
 		Code      string    `json:"code"`
 		Name      string    `json:"name"`
 		CreatedAt time.Time `json:"created_at"`
@@ -149,13 +149,13 @@ func GetFilteredPaginatedSchools(w http.ResponseWriter, r *http.Request) {
 	}
 	for _, school := range schools {
 		filteredSchools = append(filteredSchools, struct {
-			Id        int64     `json:"id"`
+			ID        int64     `json:"id"`
 			Code      string    `json:"code"`
 			Name      string    `json:"name"`
 			CreatedAt time.Time `json:"created_at"`
 			UpdatedAt time.Time `json:"updated_at"`
 		}{
-			Id:        school.Id,
+			ID:        school.ID,
 			Code:      school.Code,
 			Name:      school.Name,
 			CreatedAt: school.CreatedAt,
@@ -218,7 +218,7 @@ func ReadSchool(w http.ResponseWriter, r *http.Request) {
 	response := map[string]interface{}{
 		"message": "success",
 		"data": map[string]interface{}{
-			"id":                    school.Id,
+			"id":                    school.ID,
 			"code":                  school.Code,
 			"name":                  school.Name,
 			"is_external_url":       school.IsExternalUrl,
