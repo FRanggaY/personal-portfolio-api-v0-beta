@@ -6,6 +6,29 @@ import (
 	"gorm.io/gorm"
 )
 
+type EducationTranslationResponse struct {
+	ID                       int64     `json:"id"`
+	LanguageID               int64     `json:"language_id"`
+	SchoolID                 int64     `json:"school_id"`
+	Title                    string    `gorm:"varchar" json:"title"`
+	Description              string    `gorm:"varchar" json:"description"`
+	Category                 string    `gorm:"varchar" json:"category"`
+	Location                 string    `gorm:"varchar" json:"location"`
+	LocationType             string    `gorm:"varchar" json:"location_type"`
+	MonthStart               int       `gorm:"int" json:"month_start"`
+	MonthEnd                 int       `gorm:"int" json:"month_end"`
+	YearStart                uint      `gorm:"uint" json:"year_start"`
+	YearEnd                  uint      `gorm:"uint" json:"year_end"`
+	SchoolCode               string    `gorm:"varchar" json:"school_code"`
+	SchoolName               string    `gorm:"varchar" json:"school_name"`
+	SchoolImageUrl           string    `gorm:"varchar" json:"school_image_url"`
+	SchoolUrl                string    `gorm:"varchar" json:"school_url"`
+	SchoolIsExternalUrl      bool      `gorm:"boolean" json:"school_is_external_url"`
+	SchoolIsExternalImageUrl bool      `gorm:"boolean" json:"school_is_external_image_url"`
+	CreatedAt                time.Time `json:"created_at"`
+	UpdatedAt                time.Time `json:"updated_at"`
+}
+
 type UserEducationTranslationCreateForm struct {
 	LanguageID      int64  `gorm:"int64;not null" json:"language_id"`
 	UserEducationID int64  `gorm:"int64;not null" json:"user_education_id"`

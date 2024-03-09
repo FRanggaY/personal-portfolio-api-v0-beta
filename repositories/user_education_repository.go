@@ -93,3 +93,43 @@ func (repo *UserEducationRepository) Delete(id int64) error {
 	}
 	return nil
 }
+
+func (repo *UserEducationRepository) ReadTranslationsByUserIDLanguageID(userID int64, languageID int64, pageNumber int, pageSize int) ([]models.EducationTranslationResponse, error) {
+	var skills []models.EducationTranslationResponse
+
+	// default
+	if pageSize <= 0 {
+		pageSize = 5
+	}
+	if pageNumber <= 0 {
+		pageNumber = 1
+	}
+
+	// calculate offset
+	offset := (pageNumber - 1) * pageSize
+
+	query := models.DB.
+		Table("user_education_translations").
+		Select(`
+			user_education_translations.*,
+			IFNULL(schools.id, '') AS school_id, 
+            IFNULL(schools.code, '') AS school_code,
+            IFNULL(schools.name, '') AS school_name,
+            IFNULL(schools.image_url, '') AS school_image_url,
+            IFNULL(schools.url, '') AS school_url,
+            IFNULL(schools.is_external_url, '') AS school_is_external_url,
+            IFNULL(schools.is_external_image_url, '') AS school_is_external_image_url,
+            IFNULL(schools.address, '') AS school_address
+        `).
+		Joins("LEFT JOIN user_educations ON user_education_translations.user_education_id = user_educations.id").
+		Joins("LEFT JOIN schools ON user_educations.school_id = schools.id").
+		Where("user_educations.user_id = ?", userID).
+		Where("user_education_translations.language_id = ?", languageID).
+		Limit(pageSize).Offset(offset)
+
+	if err := query.Find(&skills).Error; err != nil {
+		return nil, err
+	}
+
+	return skills, nil
+}

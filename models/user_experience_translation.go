@@ -10,22 +10,22 @@ type ExperienceTranslationResponse struct {
 	ID                        int64     `json:"id"`
 	LanguageID                int64     `json:"language_id"`
 	CompanyID                 int64     `json:"company_id"`
-	Title                     string    `gorm:"varchar"`
-	Description               string    `gorm:"varchar"`
-	Category                  string    `gorm:"varchar"`
-	Location                  string    `gorm:"varchar"`
-	LocationType              string    `gorm:"varchar"`
-	Industry                  string    `gorm:"varchar"`
-	MonthStart                int       `gorm:"int"`
-	MonthEnd                  int       `gorm:"int"`
-	YearStart                 uint      `gorm:"uint"`
-	YearEnd                   uint      `gorm:"uint"`
-	CompanyCode               string    `gorm:"varchar"`
-	CompanyName               string    `gorm:"varchar"`
-	CompanyImageUrl           string    `gorm:"varchar"`
-	CompanyUrl                string    `gorm:"varchar"`
-	CompanyIsExternalUrl      bool      `gorm:"boolean"`
-	CompanyIsExternalImageUrl bool      `gorm:"boolean"`
+	Title                     string    `gorm:"varchar" json:"title"`
+	Description               string    `gorm:"varchar" json:"description"`
+	Category                  string    `gorm:"varchar" json:"category"`
+	Location                  string    `gorm:"varchar" json:"location"`
+	LocationType              string    `gorm:"varchar" json:"location_type"`
+	Industry                  string    `gorm:"varchar" json:"industry"`
+	MonthStart                int       `gorm:"int" json:"month_start"`
+	MonthEnd                  int       `gorm:"int" json:"month_end"`
+	YearStart                 uint      `gorm:"uint" json:"year_start"`
+	YearEnd                   uint      `gorm:"uint" json:"year_end"`
+	CompanyCode               string    `gorm:"varchar" json:"company_code"`
+	CompanyName               string    `gorm:"varchar" json:"company_name"`
+	CompanyImageUrl           string    `gorm:"varchar" json:"company_image_url"`
+	CompanyUrl                string    `gorm:"varchar" json:"company_url"`
+	CompanyIsExternalUrl      bool      `gorm:"boolean" json:"company_is_external_url"`
+	CompanyIsExternalImageUrl bool      `gorm:"boolean" json:"company_is_external_image_url"`
 	CreatedAt                 time.Time `json:"created_at"`
 	UpdatedAt                 time.Time `json:"updated_at"`
 }
