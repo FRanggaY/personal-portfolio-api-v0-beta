@@ -54,7 +54,7 @@ func CreateUserExperience(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate user id and company id
-	exist_data, _ := userExperienceRepo.ReadByUserIdCompanyId(userExperienceInput.UserID, userExperienceInput.CompanyID)
+	exist_data, _ := userExperienceRepo.ReadByUserIDCompanyID(userExperienceInput.UserID, userExperienceInput.CompanyID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Experience already added"}

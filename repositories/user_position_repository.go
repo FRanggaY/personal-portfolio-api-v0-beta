@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"github.com/FRanggaY/personal-portfolio-api/helper"
 	"github.com/FRanggaY/personal-portfolio-api/models"
 )
 
@@ -17,12 +18,12 @@ func (repo *UserPositionRepository) Create(newData *models.UserPosition) (*model
 	return newData, nil
 }
 
-func (repo *UserPositionRepository) Count(userId *int64) (int, error) {
+func (repo *UserPositionRepository) Count(userID *int64) (int, error) {
 	var count int64
 	query := models.DB.Model(&models.UserPosition{})
 
-	if userId != nil {
-		query = query.Where("user_id LIKE ?", userId)
+	if userID != nil {
+		query = query.Where(helper.FilterUserIDEqual, userID)
 	}
 
 	if err := query.Count(&count).Error; err != nil {
@@ -31,12 +32,12 @@ func (repo *UserPositionRepository) Count(userId *int64) (int, error) {
 	return int(count), nil
 }
 
-func (repo *UserPositionRepository) ReadAll(userId *int64) ([]models.UserPosition, error) {
+func (repo *UserPositionRepository) ReadAll(userID *int64) ([]models.UserPosition, error) {
 	query := models.DB
 	var datas []models.UserPosition
 
-	if userId != nil {
-		query = query.Where("user_id LIKE ?", userId)
+	if userID != nil {
+		query = query.Where("user_id LIKE ?", userID)
 	}
 
 	if err := query.Find(&datas).Error; err != nil {
@@ -45,7 +46,7 @@ func (repo *UserPositionRepository) ReadAll(userId *int64) ([]models.UserPositio
 	return datas, nil
 }
 
-func (repo *UserPositionRepository) ReadFilteredPaginated(userId *int64, pageSize, pageNumber int) ([]models.UserPosition, error) {
+func (repo *UserPositionRepository) ReadFilteredPaginated(userID *int64, pageSize, pageNumber int) ([]models.UserPosition, error) {
 	var datas []models.UserPosition
 
 	// default
@@ -60,8 +61,8 @@ func (repo *UserPositionRepository) ReadFilteredPaginated(userId *int64, pageSiz
 	offset := (pageNumber - 1) * pageSize
 
 	query := models.DB
-	if userId != nil {
-		query = query.Where("user_id LIKE ?", userId)
+	if userID != nil {
+		query = query.Where("user_id LIKE ?", userID)
 	}
 
 	// pagination
@@ -71,16 +72,16 @@ func (repo *UserPositionRepository) ReadFilteredPaginated(userId *int64, pageSiz
 	return datas, nil
 }
 
-func (repo *UserPositionRepository) Read(id int64) (*models.UserPosition, error) {
+func (repo *UserPositionRepository) Read(ID int64) (*models.UserPosition, error) {
 	var data models.UserPosition
-	if err := models.DB.First(&data, id).Error; err != nil {
+	if err := models.DB.First(&data, ID).Error; err != nil {
 		return nil, err
 	}
 	return &data, nil
 }
 
-func (repo *UserPositionRepository) Delete(id int64) error {
-	if err := models.DB.Delete(&models.UserPosition{}, id).Error; err != nil {
+func (repo *UserPositionRepository) Delete(ID int64) error {
+	if err := models.DB.Delete(&models.UserPosition{}, ID).Error; err != nil {
 		return err
 	}
 	return nil

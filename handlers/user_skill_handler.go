@@ -54,7 +54,7 @@ func CreateUserSkill(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate user id and skill id
-	exist_data, _ := userSkillRepo.ReadByUserIdSkillId(userSkillInput.UserID, userSkillInput.SkillID)
+	exist_data, _ := userSkillRepo.ReadByUserIDSkillID(userSkillInput.UserID, userSkillInput.SkillID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Skill already added"}

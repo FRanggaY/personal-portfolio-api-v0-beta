@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"github.com/FRanggaY/personal-portfolio-api/helper"
 	"github.com/FRanggaY/personal-portfolio-api/models"
 )
 
@@ -17,12 +18,12 @@ func (repo *SkillTranslationRepository) Create(newData *models.SkillTranslation)
 	return newData, nil
 }
 
-func (repo *SkillTranslationRepository) Count(languageId *int64) (int, error) {
+func (repo *SkillTranslationRepository) Count(languageID *int64) (int, error) {
 	var count int64
 	query := models.DB.Model(&models.SkillTranslation{})
 
-	if languageId != nil {
-		query = query.Where("language_id LIKE ?", languageId)
+	if languageID != nil {
+		query = query.Where(helper.FilterLanguageIDEqual, languageID)
 	}
 
 	if err := query.Count(&count).Error; err != nil {
@@ -31,12 +32,12 @@ func (repo *SkillTranslationRepository) Count(languageId *int64) (int, error) {
 	return int(count), nil
 }
 
-func (repo *SkillTranslationRepository) ReadAll(languageId *int64) ([]models.SkillTranslation, error) {
+func (repo *SkillTranslationRepository) ReadAll(languageID *int64) ([]models.SkillTranslation, error) {
 	query := models.DB
 	var datas []models.SkillTranslation
 
-	if languageId != nil {
-		query = query.Where("language_id LIKE ?", languageId)
+	if languageID != nil {
+		query = query.Where(helper.FilterLanguageIDEqual, languageID)
 	}
 
 	if err := query.Find(&datas).Error; err != nil {
@@ -45,7 +46,7 @@ func (repo *SkillTranslationRepository) ReadAll(languageId *int64) ([]models.Ski
 	return datas, nil
 }
 
-func (repo *SkillTranslationRepository) ReadFilteredPaginated(languageId *int64, pageSize, pageNumber int) ([]models.SkillTranslation, error) {
+func (repo *SkillTranslationRepository) ReadFilteredPaginated(languageID *int64, pageSize, pageNumber int) ([]models.SkillTranslation, error) {
 	var datas []models.SkillTranslation
 
 	// default
@@ -60,8 +61,8 @@ func (repo *SkillTranslationRepository) ReadFilteredPaginated(languageId *int64,
 	offset := (pageNumber - 1) * pageSize
 
 	query := models.DB
-	if languageId != nil {
-		query = query.Where("language_id LIKE ?", languageId)
+	if languageID != nil {
+		query = query.Where(helper.FilterLanguageIDEqual, languageID)
 	}
 
 	// pagination
@@ -71,24 +72,24 @@ func (repo *SkillTranslationRepository) ReadFilteredPaginated(languageId *int64,
 	return datas, nil
 }
 
-func (repo *SkillTranslationRepository) Read(id int64) (*models.SkillTranslation, error) {
+func (repo *SkillTranslationRepository) Read(ID int64) (*models.SkillTranslation, error) {
 	var data models.SkillTranslation
-	if err := models.DB.First(&data, id).Error; err != nil {
+	if err := models.DB.First(&data, ID).Error; err != nil {
 		return nil, err
 	}
 	return &data, nil
 }
 
-func (repo *SkillTranslationRepository) ReadByLanguageIdSkillId(languageId int64, skillId int64) (*models.SkillTranslation, error) {
+func (repo *SkillTranslationRepository) ReadByLanguageIDSkillID(languageID int64, skillID int64) (*models.SkillTranslation, error) {
 	var data models.SkillTranslation
-	if err := models.DB.Where("language_id = ? AND skill_id = ?", languageId, skillId).First(&data).Error; err != nil {
+	if err := models.DB.Where("language_id = ? AND skill_id = ?", languageID, skillID).First(&data).Error; err != nil {
 		return nil, err
 	}
 	return &data, nil
 }
 
-func (repo *SkillTranslationRepository) Delete(id int64) error {
-	if err := models.DB.Delete(&models.SkillTranslation{}, id).Error; err != nil {
+func (repo *SkillTranslationRepository) Delete(ID int64) error {
+	if err := models.DB.Delete(&models.SkillTranslation{}, ID).Error; err != nil {
 		return err
 	}
 	return nil

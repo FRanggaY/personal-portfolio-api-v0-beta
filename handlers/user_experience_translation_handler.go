@@ -52,7 +52,7 @@ func CreateUserExperienceTranslation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	exist_data, _ := userExperienceTranslationRepo.ReadByLanguageIdUserExperienceId(userExperienceTranslationInput.LanguageID, userExperienceTranslationInput.UserExperienceID)
+	exist_data, _ := userExperienceTranslationRepo.ReadByLanguageIDUserExperienceID(userExperienceTranslationInput.LanguageID, userExperienceTranslationInput.UserExperienceID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Experience already added"}

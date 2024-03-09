@@ -96,9 +96,9 @@ func (repo *UserRepository) ReadFilteredPaginated(nameFilter string, pageSize, p
 	return datas, nil
 }
 
-func (repo *UserRepository) Read(id int64) (*models.User, error) {
+func (repo *UserRepository) Read(ID int64) (*models.User, error) {
 	var data models.User
-	if err := models.DB.First(&data, id).Error; err != nil {
+	if err := models.DB.First(&data, ID).Error; err != nil {
 		return nil, err
 	}
 	return &data, nil
@@ -112,8 +112,8 @@ func (repo *UserRepository) ReadByUsername(username string) (*models.User, error
 	return &data, nil
 }
 
-func (repo *UserRepository) Update(id int64, updatedUser *models.UserEditForm) error {
-	existingData, err := repo.Read(id)
+func (repo *UserRepository) Update(ID int64, updatedUser *models.UserEditForm) error {
+	existingData, err := repo.Read(ID)
 	if err != nil {
 		return err
 	}
@@ -128,8 +128,8 @@ func (repo *UserRepository) Update(id int64, updatedUser *models.UserEditForm) e
 	return nil
 }
 
-func (repo *UserRepository) Delete(id int64) error {
-	if err := models.DB.Delete(&models.User{}, id).Error; err != nil {
+func (repo *UserRepository) Delete(ID int64) error {
+	if err := models.DB.Delete(&models.User{}, ID).Error; err != nil {
 		return err
 	}
 	return nil

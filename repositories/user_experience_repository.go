@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"github.com/FRanggaY/personal-portfolio-api/helper"
 	"github.com/FRanggaY/personal-portfolio-api/models"
 )
 
@@ -17,12 +18,12 @@ func (repo *UserExperienceRepository) Create(newData *models.UserExperience) (*m
 	return newData, nil
 }
 
-func (repo *UserExperienceRepository) Count(userId *int64) (int, error) {
+func (repo *UserExperienceRepository) Count(userID *int64) (int, error) {
 	var count int64
 	query := models.DB.Model(&models.UserExperience{})
 
-	if userId != nil {
-		query = query.Where("user_id LIKE ?", userId)
+	if userID != nil {
+		query = query.Where(helper.FilterUserIDEqual, userID)
 	}
 
 	if err := query.Count(&count).Error; err != nil {
@@ -31,12 +32,12 @@ func (repo *UserExperienceRepository) Count(userId *int64) (int, error) {
 	return int(count), nil
 }
 
-func (repo *UserExperienceRepository) ReadAll(userId *int64) ([]models.UserExperience, error) {
+func (repo *UserExperienceRepository) ReadAll(userID *int64) ([]models.UserExperience, error) {
 	query := models.DB
 	var datas []models.UserExperience
 
-	if userId != nil {
-		query = query.Where("user_id LIKE ?", userId)
+	if userID != nil {
+		query = query.Where(helper.FilterUserIDEqual, userID)
 	}
 
 	if err := query.Find(&datas).Error; err != nil {
@@ -45,7 +46,7 @@ func (repo *UserExperienceRepository) ReadAll(userId *int64) ([]models.UserExper
 	return datas, nil
 }
 
-func (repo *UserExperienceRepository) ReadFilteredPaginated(userId *int64, pageSize, pageNumber int) ([]models.UserExperience, error) {
+func (repo *UserExperienceRepository) ReadFilteredPaginated(userID *int64, pageSize, pageNumber int) ([]models.UserExperience, error) {
 	var datas []models.UserExperience
 
 	// default
@@ -60,8 +61,8 @@ func (repo *UserExperienceRepository) ReadFilteredPaginated(userId *int64, pageS
 	offset := (pageNumber - 1) * pageSize
 
 	query := models.DB
-	if userId != nil {
-		query = query.Where("user_id LIKE ?", userId)
+	if userID != nil {
+		query = query.Where(helper.FilterUserIDEqual, userID)
 	}
 
 	// pagination
@@ -71,24 +72,24 @@ func (repo *UserExperienceRepository) ReadFilteredPaginated(userId *int64, pageS
 	return datas, nil
 }
 
-func (repo *UserExperienceRepository) Read(id int64) (*models.UserExperience, error) {
+func (repo *UserExperienceRepository) Read(ID int64) (*models.UserExperience, error) {
 	var data models.UserExperience
-	if err := models.DB.First(&data, id).Error; err != nil {
+	if err := models.DB.First(&data, ID).Error; err != nil {
 		return nil, err
 	}
 	return &data, nil
 }
 
-func (repo *UserExperienceRepository) ReadByUserIdCompanyId(userId int64, companyId int64) (*models.UserExperience, error) {
+func (repo *UserExperienceRepository) ReadByUserIDCompanyID(userID int64, companyID int64) (*models.UserExperience, error) {
 	var data models.UserExperience
-	if err := models.DB.Where("user_id = ? AND company_id = ?", userId, companyId).First(&data).Error; err != nil {
+	if err := models.DB.Where("user_id = ? AND company_id = ?", userID, companyID).First(&data).Error; err != nil {
 		return nil, err
 	}
 	return &data, nil
 }
 
-func (repo *UserExperienceRepository) Delete(id int64) error {
-	if err := models.DB.Delete(&models.UserExperience{}, id).Error; err != nil {
+func (repo *UserExperienceRepository) Delete(ID int64) error {
+	if err := models.DB.Delete(&models.UserExperience{}, ID).Error; err != nil {
 		return err
 	}
 	return nil

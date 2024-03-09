@@ -57,24 +57,24 @@ func (repo *UserEducationTranslationRepository) ReadFilteredPaginated(pageSize, 
 	return datas, nil
 }
 
-func (repo *UserEducationTranslationRepository) Read(id int64) (*models.UserEducationTranslation, error) {
+func (repo *UserEducationTranslationRepository) Read(ID int64) (*models.UserEducationTranslation, error) {
 	var data models.UserEducationTranslation
-	if err := models.DB.First(&data, id).Error; err != nil {
+	if err := models.DB.First(&data, ID).Error; err != nil {
 		return nil, err
 	}
 	return &data, nil
 }
 
-func (repo *UserEducationTranslationRepository) ReadByLanguageIdUserEducationId(languageId int64, userEducationId int64) (*models.UserEducationTranslation, error) {
+func (repo *UserEducationTranslationRepository) ReadByLanguageIDUserEducationID(languageID int64, userEducationID int64) (*models.UserEducationTranslation, error) {
 	var data models.UserEducationTranslation
-	if err := models.DB.Where("language_id = ? AND user_education_id = ?", languageId, userEducationId).First(&data).Error; err != nil {
+	if err := models.DB.Where("language_id = ? AND user_education_id = ?", languageID, userEducationID).First(&data).Error; err != nil {
 		return nil, err
 	}
 	return &data, nil
 }
 
-func (repo *UserEducationTranslationRepository) Delete(id int64) error {
-	if err := models.DB.Delete(&models.UserEducationTranslation{}, id).Error; err != nil {
+func (repo *UserEducationTranslationRepository) Delete(ID int64) error {
+	if err := models.DB.Delete(&models.UserEducationTranslation{}, ID).Error; err != nil {
 		return err
 	}
 	return nil

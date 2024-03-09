@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"github.com/FRanggaY/personal-portfolio-api/helper"
 	"github.com/FRanggaY/personal-portfolio-api/models"
 )
 
@@ -17,12 +18,12 @@ func (repo *UserEducationRepository) Create(newData *models.UserEducation) (*mod
 	return newData, nil
 }
 
-func (repo *UserEducationRepository) Count(userId *int64) (int, error) {
+func (repo *UserEducationRepository) Count(userID *int64) (int, error) {
 	var count int64
 	query := models.DB.Model(&models.UserEducation{})
 
-	if userId != nil {
-		query = query.Where("user_id LIKE ?", userId)
+	if userID != nil {
+		query = query.Where(helper.FilterUserIDEqual, userID)
 	}
 
 	if err := query.Count(&count).Error; err != nil {
@@ -31,12 +32,12 @@ func (repo *UserEducationRepository) Count(userId *int64) (int, error) {
 	return int(count), nil
 }
 
-func (repo *UserEducationRepository) ReadAll(userId *int64) ([]models.UserEducation, error) {
+func (repo *UserEducationRepository) ReadAll(userID *int64) ([]models.UserEducation, error) {
 	query := models.DB
 	var datas []models.UserEducation
 
-	if userId != nil {
-		query = query.Where("user_id LIKE ?", userId)
+	if userID != nil {
+		query = query.Where(helper.FilterUserIDEqual, userID)
 	}
 
 	if err := query.Find(&datas).Error; err != nil {
@@ -45,7 +46,7 @@ func (repo *UserEducationRepository) ReadAll(userId *int64) ([]models.UserEducat
 	return datas, nil
 }
 
-func (repo *UserEducationRepository) ReadFilteredPaginated(userId *int64, pageSize, pageNumber int) ([]models.UserEducation, error) {
+func (repo *UserEducationRepository) ReadFilteredPaginated(userID *int64, pageSize, pageNumber int) ([]models.UserEducation, error) {
 	var datas []models.UserEducation
 
 	// default
@@ -60,8 +61,8 @@ func (repo *UserEducationRepository) ReadFilteredPaginated(userId *int64, pageSi
 	offset := (pageNumber - 1) * pageSize
 
 	query := models.DB
-	if userId != nil {
-		query = query.Where("user_id LIKE ?", userId)
+	if userID != nil {
+		query = query.Where(helper.FilterUserIDEqual, userID)
 	}
 
 	// pagination
@@ -71,24 +72,24 @@ func (repo *UserEducationRepository) ReadFilteredPaginated(userId *int64, pageSi
 	return datas, nil
 }
 
-func (repo *UserEducationRepository) Read(id int64) (*models.UserEducation, error) {
+func (repo *UserEducationRepository) Read(ID int64) (*models.UserEducation, error) {
 	var data models.UserEducation
-	if err := models.DB.First(&data, id).Error; err != nil {
+	if err := models.DB.First(&data, ID).Error; err != nil {
 		return nil, err
 	}
 	return &data, nil
 }
 
-func (repo *UserEducationRepository) ReadByUserIdSchoolId(userId int64, schoolId int64) (*models.UserEducation, error) {
+func (repo *UserEducationRepository) ReadByUserIDSchoolID(userID int64, schoolID int64) (*models.UserEducation, error) {
 	var data models.UserEducation
-	if err := models.DB.Where("user_id = ? AND school_id = ?", userId, schoolId).First(&data).Error; err != nil {
+	if err := models.DB.Where("user_id = ? AND school_id = ?", userID, schoolID).First(&data).Error; err != nil {
 		return nil, err
 	}
 	return &data, nil
 }
 
-func (repo *UserEducationRepository) Delete(id int64) error {
-	if err := models.DB.Delete(&models.UserEducation{}, id).Error; err != nil {
+func (repo *UserEducationRepository) Delete(ID int64) error {
+	if err := models.DB.Delete(&models.UserEducation{}, ID).Error; err != nil {
 		return err
 	}
 	return nil

@@ -57,9 +57,9 @@ func (repo *SkillRepository) ReadFilteredPaginated(pageSize, pageNumber int) ([]
 	return datas, nil
 }
 
-func (repo *SkillRepository) Read(id int64) (*models.Skill, error) {
+func (repo *SkillRepository) Read(ID int64) (*models.Skill, error) {
 	var data models.Skill
-	if err := models.DB.First(&data, id).Error; err != nil {
+	if err := models.DB.First(&data, ID).Error; err != nil {
 		return nil, err
 	}
 	return &data, nil

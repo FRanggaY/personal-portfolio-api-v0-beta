@@ -53,7 +53,7 @@ func CreateUserEducationTranslation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	exist_data, _ := userEducationTranslationRepo.ReadByLanguageIdUserEducationId(userEducationTranslationInput.LanguageID, userEducationTranslationInput.UserEducationID)
+	exist_data, _ := userEducationTranslationRepo.ReadByLanguageIDUserEducationID(userEducationTranslationInput.LanguageID, userEducationTranslationInput.UserEducationID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Education already added"}

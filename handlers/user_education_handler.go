@@ -54,7 +54,7 @@ func CreateUserEducation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate user id and school id
-	exist_data, _ := userEducationRepo.ReadByUserIdSchoolId(userEducationInput.UserID, userEducationInput.SchoolID)
+	exist_data, _ := userEducationRepo.ReadByUserIDSchoolID(userEducationInput.UserID, userEducationInput.SchoolID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Education already added"}

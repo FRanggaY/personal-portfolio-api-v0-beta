@@ -54,7 +54,7 @@ func CreateSkillTranslation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate lang id and skill id
-	exist_data, _ := skillTranslationRepo.ReadByLanguageIdSkillId(skillTranslationInput.LanguageID, skillTranslationInput.SkillID)
+	exist_data, _ := skillTranslationRepo.ReadByLanguageIDSkillID(skillTranslationInput.LanguageID, skillTranslationInput.SkillID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Skill Translation already added"}

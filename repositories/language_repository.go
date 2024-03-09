@@ -57,9 +57,9 @@ func (repo *LanguageRepository) ReadFilteredPaginated(pageSize, pageNumber int) 
 	return datas, nil
 }
 
-func (repo *LanguageRepository) Read(id int64) (*models.Language, error) {
+func (repo *LanguageRepository) Read(ID int64) (*models.Language, error) {
 	var data models.Language
-	if err := models.DB.First(&data, id).Error; err != nil {
+	if err := models.DB.First(&data, ID).Error; err != nil {
 		return nil, err
 	}
 	return &data, nil
