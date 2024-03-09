@@ -31,18 +31,18 @@ type ExperienceTranslationResponse struct {
 }
 
 type UserExperienceTranslationCreateForm struct {
-	LanguageID       int64  `gorm:"int64;not null" json:"language_id"`
-	UserExperienceID int64  `gorm:"int64;not null" json:"user_experience_id"`
-	Title            string `gorm:"varchar;not null;size:64" json:"title"`
-	Description      string `gorm:"varchar;not null;size:300" json:"description"`
-	Category         string `gorm:"varchar;not null;size:14" json:"category"`
-	Location         string `gorm:"varchar;not null;size:128" json:"location"`
-	LocationType     string `gorm:"varchar;not null;size:36" json:"location_type"`
-	Industry         string `gorm:"varchar;not null;size:300" json:"industry"`
-	MonthStart       int    `gorm:"int;not null;size:2" json:"month_start"`
-	MonthEnd         int    `gorm:"int;size:2" json:"month_end"`
-	YearStart        int64  `gorm:"int64;not null;size:4" json:"year_start"`
-	YearEnd          int64  `gorm:"int64;size:4" json:"year_end"`
+	LanguageID   int64  `gorm:"int64;not null" json:"language_id"`
+	CompanyID    int64  `gorm:"int64;not null" json:"company_id"`
+	Title        string `gorm:"varchar;not null;size:64" json:"title"`
+	Description  string `gorm:"varchar;not null;size:300" json:"description"`
+	Category     string `gorm:"varchar;not null;size:14" json:"category"`
+	Location     string `gorm:"varchar;not null;size:128" json:"location"`
+	LocationType string `gorm:"varchar;not null;size:36" json:"location_type"`
+	Industry     string `gorm:"varchar;not null;size:300" json:"industry"`
+	MonthStart   int    `gorm:"int;not null;size:2" json:"month_start"`
+	MonthEnd     int    `gorm:"int;size:2" json:"month_end"`
+	YearStart    int64  `gorm:"int64;not null;size:4" json:"year_start"`
+	YearEnd      int64  `gorm:"int64;size:4" json:"year_end"`
 }
 
 type UserExperienceTranslation struct {

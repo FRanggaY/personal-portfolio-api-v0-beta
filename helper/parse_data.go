@@ -30,6 +30,10 @@ func ParseIDStringToInt(IdString string) int64 {
 	return id
 }
 
+func ParseIDIntToString(idString int64) string {
+	return strconv.FormatInt(idString, 10)
+}
+
 func ParseIDStringToBool(IdString string) bool {
 	id, err := strconv.ParseBool(IdString)
 	if err != nil {

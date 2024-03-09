@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/FRanggaY/personal-portfolio-api/helper"
 	"github.com/FRanggaY/personal-portfolio-api/models"
@@ -140,21 +139,9 @@ func GetFilteredPaginatedCompanies(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var filteredCompanies []struct {
-		ID        int64     `json:"id"`
-		Code      string    `json:"code"`
-		Name      string    `json:"name"`
-		CreatedAt time.Time `json:"created_at"`
-		UpdatedAt time.Time `json:"updated_at"`
-	}
+	var filteredCompanies []models.CompanyAllResponse
 	for _, company := range companies {
-		filteredCompanies = append(filteredCompanies, struct {
-			ID        int64     `json:"id"`
-			Code      string    `json:"code"`
-			Name      string    `json:"name"`
-			CreatedAt time.Time `json:"created_at"`
-			UpdatedAt time.Time `json:"updated_at"`
-		}{
+		filteredCompanies = append(filteredCompanies, models.CompanyAllResponse{
 			ID:        company.ID,
 			Code:      company.Code,
 			Name:      company.Name,
@@ -190,7 +177,7 @@ func GetFilteredPaginatedCompanies(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param id path int true "Company ID"
-// @Success 200 {object} models.Company "Success"
+// @Success 200 {object} map[string]string "Success"
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Failure 404 {object} map[string]string "Not Found"
 // @Router /company/{id} [get]

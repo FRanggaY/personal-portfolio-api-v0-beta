@@ -22,6 +22,9 @@ import (
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Router /user-experience-translation [post]
 func CreateUserExperienceTranslation(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+	userID := jwtClaim.Id
+
 	// define input from json
 	var userExperienceTranslationInput models.UserExperienceTranslationCreateForm
 	decoder := json.NewDecoder(r.Body)
@@ -44,15 +47,15 @@ func CreateUserExperienceTranslation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate user_experience id
-	_, user_experience_err := userExperienceRepo.Read(userExperienceTranslationInput.UserExperienceID)
+	userExperience, user_experience_err := userExperienceRepo.ReadByUserIDCompanyID(userID, userExperienceTranslationInput.CompanyID)
 	if user_experience_err != nil {
 		// Handle error
-		response := map[string]string{"message": "Skill ID not found"}
+		response := map[string]string{"message": "Experience not found"}
 		helper.ResponseJSON(w, http.StatusBadRequest, response)
 		return
 	}
 
-	exist_data, _ := userExperienceTranslationRepo.ReadByLanguageIDUserExperienceID(userExperienceTranslationInput.LanguageID, userExperienceTranslationInput.UserExperienceID)
+	exist_data, _ := userExperienceTranslationRepo.ReadByLanguageIDUserExperienceID(userExperienceTranslationInput.LanguageID, userExperience.ID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Experience already added"}
@@ -63,7 +66,7 @@ func CreateUserExperienceTranslation(w http.ResponseWriter, r *http.Request) {
 	// Create a new UserExperienceTranslation record
 	newUserExperienceTranslationData := models.UserExperienceTranslation{
 		LanguageID:       uint(userExperienceTranslationInput.LanguageID),
-		UserExperienceID: uint(userExperienceTranslationInput.UserExperienceID),
+		UserExperienceID: uint(userExperience.ID),
 		Title:            userExperienceTranslationInput.Title,
 		Description:      userExperienceTranslationInput.Description,
 		Category:         userExperienceTranslationInput.Category,
@@ -99,23 +102,45 @@ func CreateUserExperienceTranslation(w http.ResponseWriter, r *http.Request) {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param id path int true "User Experience Translation ID"
+// @Param company_id path int true "company ID"
+// @Param language_id path int true "Language ID"
 // @Success 200 {object} map[string]string "Success"
 // @Success 500 {object} map[string]string "Internal Server Error"
 // @Failure 404 {object} map[string]string "Not Found"
-// @Router /user-experience-translation/{id} [delete]
+// @Router /user-experience-translation/{company_id}/{language_id} [delete]
 func DeleteUserExperienceTranslation(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+	userID := jwtClaim.Id
+
 	vars := mux.Vars(r)
-	userExperienceTranslationIDStr, ok := vars["id"]
+	companyIDStr, ok := vars["company_id"]
 	if !ok {
-		response := map[string]string{"message": "User Experience Translation not found"}
+		response := map[string]string{"message": "Company ID not found"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
 
+	languageIDStr, ok := vars["language_id"]
+	if !ok {
+		response := map[string]string{"message": "Language ID not found"}
+		helper.ResponseJSON(w, http.StatusInternalServerError, response)
+		return
+	}
+
+	userExperienceRepo := repositories.NewUserExperienceRepository()
 	userExperienceTranslationRepo := repositories.NewUserExperienceTranslationRepository()
-	userExperienceTranslationID := helper.ParseIDStringToInt(userExperienceTranslationIDStr)
-	err := userExperienceTranslationRepo.Delete(userExperienceTranslationID)
+	companyID := helper.ParseIDStringToInt(companyIDStr)
+	languageID := helper.ParseIDStringToInt(languageIDStr)
+
+	userExperience, user_experience_err := userExperienceRepo.ReadByUserIDCompanyID(userID, companyID)
+	if user_experience_err != nil {
+		// Handle error
+		response := map[string]string{"message": "Experience not found"}
+		helper.ResponseJSON(w, http.StatusBadRequest, response)
+		return
+	}
+
+	err := userExperienceTranslationRepo.DeleteByLanguageIDUserExperienceID(languageID, userExperience.ID)
 	if err != nil {
 		response := map[string]string{"message": "User Experience Translation ID not found"}
 		helper.ResponseJSON(w, http.StatusNotFound, response)

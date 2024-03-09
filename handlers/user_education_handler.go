@@ -22,6 +22,8 @@ import (
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Router /user-education [post]
 func CreateUserEducation(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+	userID := jwtClaim.Id
 
 	// define input from json
 	var userEducationInput models.UserEducationCreateForm
@@ -36,7 +38,7 @@ func CreateUserEducation(w http.ResponseWriter, r *http.Request) {
 	userEducationRepo := repositories.NewUserEducationRepository()
 
 	// validate user id
-	_, user_err := userRepo.Read(userEducationInput.UserID)
+	_, user_err := userRepo.Read(userID)
 	if user_err != nil {
 		// Handle error
 		response := map[string]string{"message": "User ID not found"}
@@ -54,7 +56,7 @@ func CreateUserEducation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate user id and school id
-	exist_data, _ := userEducationRepo.ReadByUserIDSchoolID(userEducationInput.UserID, userEducationInput.SchoolID)
+	exist_data, _ := userEducationRepo.ReadByUserIDSchoolID(userID, userEducationInput.SchoolID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Education already added"}
@@ -63,7 +65,7 @@ func CreateUserEducation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newUserEducationData := models.UserEducation{
-		UserID:   uint(userEducationInput.UserID),
+		UserID:   uint(userID),
 		SchoolId: uint(userEducationInput.SchoolID),
 	}
 
@@ -91,23 +93,26 @@ func CreateUserEducation(w http.ResponseWriter, r *http.Request) {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param id path int true "User Education ID"
+// @Param school_id path int true "School ID"
 // @Success 200 {object} map[string]string "Success"
 // @Success 500 {object} map[string]string "Internal Server Error"
 // @Failure 404 {object} map[string]string "Not Found"
-// @Router /user-education/{id} [delete]
+// @Router /user-education/{school_id} [delete]
 func DeleteUserEducation(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+	userID := jwtClaim.Id
+
 	vars := mux.Vars(r)
-	userEducationIDStr, ok := vars["id"]
+	schoolIDStr, ok := vars["school_id"]
 	if !ok {
-		response := map[string]string{"message": "User Education not found"}
+		response := map[string]string{"message": "School ID not found"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
 
 	userEducationRepo := repositories.NewUserEducationRepository()
-	userEducationID := helper.ParseIDStringToInt(userEducationIDStr)
-	err := userEducationRepo.Delete(userEducationID)
+	schoolID := helper.ParseIDStringToInt(schoolIDStr)
+	err := userEducationRepo.DeleteByUserIDSchoolID(userID, schoolID)
 	if err != nil {
 		response := map[string]string{"message": "User Education ID not found"}
 		helper.ResponseJSON(w, http.StatusNotFound, response)

@@ -7,7 +7,6 @@ import (
 )
 
 type UserEducationCreateForm struct {
-	UserID   int64 `gorm:"int64;not null" json:"user_id"`
 	SchoolID int64 `gorm:"int64;not null" json:"school_id"`
 }
 

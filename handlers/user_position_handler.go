@@ -22,6 +22,8 @@ import (
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Router /user-position [post]
 func CreateUserPosition(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+	userID := jwtClaim.Id
 
 	// define input from json
 	var userPositionInput models.UserPositionCreateForm
@@ -35,7 +37,7 @@ func CreateUserPosition(w http.ResponseWriter, r *http.Request) {
 	userPositionRepo := repositories.NewUserPositionRepository()
 
 	// validate user id
-	_, user_err := userRepo.Read(userPositionInput.UserID)
+	_, user_err := userRepo.Read(userID)
 	if user_err != nil {
 		// Handle error
 		response := map[string]string{"message": "User ID not found"}
@@ -44,7 +46,7 @@ func CreateUserPosition(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newUserPositionData := models.UserPosition{
-		UserID: uint(userPositionInput.UserID),
+		UserID: uint(userID),
 		Title:  userPositionInput.Title,
 	}
 
@@ -75,9 +77,13 @@ func CreateUserPosition(w http.ResponseWriter, r *http.Request) {
 // @Param id path int true "User Position ID"
 // @Success 200 {object} map[string]string "Success"
 // @Success 500 {object} map[string]string "Internal Server Error"
+// @Success 403 {object} map[string]string "Forbidden"
 // @Failure 404 {object} map[string]string "Not Found"
 // @Router /user-position/{id} [delete]
 func DeleteUserPosition(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+	userID := jwtClaim.Id
+
 	vars := mux.Vars(r)
 	userRepoIDStr, ok := vars["id"]
 	if !ok {
@@ -88,8 +94,22 @@ func DeleteUserPosition(w http.ResponseWriter, r *http.Request) {
 
 	userPositionRepo := repositories.NewUserPositionRepository()
 	userPositionID := helper.ParseIDStringToInt(userRepoIDStr)
-	err := userPositionRepo.Delete(userPositionID)
+
+	userPosition, err := userPositionRepo.Read(userPositionID)
 	if err != nil {
+		response := map[string]string{"message": "User Position ID not found"}
+		helper.ResponseJSON(w, http.StatusNotFound, response)
+		return
+	}
+
+	if userPosition.UserID != uint(userID) {
+		response := map[string]string{"message": "Not allowing delete"}
+		helper.ResponseJSON(w, http.StatusForbidden, response)
+		return
+	}
+
+	errDelete := userPositionRepo.Delete(userPositionID)
+	if errDelete != nil {
 		response := map[string]string{"message": "User Position ID not found"}
 		helper.ResponseJSON(w, http.StatusNotFound, response)
 		return

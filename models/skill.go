@@ -12,6 +12,15 @@ type SkillTranslationCreateForm struct {
 	Description string `gorm:"varchar;not null;size:300" json:"description"`
 }
 
+type SkillAllResponse struct {
+	ID        int64     `json:"id"`
+	Code      string    `json:"code"`
+	Name      string    `json:"name"`
+	ImageUrl  string    `json:"image_url"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 type Skill struct {
 	ID                 int64     `gorm:"primaryKey" json:"id"`
 	Code               string    `gorm:"varchar;unique;not null;size:5" json:"code"`

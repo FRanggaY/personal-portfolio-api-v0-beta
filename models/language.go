@@ -6,6 +6,15 @@ import (
 	"gorm.io/gorm"
 )
 
+type LanguageResponse struct {
+	ID        int64     `json:"id"`
+	Code      string    `json:"code"`
+	Name      string    `json:"name"`
+	LogoUrl   string    `json:"logo_url"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 type Language struct {
 	ID        int64     `gorm:"primaryKey" json:"id"`
 	Code      string    `gorm:"varchar;size:5;unique;not null" json:"code"`

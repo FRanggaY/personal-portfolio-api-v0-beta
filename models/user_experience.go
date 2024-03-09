@@ -7,7 +7,6 @@ import (
 )
 
 type UserExperienceCreateForm struct {
-	UserID    int64 `gorm:"int64;not null" json:"user_id"`
 	CompanyID int64 `gorm:"int64;not null" json:"company_id"`
 }
 type UserExperience struct {

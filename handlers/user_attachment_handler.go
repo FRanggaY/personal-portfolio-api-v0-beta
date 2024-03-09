@@ -8,6 +8,7 @@ import (
 	"github.com/FRanggaY/personal-portfolio-api/helper"
 	"github.com/FRanggaY/personal-portfolio-api/models"
 	"github.com/FRanggaY/personal-portfolio-api/repositories"
+	"github.com/gorilla/mux"
 )
 
 // CreateUserAttachment godoc
@@ -16,7 +17,6 @@ import (
 // @Tags users
 // @Accept mpfd
 // @Produce json
-// @Param user_id formData string true "User ID"
 // @Param title formData string true "User attachment title"
 // @Param category formData string true "User attachment category"
 // @Param image_file formData file true "User attachment image file"
@@ -27,6 +27,8 @@ import (
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Router /user-attachment [post]
 func CreateUserAttachment(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+
 	err := r.ParseMultipartForm(10 << 20) // 10MB max size
 	if err != nil {
 		// Handle error
@@ -35,7 +37,7 @@ func CreateUserAttachment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userIDStr := r.FormValue("user_id")
+	userID := jwtClaim.Id
 	title := r.FormValue("title")
 	category := r.FormValue("category")
 	url := r.FormValue("url")
@@ -53,7 +55,6 @@ func CreateUserAttachment(w http.ResponseWriter, r *http.Request) {
 
 	userRepo := repositories.NewUserRepository()
 	userAttachmentRepo := repositories.NewUserAttachmentRepository()
-	userID := helper.ParseIDStringToInt(userIDStr)
 	// validation name and code unique
 	_, err_user := userRepo.Read(userID)
 	if err_user != nil {
@@ -74,7 +75,7 @@ func CreateUserAttachment(w http.ResponseWriter, r *http.Request) {
 
 	filename := header.Filename
 	extension := filepath.Ext(filename)
-	finalFilename := helper.GetStringTimeNow() + "_" + userIDStr + "_" + title + extension
+	finalFilename := helper.GetStringTimeNow() + "_" + helper.ParseIDIntToString(userID) + "_" + title + extension
 	imageUrl, _ := helper.UploadFile(file, directory, finalFilename)
 
 	// Create a new user attachment record
@@ -103,4 +104,65 @@ func CreateUserAttachment(w http.ResponseWriter, r *http.Request) {
 		helper.ResponseJSON(w, http.StatusOK, response)
 		return
 	}
+}
+
+// delete user attachment godoc
+// @Summary Delete User attachment
+// @Description Delete user attachment
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param id path int true "User Attachment ID"
+// @Success 200 {object} map[string]string "Success"
+// @Success 500 {object} map[string]string "Internal Server Error"
+// @Success 403 {object} map[string]string "Forbidden"
+// @Failure 404 {object} map[string]string "Not Found"
+// @Router /user-attachment/{id} [delete]
+func DeleteUserAttachment(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+	userID := jwtClaim.Id
+
+	vars := mux.Vars(r)
+	userRepoIDStr, ok := vars["id"]
+	if !ok {
+		response := map[string]string{"message": "User Attachment not found"}
+		helper.ResponseJSON(w, http.StatusInternalServerError, response)
+		return
+	}
+
+	userAttachmentRepo := repositories.NewUserAttachmentRepository()
+	userAttachmentID := helper.ParseIDStringToInt(userRepoIDStr)
+
+	userAttachment, err := userAttachmentRepo.Read(userAttachmentID)
+	if err != nil {
+		response := map[string]string{"message": "User Attachment ID not found"}
+		helper.ResponseJSON(w, http.StatusNotFound, response)
+		return
+	}
+
+	if userAttachment.UserID != uint(userID) {
+		response := map[string]string{"message": "Not allowing delete"}
+		helper.ResponseJSON(w, http.StatusForbidden, response)
+		return
+	}
+
+	errDeleteImage := helper.RemoveFile(userAttachment.ImageUrl)
+	if errDeleteImage != nil {
+		// Handle error
+		response := map[string]string{"message": "Failed to delete file"}
+		helper.ResponseJSON(w, http.StatusInternalServerError, response)
+		return
+	}
+
+	errDelete := userAttachmentRepo.Delete(userAttachmentID)
+	if errDelete != nil {
+		response := map[string]string{"message": "User Attachment ID not found"}
+		helper.ResponseJSON(w, http.StatusNotFound, response)
+		return
+	}
+
+	response := map[string]interface{}{
+		"message": "success",
+	}
+	helper.ResponseJSON(w, http.StatusOK, response)
 }

@@ -95,6 +95,16 @@ func (repo *UserExperienceRepository) Delete(ID int64) error {
 	return nil
 }
 
+func (repo *UserExperienceRepository) DeleteByUserIDCompanyID(userID int64, companyID int64) error {
+	if err := models.DB.
+		Where("user_id = ? AND company_id = ?", userID, companyID).
+		Delete(&models.UserExperience{}).
+		Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func (repo *UserExperienceRepository) ReadTranslationsByUserIDLanguageID(userID int64, languageID int64, pageNumber int, pageSize int) ([]models.ExperienceTranslationResponse, error) {
 	var skills []models.ExperienceTranslationResponse
 

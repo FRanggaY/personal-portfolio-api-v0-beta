@@ -7,8 +7,7 @@ import (
 )
 
 type UserPositionCreateForm struct {
-	UserID int64  `gorm:"int64;not null" json:"user_id"`
-	Title  string `gorm:"varchar;not null;size:64" json:"title"`
+	Title string `gorm:"varchar;not null;size:64" json:"title"`
 }
 
 type UserPosition struct {

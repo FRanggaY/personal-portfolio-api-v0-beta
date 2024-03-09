@@ -30,17 +30,17 @@ type EducationTranslationResponse struct {
 }
 
 type UserEducationTranslationCreateForm struct {
-	LanguageID      int64  `gorm:"int64;not null" json:"language_id"`
-	UserEducationID int64  `gorm:"int64;not null" json:"user_education_id"`
-	Title           string `gorm:"varchar;not null;size:64" json:"title"`
-	Description     string `gorm:"varchar;not null;size:300" json:"description"`
-	Category        string `gorm:"varchar;not null;size:14" json:"category"`
-	Location        string `gorm:"varchar;not null;size:128" json:"location"`
-	LocationType    string `gorm:"varchar;not null;size:36" json:"location_type"`
-	MonthStart      int    `gorm:"int;not null;size:2" json:"month_start"`
-	MonthEnd        int    `gorm:"int;size:2" json:"month_end"`
-	YearStart       int64  `gorm:"int64;not null;size:4" json:"year_start"`
-	YearEnd         int64  `gorm:"int64;size:4" json:"year_end"`
+	LanguageID   int64  `gorm:"int64;not null" json:"language_id"`
+	SchoolID     int64  `gorm:"int64;not null" json:"school_id"`
+	Title        string `gorm:"varchar;not null;size:64" json:"title"`
+	Description  string `gorm:"varchar;not null;size:300" json:"description"`
+	Category     string `gorm:"varchar;not null;size:14" json:"category"`
+	Location     string `gorm:"varchar;not null;size:128" json:"location"`
+	LocationType string `gorm:"varchar;not null;size:36" json:"location_type"`
+	MonthStart   int    `gorm:"int;not null;size:2" json:"month_start"`
+	MonthEnd     int    `gorm:"int;size:2" json:"month_end"`
+	YearStart    int64  `gorm:"int64;not null;size:4" json:"year_start"`
+	YearEnd      int64  `gorm:"int64;size:4" json:"year_end"`
 }
 
 type UserEducationTranslation struct {

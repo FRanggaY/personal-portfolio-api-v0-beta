@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/FRanggaY/personal-portfolio-api/helper"
 	"github.com/FRanggaY/personal-portfolio-api/models"
@@ -137,24 +136,15 @@ func GetFilteredPaginatedSkills(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var filteredSkills []struct {
-		ID        int64     `json:"id"`
-		Code      string    `json:"code"`
-		Name      string    `json:"name"`
-		CreatedAt time.Time `json:"created_at"`
-		UpdatedAt time.Time `json:"updated_at"`
-	}
+	var filteredSkills []models.SkillAllResponse
 	for _, skill := range skills {
-		filteredSkills = append(filteredSkills, struct {
-			ID        int64     `json:"id"`
-			Code      string    `json:"code"`
-			Name      string    `json:"name"`
-			CreatedAt time.Time `json:"created_at"`
-			UpdatedAt time.Time `json:"updated_at"`
-		}{
+		fullImageURL := helper.GetFullImageUrl(skill.ImageUrl, r)
+
+		filteredSkills = append(filteredSkills, models.SkillAllResponse{
 			ID:        skill.ID,
 			Code:      skill.Code,
 			Name:      skill.Name,
+			ImageUrl:  fullImageURL,
 			CreatedAt: skill.CreatedAt,
 			UpdatedAt: skill.UpdatedAt,
 		})
@@ -187,7 +177,7 @@ func GetFilteredPaginatedSkills(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param id path int true "Skill ID"
-// @Success 200 {object} models.Skill "Success"
+// @Success 200 {object} map[string]string "Success"
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Failure 404 {object} map[string]string "Not Found"
 // @Router /skill/{id} [get]

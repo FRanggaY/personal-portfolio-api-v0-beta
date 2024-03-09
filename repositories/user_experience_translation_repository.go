@@ -79,3 +79,13 @@ func (repo *UserExperienceTranslationRepository) Delete(ID int64) error {
 	}
 	return nil
 }
+
+func (repo *UserExperienceTranslationRepository) DeleteByLanguageIDUserExperienceID(languageID int64, userExperienceID int64) error {
+	if err := models.DB.
+		Where("language_id = ? AND user_experience_id = ?", languageID, userExperienceID).
+		Delete(&models.UserExperienceTranslation{}).
+		Error; err != nil {
+		return err
+	}
+	return nil
+}

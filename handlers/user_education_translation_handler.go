@@ -22,6 +22,9 @@ import (
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Router /user-education-translation [post]
 func CreateUserEducationTranslation(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+	userID := jwtClaim.Id
+
 	// define input from json
 	var userEducationTranslationInput models.UserEducationTranslationCreateForm
 	decoder := json.NewDecoder(r.Body)
@@ -45,15 +48,15 @@ func CreateUserEducationTranslation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate user_education id
-	_, user_education_err := userEducationRepo.Read(userEducationTranslationInput.UserEducationID)
+	userEducation, user_education_err := userEducationRepo.ReadByUserIDSchoolID(userID, userEducationTranslationInput.SchoolID)
 	if user_education_err != nil {
 		// Handle error
-		response := map[string]string{"message": "Skill ID not found"}
+		response := map[string]string{"message": "Education not found"}
 		helper.ResponseJSON(w, http.StatusBadRequest, response)
 		return
 	}
 
-	exist_data, _ := userEducationTranslationRepo.ReadByLanguageIDUserEducationID(userEducationTranslationInput.LanguageID, userEducationTranslationInput.UserEducationID)
+	exist_data, _ := userEducationTranslationRepo.ReadByLanguageIDUserEducationID(userEducationTranslationInput.LanguageID, userEducation.ID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Education already added"}
@@ -64,7 +67,7 @@ func CreateUserEducationTranslation(w http.ResponseWriter, r *http.Request) {
 	// Create a new UserEducationTranslation record
 	newUserEducationTranslationData := models.UserEducationTranslation{
 		LanguageID:      uint(userEducationTranslationInput.LanguageID),
-		UserEducationID: uint(userEducationTranslationInput.UserEducationID),
+		UserEducationID: uint(userEducation.ID),
 		Title:           userEducationTranslationInput.Title,
 		Description:     userEducationTranslationInput.Description,
 		Category:        userEducationTranslationInput.Category,
@@ -99,23 +102,45 @@ func CreateUserEducationTranslation(w http.ResponseWriter, r *http.Request) {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param id path int true "User Education Translation ID"
+// @Param school_id path int true "School ID"
+// @Param language_id path int true "Language ID"
 // @Success 200 {object} map[string]string "Success"
 // @Success 500 {object} map[string]string "Internal Server Error"
 // @Failure 404 {object} map[string]string "Not Found"
-// @Router /user-education-translation/{id} [delete]
+// @Router /user-education-translation/{school_id}/{language_id} [delete]
 func DeleteUserEducationTranslation(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+	userID := jwtClaim.Id
+
 	vars := mux.Vars(r)
-	userEducationTranslationIDStr, ok := vars["id"]
+	schoolIDStr, ok := vars["school_id"]
 	if !ok {
-		response := map[string]string{"message": "User Education Translation not found"}
+		response := map[string]string{"message": "School ID not found"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
 
+	languageIDStr, ok := vars["language_id"]
+	if !ok {
+		response := map[string]string{"message": "Language ID not found"}
+		helper.ResponseJSON(w, http.StatusInternalServerError, response)
+		return
+	}
+
+	userEducationRepo := repositories.NewUserEducationRepository()
 	userEducationTranslationRepo := repositories.NewUserEducationTranslationRepository()
-	userEducationTranslationID := helper.ParseIDStringToInt(userEducationTranslationIDStr)
-	err := userEducationTranslationRepo.Delete(userEducationTranslationID)
+	schoolID := helper.ParseIDStringToInt(schoolIDStr)
+	languageID := helper.ParseIDStringToInt(languageIDStr)
+
+	userEducation, user_education_err := userEducationRepo.ReadByUserIDSchoolID(userID, schoolID)
+	if user_education_err != nil {
+		// Handle error
+		response := map[string]string{"message": "Education not found"}
+		helper.ResponseJSON(w, http.StatusBadRequest, response)
+		return
+	}
+
+	err := userEducationTranslationRepo.DeleteByLanguageIDUserEducationID(languageID, userEducation.ID)
 	if err != nil {
 		response := map[string]string{"message": "User Education Translation ID not found"}
 		helper.ResponseJSON(w, http.StatusNotFound, response)

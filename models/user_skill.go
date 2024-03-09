@@ -7,7 +7,6 @@ import (
 )
 
 type UserSkillCreateForm struct {
-	UserID  int64 `gorm:"int64;not null" json:"user_id"`
 	SkillID int64 `gorm:"int64;not null" json:"skill_id"`
 }
 

@@ -22,6 +22,8 @@ import (
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Router /user-experience [post]
 func CreateUserExperience(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+	userID := jwtClaim.Id
 
 	// define input from json
 	var userExperienceInput models.UserExperienceCreateForm
@@ -36,7 +38,7 @@ func CreateUserExperience(w http.ResponseWriter, r *http.Request) {
 	userExperienceRepo := repositories.NewUserExperienceRepository()
 
 	// validate user id
-	_, user_err := userRepo.Read(userExperienceInput.UserID)
+	_, user_err := userRepo.Read(userID)
 	if user_err != nil {
 		// Handle error
 		response := map[string]string{"message": "User ID not found"}
@@ -54,7 +56,7 @@ func CreateUserExperience(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate user id and company id
-	exist_data, _ := userExperienceRepo.ReadByUserIDCompanyID(userExperienceInput.UserID, userExperienceInput.CompanyID)
+	exist_data, _ := userExperienceRepo.ReadByUserIDCompanyID(userID, userExperienceInput.CompanyID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Experience already added"}
@@ -63,7 +65,7 @@ func CreateUserExperience(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newUserExperienceData := models.UserExperience{
-		UserID:    uint(userExperienceInput.UserID),
+		UserID:    uint(userID),
 		CompanyID: uint(userExperienceInput.CompanyID),
 	}
 
@@ -91,23 +93,26 @@ func CreateUserExperience(w http.ResponseWriter, r *http.Request) {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param id path int true "User Experience ID"
+// @Param company_id path int true "Company ID"
 // @Success 200 {object} map[string]string "Success"
 // @Success 500 {object} map[string]string "Internal Server Error"
 // @Failure 404 {object} map[string]string "Not Found"
-// @Router /user-experience/{id} [delete]
+// @Router /user-experience/{company_id} [delete]
 func DeleteUserExperience(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+	userID := jwtClaim.Id
+
 	vars := mux.Vars(r)
-	userExperienceIDStr, ok := vars["id"]
+	companyIDStr, ok := vars["company_id"]
 	if !ok {
-		response := map[string]string{"message": "User Experience not found"}
+		response := map[string]string{"message": "Company ID not found"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
 
 	userExperienceRepo := repositories.NewUserExperienceRepository()
-	userExperienceID := helper.ParseIDStringToInt(userExperienceIDStr)
-	err := userExperienceRepo.Delete(userExperienceID)
+	companyID := helper.ParseIDStringToInt(companyIDStr)
+	err := userExperienceRepo.DeleteByUserIDCompanyID(userID, companyID)
 	if err != nil {
 		response := map[string]string{"message": "User Experience ID not found"}
 		helper.ResponseJSON(w, http.StatusNotFound, response)

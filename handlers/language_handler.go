@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/FRanggaY/personal-portfolio-api/helper"
 	"github.com/FRanggaY/personal-portfolio-api/models"
@@ -102,7 +101,7 @@ func CreateLanguage(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Param size query int false "Page size" default(5)
 // @Param offset query int false "Page offset" default(1)
-// @Success 200 {object} map[string]string "Success"
+// @Success 200 {object} map[string][]models.LanguageResponse "Success"
 // @Success 500 {object} map[string]string "Internal Server Error"
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Failure 404 {object} map[string]string "Not Found"
@@ -128,27 +127,15 @@ func GetFilteredPaginatedLanguages(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var filteredLanguages []struct {
-		ID        int64     `json:"id"`
-		Code      string    `json:"code"`
-		Name      string    `json:"name"`
-		LogoUrl   string    `json:"logo_url"`
-		CreatedAt time.Time `json:"created_at"`
-		UpdatedAt time.Time `json:"updated_at"`
-	}
+	var filteredLanguages []models.LanguageResponse
 	for _, language := range languages {
-		filteredLanguages = append(filteredLanguages, struct {
-			ID        int64     `json:"id"`
-			Code      string    `json:"code"`
-			Name      string    `json:"name"`
-			LogoUrl   string    `json:"logo_url"`
-			CreatedAt time.Time `json:"created_at"`
-			UpdatedAt time.Time `json:"updated_at"`
-		}{
+		fullImageURL := helper.GetFullImageUrl(language.LogoUrl, r)
+
+		filteredLanguages = append(filteredLanguages, models.LanguageResponse{
 			ID:        language.ID,
 			Code:      language.Code,
 			Name:      language.Name,
-			LogoUrl:   language.LogoUrl,
+			LogoUrl:   fullImageURL,
 			CreatedAt: language.CreatedAt,
 			UpdatedAt: language.UpdatedAt,
 		})
@@ -181,7 +168,7 @@ func GetFilteredPaginatedLanguages(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param id path int true "Language ID"
-// @Success 200 {object} models.Language "Success"
+// @Success 200 {object} models.LanguageResponse "Success"
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Failure 404 {object} map[string]string "Not Found"
 // @Router /language/{id} [get]
@@ -206,16 +193,18 @@ func ReadLanguage(w http.ResponseWriter, r *http.Request) {
 
 	fullImageURL := helper.GetFullImageUrl(language.LogoUrl, r)
 
+	var responseData = models.LanguageResponse{
+		ID:        language.ID,
+		Code:      language.Code,
+		Name:      language.Name,
+		LogoUrl:   fullImageURL,
+		CreatedAt: language.CreatedAt,
+		UpdatedAt: language.UpdatedAt,
+	}
+
 	response := map[string]interface{}{
 		"message": "success",
-		"data": map[string]interface{}{
-			"id":         language.ID,
-			"code":       language.Code,
-			"name":       language.Name,
-			"created_at": language.CreatedAt,
-			"updated_at": language.UpdatedAt,
-			"logo_url":   fullImageURL,
-		},
+		"data":    responseData,
 	}
 
 	helper.ResponseJSON(w, http.StatusOK, response)

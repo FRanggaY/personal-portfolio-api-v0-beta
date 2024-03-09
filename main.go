@@ -50,24 +50,25 @@ func main() {
 	apiProtect.HandleFunc(userDetailRoute, handlers.DeleteUser).Methods("DELETE")
 
 	apiProtect.HandleFunc("/user-skill", handlers.CreateUserSkill).Methods("POST")
-	apiProtect.HandleFunc("/user-skill/{id}", handlers.DeleteUserSkill).Methods("DELETE")
+	apiProtect.HandleFunc("/user-skill/{skill_id}", handlers.DeleteUserSkill).Methods("DELETE")
 
 	apiProtect.HandleFunc("/user-experience", handlers.CreateUserExperience).Methods("POST")
-	apiProtect.HandleFunc("/user-experience/{id}", handlers.DeleteUserExperience).Methods("DELETE")
+	apiProtect.HandleFunc("/user-experience/{company_id}", handlers.DeleteUserExperience).Methods("DELETE")
 
 	apiProtect.HandleFunc("/user-position", handlers.CreateUserPosition).Methods("POST")
 	apiProtect.HandleFunc("/user-position/{id}", handlers.DeleteUserPosition).Methods("DELETE")
 
 	apiProtect.HandleFunc("/user-education", handlers.CreateUserEducation).Methods("POST")
-	apiProtect.HandleFunc("/user-education/{id}", handlers.DeleteUserEducation).Methods("DELETE")
+	apiProtect.HandleFunc("/user-education/{school_id}", handlers.DeleteUserEducation).Methods("DELETE")
 
 	apiProtect.HandleFunc("/user-experience-translation", handlers.CreateUserExperienceTranslation).Methods("POST")
-	apiProtect.HandleFunc("/user-experience-translation/{id}", handlers.DeleteUserExperienceTranslation).Methods("DELETE")
+	apiProtect.HandleFunc("/user-experience-translation/{company_id}/{language_id}", handlers.DeleteUserExperienceTranslation).Methods("DELETE")
 
 	apiProtect.HandleFunc("/user-education-translation", handlers.CreateUserEducationTranslation).Methods("POST")
-	apiProtect.HandleFunc("/user-education-translation/{id}", handlers.DeleteUserEducationTranslation).Methods("DELETE")
+	apiProtect.HandleFunc("/user-education-translation/{school_id}/{language_id}", handlers.DeleteUserEducationTranslation).Methods("DELETE")
 
 	apiProtect.HandleFunc("/user-attachment", handlers.CreateUserAttachment).Methods("POST")
+	apiProtect.HandleFunc("/user-attachment/{id}", handlers.DeleteUserAttachment).Methods("DELETE")
 
 	apiProtect.HandleFunc("/school", handlers.GetFilteredPaginatedSchools).Methods("GET")
 	apiProtect.HandleFunc("/school", handlers.CreateSchool).Methods("POST")

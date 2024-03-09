@@ -95,6 +95,16 @@ func (repo *UserEducationRepository) Delete(ID int64) error {
 	return nil
 }
 
+func (repo *UserEducationRepository) DeleteByUserIDSchoolID(userID int64, schoolID int64) error {
+	if err := models.DB.
+		Where("user_id = ? AND school_id = ?", userID, schoolID).
+		Delete(&models.UserEducation{}).
+		Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func (repo *UserEducationRepository) ReadTranslationsByUserIDLanguageID(userID int64, languageID int64, pageNumber int, pageSize int) ([]models.EducationTranslationResponse, error) {
 	var skills []models.EducationTranslationResponse
 

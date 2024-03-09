@@ -22,6 +22,8 @@ import (
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Router /user-skill [post]
 func CreateUserSkill(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+	userID := jwtClaim.Id
 
 	// define input from json
 	var userSkillInput models.UserSkillCreateForm
@@ -36,7 +38,7 @@ func CreateUserSkill(w http.ResponseWriter, r *http.Request) {
 	userSkillRepo := repositories.NewUserSkillRepository()
 
 	// validate user id
-	_, user_err := userRepo.Read(userSkillInput.UserID)
+	_, user_err := userRepo.Read(userID)
 	if user_err != nil {
 		// Handle error
 		response := map[string]string{"message": "User ID not found"}
@@ -54,7 +56,7 @@ func CreateUserSkill(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate user id and skill id
-	exist_data, _ := userSkillRepo.ReadByUserIDSkillID(userSkillInput.UserID, userSkillInput.SkillID)
+	exist_data, _ := userSkillRepo.ReadByUserIDSkillID(userID, userSkillInput.SkillID)
 	if exist_data != nil {
 		// Handle error
 		response := map[string]string{"message": "Skill already added"}
@@ -63,7 +65,7 @@ func CreateUserSkill(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newUserSkillData := models.UserSkill{
-		UserID:  uint(userSkillInput.UserID),
+		UserID:  uint(userID),
 		SkillID: uint(userSkillInput.SkillID),
 	}
 
@@ -91,23 +93,26 @@ func CreateUserSkill(w http.ResponseWriter, r *http.Request) {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param id path int true "User Skill ID"
+// @Param skill_id path int true "Skill ID"
 // @Success 200 {object} map[string]string "Success"
 // @Success 500 {object} map[string]string "Internal Server Error"
 // @Failure 404 {object} map[string]string "Not Found"
-// @Router /user-skill/{id} [delete]
+// @Router /user-skill/{skill_id} [delete]
 func DeleteUserSkill(w http.ResponseWriter, r *http.Request) {
+	jwtClaim, _ := helper.GetJWTClaim(r)
+	userID := jwtClaim.Id
+
 	vars := mux.Vars(r)
-	userSkillIDStr, ok := vars["id"]
+	skillIDStr, ok := vars["skill_id"]
 	if !ok {
-		response := map[string]string{"message": "User Skill not found"}
+		response := map[string]string{"message": "Skill ID not found"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
 
 	userSkillRepo := repositories.NewUserSkillRepository()
-	userSkillID := helper.ParseIDStringToInt(userSkillIDStr)
-	err := userSkillRepo.Delete(userSkillID)
+	skillID := helper.ParseIDStringToInt(skillIDStr)
+	err := userSkillRepo.DeleteByUserIDSkillID(userID, skillID)
 	if err != nil {
 		response := map[string]string{"message": "User Skill ID not found"}
 		helper.ResponseJSON(w, http.StatusNotFound, response)

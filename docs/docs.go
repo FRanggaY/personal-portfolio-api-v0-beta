@@ -190,7 +190,10 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/models.Company"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "400": {
@@ -249,7 +252,10 @@ const docTemplate = `{
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
-                                "type": "string"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/models.LanguageResponse"
+                                }
                             }
                         }
                     },
@@ -365,7 +371,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/models.Language"
+                            "$ref": "#/definitions/models.LanguageResponse"
                         }
                     },
                     "400": {
@@ -1026,7 +1032,10 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/models.School"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "400": {
@@ -1318,7 +1327,10 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/models.Skill"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "400": {
@@ -1433,13 +1445,6 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "User ID",
-                        "name": "user_id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
                         "description": "User attachment title",
                         "name": "title",
                         "in": "formData",
@@ -1490,6 +1495,68 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user-attachment/{id}": {
+            "delete": {
+                "description": "Delete user attachment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete User attachment",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User Attachment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -1592,7 +1659,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user-education-translation/{id}": {
+        "/user-education-translation/{school_id}/{language_id}": {
             "delete": {
                 "description": "Delete user Education Translation",
                 "consumes": [
@@ -1608,8 +1675,15 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "User Education Translation ID",
-                        "name": "id",
+                        "description": "School ID",
+                        "name": "school_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Language ID",
+                        "name": "language_id",
                         "in": "path",
                         "required": true
                     }
@@ -1645,7 +1719,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user-education/{id}": {
+        "/user-education/{school_id}": {
             "delete": {
                 "description": "Delete user Education",
                 "consumes": [
@@ -1661,8 +1735,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "User Education ID",
-                        "name": "id",
+                        "description": "School ID",
+                        "name": "school_id",
                         "in": "path",
                         "required": true
                     }
@@ -1790,7 +1864,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user-experience-translation/{id}": {
+        "/user-experience-translation/{company_id}/{language_id}": {
             "delete": {
                 "description": "Delete user Experience Translation",
                 "consumes": [
@@ -1806,8 +1880,15 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "User Experience Translation ID",
-                        "name": "id",
+                        "description": "company ID",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Language ID",
+                        "name": "language_id",
                         "in": "path",
                         "required": true
                     }
@@ -1843,7 +1924,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user-experience/{id}": {
+        "/user-experience/{company_id}": {
             "delete": {
                 "description": "Delete user Experience",
                 "consumes": [
@@ -1859,8 +1940,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "User Experience ID",
-                        "name": "id",
+                        "description": "Company ID",
+                        "name": "company_id",
                         "in": "path",
                         "required": true
                     }
@@ -1974,6 +2055,15 @@ const docTemplate = `{
                             }
                         }
                     },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Not Found",
                         "schema": {
@@ -2041,7 +2131,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user-skill/{id}": {
+        "/user-skill/{skill_id}": {
             "delete": {
                 "description": "Delete user skill",
                 "consumes": [
@@ -2057,8 +2147,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "User Skill ID",
-                        "name": "id",
+                        "description": "Skill ID",
+                        "name": "skill_id",
                         "in": "path",
                         "required": true
                     }
@@ -2260,48 +2350,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.Company": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "code": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "image_url": {
-                    "type": "string"
-                },
-                "is_external_image_url": {
-                    "type": "boolean"
-                },
-                "is_external_url": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
-                },
-                "userExperiences": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.UserExperience"
-                    }
-                }
-            }
-        },
-        "models.Language": {
+        "models.LanguageResponse": {
             "type": "object",
             "properties": {
                 "code": {
@@ -2318,134 +2367,6 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
-                },
-                "skillTranslations": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.SkillTranslation"
-                    }
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "userEducationTranslations": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.UserEducationTranslation"
-                    }
-                },
-                "userExperienceTranslations": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.UserExperienceTranslation"
-                    }
-                }
-            }
-        },
-        "models.School": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "code": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "image_url": {
-                    "type": "string"
-                },
-                "is_external_image_url": {
-                    "type": "boolean"
-                },
-                "is_external_url": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
-                },
-                "userEducations": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.UserEducation"
-                    }
-                }
-            }
-        },
-        "models.Skill": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "image_url": {
-                    "type": "string"
-                },
-                "is_external_image_url": {
-                    "type": "boolean"
-                },
-                "is_external_url": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "skillTranslations": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.SkillTranslation"
-                    }
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
-                },
-                "userSkills": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.UserSkill"
-                    }
-                }
-            }
-        },
-        "models.SkillTranslation": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "languageID": {
-                    "description": "Foreign key to link user skill translation to language",
-                    "type": "integer"
-                },
-                "skillID": {
-                    "description": "Foreign key to link user skill translation to skill",
-                    "type": "integer"
                 },
                 "updated_at": {
                     "type": "string"
@@ -2491,90 +2412,10 @@ const docTemplate = `{
                 }
             }
         },
-        "models.UserEducation": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "schoolId": {
-                    "description": "Foreign key to link user education to school",
-                    "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "userEducationTranslations": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.UserEducationTranslation"
-                    }
-                },
-                "userID": {
-                    "description": "Foreign key to link user education to user",
-                    "type": "integer"
-                }
-            }
-        },
         "models.UserEducationCreateForm": {
             "type": "object",
             "properties": {
                 "school_id": {
-                    "type": "integer"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "models.UserEducationTranslation": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "languageID": {
-                    "description": "Foreign key to link user education translation to language",
-                    "type": "integer"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "location_type": {
-                    "type": "string"
-                },
-                "month_end": {
-                    "type": "integer"
-                },
-                "month_start": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "userEducationID": {
-                    "description": "Foreign key to link user education translation to user education",
-                    "type": "integer"
-                },
-                "year_end": {
-                    "type": "integer"
-                },
-                "year_start": {
                     "type": "integer"
                 }
             }
@@ -2603,44 +2444,16 @@ const docTemplate = `{
                 "month_start": {
                     "type": "integer"
                 },
+                "school_id": {
+                    "type": "integer"
+                },
                 "title": {
                     "type": "string"
-                },
-                "user_education_id": {
-                    "type": "integer"
                 },
                 "year_end": {
                     "type": "integer"
                 },
                 "year_start": {
-                    "type": "integer"
-                }
-            }
-        },
-        "models.UserExperience": {
-            "type": "object",
-            "properties": {
-                "companyID": {
-                    "description": "Foreign key to link user experience to company",
-                    "type": "integer"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "userExperienceTranslations": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.UserExperienceTranslation"
-                    }
-                },
-                "userID": {
-                    "description": "Foreign key to link user experience to user",
                     "type": "integer"
                 }
             }
@@ -2650,61 +2463,6 @@ const docTemplate = `{
             "properties": {
                 "company_id": {
                     "type": "integer"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "models.UserExperienceTranslation": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "industry": {
-                    "type": "string"
-                },
-                "languageID": {
-                    "description": "Foreign key to link user experience translation to language",
-                    "type": "integer"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "location_type": {
-                    "type": "string"
-                },
-                "month_end": {
-                    "type": "integer"
-                },
-                "month_start": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "userExperienceID": {
-                    "description": "Foreign key to link user experience translation to user experience",
-                    "type": "integer"
-                },
-                "year_end": {
-                    "type": "integer"
-                },
-                "year_start": {
-                    "type": "integer"
                 }
             }
         },
@@ -2713,6 +2471,9 @@ const docTemplate = `{
             "properties": {
                 "category": {
                     "type": "string"
+                },
+                "company_id": {
+                    "type": "integer"
                 },
                 "description": {
                     "type": "string"
@@ -2738,9 +2499,6 @@ const docTemplate = `{
                 "title": {
                     "type": "string"
                 },
-                "user_experience_id": {
-                    "type": "integer"
-                },
                 "year_end": {
                     "type": "integer"
                 },
@@ -2765,31 +2523,6 @@ const docTemplate = `{
             "properties": {
                 "title": {
                     "type": "string"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "models.UserSkill": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "skillID": {
-                    "description": "Foreign key to link user experience to skill",
-                    "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "userID": {
-                    "description": "Foreign key to link user experience to user",
-                    "type": "integer"
                 }
             }
         },
@@ -2797,9 +2530,6 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "skill_id": {
-                    "type": "integer"
-                },
-                "user_id": {
                     "type": "integer"
                 }
             }

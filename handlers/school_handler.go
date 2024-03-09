@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/FRanggaY/personal-portfolio-api/helper"
 	"github.com/FRanggaY/personal-portfolio-api/models"
@@ -140,21 +139,9 @@ func GetFilteredPaginatedSchools(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var filteredSchools []struct {
-		ID        int64     `json:"id"`
-		Code      string    `json:"code"`
-		Name      string    `json:"name"`
-		CreatedAt time.Time `json:"created_at"`
-		UpdatedAt time.Time `json:"updated_at"`
-	}
+	var filteredSchools []models.SchoolAllResponse
 	for _, school := range schools {
-		filteredSchools = append(filteredSchools, struct {
-			ID        int64     `json:"id"`
-			Code      string    `json:"code"`
-			Name      string    `json:"name"`
-			CreatedAt time.Time `json:"created_at"`
-			UpdatedAt time.Time `json:"updated_at"`
-		}{
+		filteredSchools = append(filteredSchools, models.SchoolAllResponse{
 			ID:        school.ID,
 			Code:      school.Code,
 			Name:      school.Name,
@@ -190,7 +177,7 @@ func GetFilteredPaginatedSchools(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param id path int true "School ID"
-// @Success 200 {object} models.School "Success"
+// @Success 200 {object} map[string]string "Success"
 // @Failure 400 {object} map[string]string "Bad Request"
 // @Failure 404 {object} map[string]string "Not Found"
 // @Router /school/{id} [get]

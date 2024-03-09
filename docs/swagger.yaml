@@ -1,32 +1,5 @@
 definitions:
-  models.Company:
-    properties:
-      address:
-        type: string
-      code:
-        type: string
-      created_at:
-        type: string
-      id:
-        type: integer
-      image_url:
-        type: string
-      is_external_image_url:
-        type: boolean
-      is_external_url:
-        type: boolean
-      name:
-        type: string
-      updated_at:
-        type: string
-      url:
-        type: string
-      userExperiences:
-        items:
-          $ref: '#/definitions/models.UserExperience'
-        type: array
-    type: object
-  models.Language:
+  models.LanguageResponse:
     properties:
       code:
         type: string
@@ -38,91 +11,6 @@ definitions:
         type: string
       name:
         type: string
-      skillTranslations:
-        items:
-          $ref: '#/definitions/models.SkillTranslation'
-        type: array
-      updated_at:
-        type: string
-      userEducationTranslations:
-        items:
-          $ref: '#/definitions/models.UserEducationTranslation'
-        type: array
-      userExperienceTranslations:
-        items:
-          $ref: '#/definitions/models.UserExperienceTranslation'
-        type: array
-    type: object
-  models.School:
-    properties:
-      address:
-        type: string
-      code:
-        type: string
-      created_at:
-        type: string
-      id:
-        type: integer
-      image_url:
-        type: string
-      is_external_image_url:
-        type: boolean
-      is_external_url:
-        type: boolean
-      name:
-        type: string
-      updated_at:
-        type: string
-      url:
-        type: string
-      userEducations:
-        items:
-          $ref: '#/definitions/models.UserEducation'
-        type: array
-    type: object
-  models.Skill:
-    properties:
-      code:
-        type: string
-      created_at:
-        type: string
-      id:
-        type: integer
-      image_url:
-        type: string
-      is_external_image_url:
-        type: boolean
-      is_external_url:
-        type: boolean
-      name:
-        type: string
-      skillTranslations:
-        items:
-          $ref: '#/definitions/models.SkillTranslation'
-        type: array
-      updated_at:
-        type: string
-      url:
-        type: string
-      userSkills:
-        items:
-          $ref: '#/definitions/models.UserSkill'
-        type: array
-    type: object
-  models.SkillTranslation:
-    properties:
-      created_at:
-        type: string
-      description:
-        type: string
-      id:
-        type: integer
-      languageID:
-        description: Foreign key to link user skill translation to language
-        type: integer
-      skillID:
-        description: Foreign key to link user skill translation to skill
-        type: integer
       updated_at:
         type: string
     type: object
@@ -151,63 +39,9 @@ definitions:
       username:
         type: string
     type: object
-  models.UserEducation:
-    properties:
-      created_at:
-        type: string
-      id:
-        type: integer
-      schoolId:
-        description: Foreign key to link user education to school
-        type: integer
-      updated_at:
-        type: string
-      userEducationTranslations:
-        items:
-          $ref: '#/definitions/models.UserEducationTranslation'
-        type: array
-      userID:
-        description: Foreign key to link user education to user
-        type: integer
-    type: object
   models.UserEducationCreateForm:
     properties:
       school_id:
-        type: integer
-      user_id:
-        type: integer
-    type: object
-  models.UserEducationTranslation:
-    properties:
-      category:
-        type: string
-      created_at:
-        type: string
-      description:
-        type: string
-      id:
-        type: integer
-      languageID:
-        description: Foreign key to link user education translation to language
-        type: integer
-      location:
-        type: string
-      location_type:
-        type: string
-      month_end:
-        type: integer
-      month_start:
-        type: integer
-      title:
-        type: string
-      updated_at:
-        type: string
-      userEducationID:
-        description: Foreign key to link user education translation to user education
-        type: integer
-      year_end:
-        type: integer
-      year_start:
         type: integer
     type: object
   models.UserEducationTranslationCreateForm:
@@ -226,80 +60,26 @@ definitions:
         type: integer
       month_start:
         type: integer
+      school_id:
+        type: integer
       title:
         type: string
-      user_education_id:
-        type: integer
       year_end:
         type: integer
       year_start:
-        type: integer
-    type: object
-  models.UserExperience:
-    properties:
-      companyID:
-        description: Foreign key to link user experience to company
-        type: integer
-      created_at:
-        type: string
-      id:
-        type: integer
-      updated_at:
-        type: string
-      userExperienceTranslations:
-        items:
-          $ref: '#/definitions/models.UserExperienceTranslation'
-        type: array
-      userID:
-        description: Foreign key to link user experience to user
         type: integer
     type: object
   models.UserExperienceCreateForm:
     properties:
       company_id:
         type: integer
-      user_id:
-        type: integer
-    type: object
-  models.UserExperienceTranslation:
-    properties:
-      category:
-        type: string
-      created_at:
-        type: string
-      description:
-        type: string
-      id:
-        type: integer
-      industry:
-        type: string
-      languageID:
-        description: Foreign key to link user experience translation to language
-        type: integer
-      location:
-        type: string
-      location_type:
-        type: string
-      month_end:
-        type: integer
-      month_start:
-        type: integer
-      title:
-        type: string
-      updated_at:
-        type: string
-      userExperienceID:
-        description: Foreign key to link user experience translation to user experience
-        type: integer
-      year_end:
-        type: integer
-      year_start:
-        type: integer
     type: object
   models.UserExperienceTranslationCreateForm:
     properties:
       category:
         type: string
+      company_id:
+        type: integer
       description:
         type: string
       industry:
@@ -316,8 +96,6 @@ definitions:
         type: integer
       title:
         type: string
-      user_experience_id:
-        type: integer
       year_end:
         type: integer
       year_start:
@@ -334,29 +112,10 @@ definitions:
     properties:
       title:
         type: string
-      user_id:
-        type: integer
-    type: object
-  models.UserSkill:
-    properties:
-      created_at:
-        type: string
-      id:
-        type: integer
-      skillID:
-        description: Foreign key to link user experience to skill
-        type: integer
-      updated_at:
-        type: string
-      userID:
-        description: Foreign key to link user experience to user
-        type: integer
     type: object
   models.UserSkillCreateForm:
     properties:
       skill_id:
-        type: integer
-      user_id:
         type: integer
     type: object
 info:
@@ -479,7 +238,9 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/models.Company'
+            additionalProperties:
+              type: string
+            type: object
         "400":
           description: Bad Request
           schema:
@@ -518,7 +279,9 @@ paths:
           description: Success
           schema:
             additionalProperties:
-              type: string
+              items:
+                $ref: '#/definitions/models.LanguageResponse'
+              type: array
             type: object
         "400":
           description: Bad Request
@@ -596,7 +359,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/models.Language'
+            $ref: '#/definitions/models.LanguageResponse'
         "400":
           description: Bad Request
           schema:
@@ -1037,7 +800,9 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/models.School'
+            additionalProperties:
+              type: string
+            type: object
         "400":
           description: Bad Request
           schema:
@@ -1231,7 +996,9 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/models.Skill'
+            additionalProperties:
+              type: string
+            type: object
         "400":
           description: Bad Request
           schema:
@@ -1303,11 +1070,6 @@ paths:
       - multipart/form-data
       description: Create a new user attachment with file upload support
       parameters:
-      - description: User ID
-        in: formData
-        name: user_id
-        required: true
-        type: string
       - description: User attachment title
         in: formData
         name: title
@@ -1351,6 +1113,47 @@ paths:
               type: string
             type: object
       summary: Create a new user attachment
+      tags:
+      - users
+  /user-attachment/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user attachment
+      parameters:
+      - description: User Attachment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete User attachment
       tags:
       - users
   /user-education:
@@ -1413,15 +1216,20 @@ paths:
       summary: Create a new User Education Translation
       tags:
       - users
-  /user-education-translation/{id}:
+  /user-education-translation/{school_id}/{language_id}:
     delete:
       consumes:
       - application/json
       description: Delete user Education Translation
       parameters:
-      - description: User Education Translation ID
+      - description: School ID
         in: path
-        name: id
+        name: school_id
+        required: true
+        type: integer
+      - description: Language ID
+        in: path
+        name: language_id
         required: true
         type: integer
       produces:
@@ -1448,15 +1256,15 @@ paths:
       summary: Delete User Education Translation
       tags:
       - users
-  /user-education/{id}:
+  /user-education/{school_id}:
     delete:
       consumes:
       - application/json
       description: Delete user Education
       parameters:
-      - description: User Education ID
+      - description: School ID
         in: path
-        name: id
+        name: school_id
         required: true
         type: integer
       produces:
@@ -1543,15 +1351,20 @@ paths:
       summary: Create a new User Experience Translation
       tags:
       - users
-  /user-experience-translation/{id}:
+  /user-experience-translation/{company_id}/{language_id}:
     delete:
       consumes:
       - application/json
       description: Delete user Experience Translation
       parameters:
-      - description: User Experience Translation ID
+      - description: company ID
         in: path
-        name: id
+        name: company_id
+        required: true
+        type: integer
+      - description: Language ID
+        in: path
+        name: language_id
         required: true
         type: integer
       produces:
@@ -1578,15 +1391,15 @@ paths:
       summary: Delete User Experience Translation
       tags:
       - users
-  /user-experience/{id}:
+  /user-experience/{company_id}:
     delete:
       consumes:
       - application/json
       description: Delete user Experience
       parameters:
-      - description: User Experience ID
+      - description: Company ID
         in: path
-        name: id
+        name: company_id
         required: true
         type: integer
       produces:
@@ -1663,6 +1476,12 @@ paths:
             additionalProperties:
               type: string
             type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
         "404":
           description: Not Found
           schema:
@@ -1708,15 +1527,15 @@ paths:
       summary: Create a new user skill
       tags:
       - users
-  /user-skill/{id}:
+  /user-skill/{skill_id}:
     delete:
       consumes:
       - application/json
       description: Delete user skill
       parameters:
-      - description: User Skill ID
+      - description: Skill ID
         in: path
-        name: id
+        name: skill_id
         required: true
         type: integer
       produces:
