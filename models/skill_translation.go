@@ -6,6 +6,20 @@ import (
 	"gorm.io/gorm"
 )
 
+type SkillTranslationResponse struct {
+	ID                 int64     `json:"id"`
+	LanguageID         int64     `json:"language_id"`
+	Code               string    `json:"code"`
+	Name               string    `json:"name"`
+	ImageUrl           string    `json:"image_url"`
+	Url                string    `json:"url"`
+	IsExternalUrl      bool      `json:"is_external_url"`
+	IsExternalImageUrl bool      `json:"is_external_image_url"`
+	Description        string    `json:"description"`
+	CreatedAt          time.Time `json:"created_at"`
+	UpdatedAt          time.Time `json:"updated_at"`
+}
+
 type SkillTranslation struct {
 	Id          int64     `gorm:"primaryKey" json:"id"`
 	SkillId     uint      // Foreign key to link user skill translation to skill

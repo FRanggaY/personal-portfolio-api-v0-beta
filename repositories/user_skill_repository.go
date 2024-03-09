@@ -93,3 +93,37 @@ func (repo *UserSkillRepository) Delete(id int64) error {
 	}
 	return nil
 }
+
+func (repo *UserSkillRepository) ReadTranslationsByUserIDLanguageID(userID int64, languageID int64, pageNumber int, pageSize int) ([]models.SkillTranslationResponse, error) {
+	var skills []models.SkillTranslationResponse
+
+	// default
+	if pageSize <= 0 {
+		pageSize = 5
+	}
+	if pageNumber <= 0 {
+		pageNumber = 1
+	}
+
+	// calculate offset
+	offset := (pageNumber - 1) * pageSize
+
+	query := models.DB.
+		Table("skill_translations").
+		Select(`
+            skills.*, 
+            IFNULL(skill_translations.description, '') AS description, 
+            IFNULL(skill_translations.language_id, '') AS language_id
+        `).
+		Joins("LEFT JOIN skills ON skill_translations.skill_id = skills.id").
+		Joins("LEFT JOIN user_skills ON skills.id = user_skills.skill_id").
+		Where("user_skills.user_id = ?", userID).
+		Where("skill_translations.language_id = ?", languageID).
+		Limit(pageSize).Offset(offset)
+
+	if err := query.Find(&skills).Error; err != nil {
+		return nil, err
+	}
+
+	return skills, nil
+}

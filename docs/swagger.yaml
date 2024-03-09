@@ -676,6 +676,62 @@ paths:
       summary: Profile user
       tags:
       - auth
+  /public/user/{username}/skill:
+    get:
+      consumes:
+      - application/json
+      description: Get Public User Detail Skill with the pagination
+      parameters:
+      - default: 5
+        description: Page size
+        in: query
+        name: size
+        type: integer
+      - default: 1
+        description: Page offset
+        in: query
+        name: offset
+        type: integer
+      - description: Username
+        in: path
+        name: username
+        required: true
+        type: string
+      - description: Filter by languageId
+        in: query
+        name: language_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get public User detail skill
+      tags:
+      - public-users
   /register:
     post:
       consumes:
