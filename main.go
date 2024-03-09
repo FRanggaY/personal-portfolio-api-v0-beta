@@ -36,6 +36,7 @@ func main() {
 	api.HandleFunc("/logout", handlers.Logout).Methods("GET")
 
 	api.HandleFunc("/public/user/{username}/skill", public_handlers.GetPublicFilteredPaginatedUserSkillDetail).Methods("GET")
+	api.HandleFunc("/public/user/{username}/experience", public_handlers.GetPublicFilteredPaginatedUserExperienceDetail).Methods("GET")
 
 	apiProtect := r.PathPrefix(basePathRoute).Subrouter()
 	apiProtect.HandleFunc("/profile", handlers.Profile).Methods("GET")
