@@ -676,6 +676,52 @@ paths:
       summary: Profile user
       tags:
       - auth
+  /public/user/{username}:
+    get:
+      consumes:
+      - application/json
+      description: Get Public User Detail with the pagination
+      parameters:
+      - description: Username
+        in: path
+        name: username
+        required: true
+        type: string
+      - description: Filter by languageId
+        in: query
+        name: language_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get public User detail
+      tags:
+      - public-users
   /public/user/{username}/education:
     get:
       consumes:

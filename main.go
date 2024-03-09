@@ -35,6 +35,7 @@ func main() {
 	api.HandleFunc("/register", handlers.Register).Methods("POST")
 	api.HandleFunc("/logout", handlers.Logout).Methods("GET")
 
+	api.HandleFunc("/public/user/{username}", public_handlers.GetPublicFilteredPaginatedUserDetail).Methods("GET")
 	api.HandleFunc("/public/user/{username}/skill", public_handlers.GetPublicFilteredPaginatedUserSkillDetail).Methods("GET")
 	api.HandleFunc("/public/user/{username}/experience", public_handlers.GetPublicFilteredPaginatedUserExperienceDetail).Methods("GET")
 	api.HandleFunc("/public/user/{username}/education", public_handlers.GetPublicFilteredPaginatedUserEducationDetail).Methods("GET")
