@@ -6,13 +6,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// type UserProjectCreateForm struct {
-// 	Name             string    `gorm:"varchar" json:"name"`
-// 	Slug             string    `gorm:"varchar" json:"slug"`
-// 	ProjectCreatedAt time.Time `gorm:"timestamp" json:"project_created_at"`
-// 	ProjectUpdatedAt time.Time `gorm:"timestamp" json:"project_updated_at"`
-// }
-
 type UserProject struct {
 	ID                int64     `gorm:"primaryKey" json:"id"`
 	UserID            uint      // Foreign key

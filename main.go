@@ -39,8 +39,8 @@ func main() {
 	api.HandleFunc("/public/user/{username}/skill", public_handlers.GetPublicFilteredPaginatedUserSkillDetail).Methods("GET")
 	api.HandleFunc("/public/user/{username}/experience", public_handlers.GetPublicFilteredPaginatedUserExperienceDetail).Methods("GET")
 	api.HandleFunc("/public/user/{username}/education", public_handlers.GetPublicFilteredPaginatedUserEducationDetail).Methods("GET")
-	// api.HandleFunc("/public/user/{username}/project", public_handlers.GetPublicFilteredPaginatedUserProjectDetail).Methods("GET")
-	// api.HandleFunc("/public/user/{username}/project/{slug}", public_handlers.GetPublicProjectDetail).Methods("GET")
+	api.HandleFunc("/public/user/{username}/project", public_handlers.GetPublicFilteredPaginatedUserProjectDetail).Methods("GET")
+	api.HandleFunc("/public/user/{username}/project/{slug}", public_handlers.GetPublicProjectDetail).Methods("GET")
 
 	apiProtect := r.PathPrefix(basePathRoute).Subrouter()
 	apiProtect.HandleFunc("/profile", handlers.Profile).Methods("GET")

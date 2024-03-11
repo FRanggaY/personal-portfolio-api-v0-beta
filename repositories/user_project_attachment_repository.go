@@ -27,9 +27,13 @@ func (repo *UserProjectAttachmentRepository) Count() (int, error) {
 	return int(count), nil
 }
 
-func (repo *UserProjectAttachmentRepository) ReadAll() ([]models.UserProjectAttachment, error) {
+func (repo *UserProjectAttachmentRepository) ReadAll(userProjectID *int64) ([]models.UserProjectAttachment, error) {
 	query := models.DB
 	var datas []models.UserProjectAttachment
+
+	if userProjectID != nil {
+		query = query.Where("user_project_id", userProjectID)
+	}
 
 	if err := query.Find(&datas).Error; err != nil {
 		return nil, err

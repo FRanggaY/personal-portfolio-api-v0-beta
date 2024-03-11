@@ -841,6 +841,117 @@ paths:
       summary: Get public User detail experience
       tags:
       - public-users
+  /public/user/{username}/project:
+    get:
+      consumes:
+      - application/json
+      description: Get Public User Detail Project with the pagination
+      parameters:
+      - default: 5
+        description: Page size
+        in: query
+        name: size
+        type: integer
+      - default: 1
+        description: Page offset
+        in: query
+        name: offset
+        type: integer
+      - description: Project Platform ID
+        in: query
+        name: project_platform_id
+        type: string
+      - description: Username
+        in: path
+        name: username
+        required: true
+        type: string
+      - description: Filter by languageId
+        in: query
+        name: language_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get public User detail project
+      tags:
+      - public-users
+  /public/user/{username}/project/{slug}:
+    get:
+      consumes:
+      - application/json
+      description: Get Public Detail Project with the pagination
+      parameters:
+      - description: Username
+        in: path
+        name: username
+        required: true
+        type: string
+      - description: Slug
+        in: path
+        name: slug
+        required: true
+        type: string
+      - description: Filter by languageId
+        in: query
+        name: language_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get public detail project
+      tags:
+      - public-users
   /public/user/{username}/skill:
     get:
       consumes:
