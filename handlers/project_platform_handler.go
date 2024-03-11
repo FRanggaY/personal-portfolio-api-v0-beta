@@ -62,7 +62,7 @@ func CreateProjectPlatform(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validation location image
-	var directory = "./assets/images/project-platform"
+	var directory = "./assets/images/project/platform"
 	if err := os.MkdirAll(directory, 0755); err != nil {
 		// Handle error
 		response := map[string]string{"message": "Failed to create directory"}
