@@ -140,6 +140,17 @@ definitions:
       title:
         type: string
     type: object
+  models.UserProjectTranslationCreateForm:
+    properties:
+      description:
+        type: string
+      language_id:
+        type: integer
+      name:
+        type: string
+      user_project_id:
+        type: integer
+    type: object
   models.UserSkillCreateForm:
     properties:
       skill_id:
@@ -1863,6 +1874,270 @@ paths:
               type: string
             type: object
       summary: Delete User position
+      tags:
+      - users
+  /user-project:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new user project with file upload support
+      parameters:
+      - description: project platform id
+        in: formData
+        name: project_platform_id
+        required: true
+        type: string
+      - description: User project created at
+        in: formData
+        name: project_created_at
+        required: true
+        type: string
+      - description: User project updated at
+        in: formData
+        name: project_updated_at
+        required: true
+        type: string
+      - description: User project slug
+        in: formData
+        name: slug
+        required: true
+        type: string
+      - description: User project image file
+        in: formData
+        name: image_file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new user project
+      tags:
+      - users
+  /user-project-attachment:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new user project attachment with file upload support
+      parameters:
+      - description: user project id
+        in: formData
+        name: user_project_id
+        required: true
+        type: string
+      - description: User attachment title
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: User attachment category
+        in: formData
+        name: category
+        required: true
+        type: string
+      - description: User attachment image file
+        in: formData
+        name: image_file
+        required: true
+        type: file
+      - description: User attachment URL
+        in: formData
+        name: url
+        type: string
+      - description: Is external URL
+        in: formData
+        name: is_external_url
+        type: boolean
+      - description: Is external image URL
+        in: formData
+        name: is_external_image_url
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new user project attachment
+      tags:
+      - users
+  /user-project-attachment/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user project attachment
+      parameters:
+      - description: User Project Attachment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete User project attachment
+      tags:
+      - users
+  /user-project-translation:
+    post:
+      consumes:
+      - application/json
+      description: Create a new User Project Translation with file upload support
+      parameters:
+      - description: User Project input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserProjectTranslationCreateForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new User Project Translation
+      tags:
+      - users
+  /user-project-translation/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user project translation
+      parameters:
+      - description: User Project Translation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete User project translation
+      tags:
+      - users
+  /user-project/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user project
+      parameters:
+      - description: User Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete User project
       tags:
       - users
   /user-skill:

@@ -39,6 +39,8 @@ func main() {
 	api.HandleFunc("/public/user/{username}/skill", public_handlers.GetPublicFilteredPaginatedUserSkillDetail).Methods("GET")
 	api.HandleFunc("/public/user/{username}/experience", public_handlers.GetPublicFilteredPaginatedUserExperienceDetail).Methods("GET")
 	api.HandleFunc("/public/user/{username}/education", public_handlers.GetPublicFilteredPaginatedUserEducationDetail).Methods("GET")
+	// api.HandleFunc("/public/user/{username}/project", public_handlers.GetPublicFilteredPaginatedUserProjectDetail).Methods("GET")
+	// api.HandleFunc("/public/user/{username}/project/{slug}", public_handlers.GetPublicProjectDetail).Methods("GET")
 
 	apiProtect := r.PathPrefix(basePathRoute).Subrouter()
 	apiProtect.HandleFunc("/profile", handlers.Profile).Methods("GET")
@@ -67,11 +69,20 @@ func main() {
 	apiProtect.HandleFunc("/user-education", handlers.CreateUserEducation).Methods("POST")
 	apiProtect.HandleFunc("/user-education/{school_id}", handlers.DeleteUserEducation).Methods("DELETE")
 
+	apiProtect.HandleFunc("/user-project", handlers.CreateUserProject).Methods("POST")
+	apiProtect.HandleFunc("/user-project/{id}", handlers.DeleteUserProject).Methods("DELETE")
+
 	apiProtect.HandleFunc("/user-experience-translation", handlers.CreateUserExperienceTranslation).Methods("POST")
 	apiProtect.HandleFunc("/user-experience-translation/{company_id}/{language_id}", handlers.DeleteUserExperienceTranslation).Methods("DELETE")
 
 	apiProtect.HandleFunc("/user-education-translation", handlers.CreateUserEducationTranslation).Methods("POST")
 	apiProtect.HandleFunc("/user-education-translation/{school_id}/{language_id}", handlers.DeleteUserEducationTranslation).Methods("DELETE")
+
+	apiProtect.HandleFunc("/user-project-translation", handlers.CreateUserProjectTranslation).Methods("POST")
+	apiProtect.HandleFunc("/user-project-translation/{id}", handlers.DeleteUserProjectTranslation).Methods("DELETE")
+
+	apiProtect.HandleFunc("/user-project-attachment", handlers.CreateUserProjectAttachment).Methods("POST")
+	apiProtect.HandleFunc("/user-project-attachment/{id}", handlers.DeleteUserProjectAttachment).Methods("DELETE")
 
 	apiProtect.HandleFunc("/user-attachment", handlers.CreateUserAttachment).Methods("POST")
 	apiProtect.HandleFunc("/user-attachment/{id}", handlers.DeleteUserAttachment).Methods("DELETE")

@@ -35,6 +35,7 @@ type User struct {
 	Experiences []UserExperience `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Educations  []UserEducation  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Languages   []UserLanguage   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Projects    []UserProject    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
 func (User) BeforeUpdate(db *gorm.DB) error {

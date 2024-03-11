@@ -27,6 +27,7 @@ type ProjectPlatform struct {
 	UpdatedAt          time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoUpdateTime" json:"updated_at"`
 
 	ProjectPlatformTranslations []ProjectPlatformTranslation `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	UserProjects                []UserProject                `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
 func (ProjectPlatform) BeforeUpdate(db *gorm.DB) error {
