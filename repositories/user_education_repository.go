@@ -18,12 +18,16 @@ func (repo *UserEducationRepository) Create(newData *models.UserEducation) (*mod
 	return newData, nil
 }
 
-func (repo *UserEducationRepository) Count(userID *int64) (int, error) {
+func (repo *UserEducationRepository) Count(userID *int64, isActive *bool) (int, error) {
 	var count int64
 	query := models.DB.Model(&models.UserEducation{})
 
 	if userID != nil {
 		query = query.Where(helper.FilterUserIDEqual, userID)
+	}
+
+	if isActive != nil {
+		query = query.Where("is_active = ?", isActive)
 	}
 
 	if err := query.Count(&count).Error; err != nil {
@@ -105,7 +109,7 @@ func (repo *UserEducationRepository) DeleteByUserIDSchoolID(userID int64, school
 	return nil
 }
 
-func (repo *UserEducationRepository) ReadTranslationsByUserIDLanguageID(userID int64, languageID int64, pageNumber int, pageSize int) ([]models.EducationTranslationResponse, error) {
+func (repo *UserEducationRepository) ReadTranslationsByUserIDLanguageID(userID int64, languageID int64, isActive *bool, pageNumber int, pageSize int) ([]models.EducationTranslationResponse, error) {
 	var skills []models.EducationTranslationResponse
 
 	// default
@@ -123,6 +127,10 @@ func (repo *UserEducationRepository) ReadTranslationsByUserIDLanguageID(userID i
 		Table("user_education_translations").
 		Select(`
 			user_education_translations.*,
+			user_educations.month_start,
+			user_educations.month_end,
+			user_educations.year_start,
+			user_educations.year_end,
 			IFNULL(schools.id, '') AS school_id, 
             IFNULL(schools.code, '') AS school_code,
             IFNULL(schools.name, '') AS school_name,
@@ -137,6 +145,10 @@ func (repo *UserEducationRepository) ReadTranslationsByUserIDLanguageID(userID i
 		Where("user_educations.user_id = ?", userID).
 		Where("user_education_translations.language_id = ?", languageID).
 		Limit(pageSize).Offset(offset)
+
+	if isActive != nil {
+		query = query.Where("user_educations.is_active = ?", isActive)
+	}
 
 	if err := query.Find(&skills).Error; err != nil {
 		return nil, err

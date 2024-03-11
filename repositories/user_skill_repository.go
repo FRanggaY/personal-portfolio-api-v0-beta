@@ -18,12 +18,16 @@ func (repo *UserSkillRepository) Create(newData *models.UserSkill) (*models.User
 	return newData, nil
 }
 
-func (repo *UserSkillRepository) Count(userID *int64) (int, error) {
+func (repo *UserSkillRepository) Count(userID *int64, isActive *bool) (int, error) {
 	var count int64
 	query := models.DB.Model(&models.UserSkill{})
 
 	if userID != nil {
 		query = query.Where(helper.FilterUserIDEqual, userID)
+	}
+
+	if isActive != nil {
+		query = query.Where("is_active = ?", isActive)
 	}
 
 	if err := query.Count(&count).Error; err != nil {
@@ -105,7 +109,7 @@ func (repo *UserSkillRepository) DeleteByUserIDSkillID(userID int64, skillID int
 	return nil
 }
 
-func (repo *UserSkillRepository) ReadTranslationsByUserIDLanguageID(userID int64, languageID int64, pageNumber int, pageSize int) ([]models.SkillTranslationResponse, error) {
+func (repo *UserSkillRepository) ReadTranslationsByUserIDLanguageID(userID int64, languageID int64, isActive *bool, pageNumber int, pageSize int) ([]models.SkillTranslationResponse, error) {
 	var skills []models.SkillTranslationResponse
 
 	// default
@@ -131,6 +135,10 @@ func (repo *UserSkillRepository) ReadTranslationsByUserIDLanguageID(userID int64
 		Where("user_skills.user_id = ?", userID).
 		Where("skill_translations.language_id = ?", languageID).
 		Limit(pageSize).Offset(offset)
+
+	if isActive != nil {
+		query = query.Where("user_skills.is_active = ?", isActive)
+	}
 
 	if err := query.Find(&skills).Error; err != nil {
 		return nil, err

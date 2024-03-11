@@ -40,6 +40,8 @@ func GetPublicFilteredPaginatedUserExperienceDetail(w http.ResponseWriter, r *ht
 
 	languageIDFilter := helper.ParseIDStringToInt(languageIDFilterStr)
 
+	isActiveBool := helper.ParseIDStringToBool("true")
+
 	userRepo := repositories.NewUserRepository()
 	userExperienceRepo := repositories.NewUserExperienceRepository()
 
@@ -50,7 +52,7 @@ func GetPublicFilteredPaginatedUserExperienceDetail(w http.ResponseWriter, r *ht
 		return
 	}
 
-	totalCount, err := userExperienceRepo.Count(&user.ID)
+	totalCount, err := userExperienceRepo.Count(&user.ID, &isActiveBool)
 	if err != nil {
 		response := map[string]string{"message": "Failed to fetch total count"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
@@ -59,7 +61,7 @@ func GetPublicFilteredPaginatedUserExperienceDetail(w http.ResponseWriter, r *ht
 
 	totalPage := int(math.Ceil(float64(totalCount) / float64(pageSize)))
 
-	userExperiences, err := userExperienceRepo.ReadTranslationsByUserIDLanguageID(user.ID, languageIDFilter, pageNumber, pageSize)
+	userExperiences, err := userExperienceRepo.ReadTranslationsByUserIDLanguageID(user.ID, languageIDFilter, &isActiveBool, pageNumber, pageSize)
 	if err != nil {
 		response := map[string]string{"message": "Failed to fetch users experience"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)

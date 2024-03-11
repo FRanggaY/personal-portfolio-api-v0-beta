@@ -65,8 +65,12 @@ func CreateUserExperience(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newUserExperienceData := models.UserExperience{
-		UserID:    uint(userID),
-		CompanyID: uint(userExperienceInput.CompanyID),
+		UserID:     uint(userID),
+		CompanyID:  uint(userExperienceInput.CompanyID),
+		MonthStart: userExperienceInput.MonthStart,
+		MonthEnd:   userExperienceInput.MonthEnd,
+		YearStart:  uint(userExperienceInput.YearStart),
+		YearEnd:    uint(userExperienceInput.YearEnd),
 	}
 
 	// insert to database

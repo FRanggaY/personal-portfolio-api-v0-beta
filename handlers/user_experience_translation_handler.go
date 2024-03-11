@@ -73,10 +73,6 @@ func CreateUserExperienceTranslation(w http.ResponseWriter, r *http.Request) {
 		Location:         userExperienceTranslationInput.Location,
 		LocationType:     userExperienceTranslationInput.LocationType,
 		Industry:         userExperienceTranslationInput.Industry,
-		MonthStart:       userExperienceTranslationInput.MonthStart,
-		MonthEnd:         userExperienceTranslationInput.MonthEnd,
-		YearStart:        uint(userExperienceTranslationInput.YearStart),
-		YearEnd:          uint(userExperienceTranslationInput.YearEnd),
 	}
 	// insert to database
 	if newUserExperienceTranslation, err := userExperienceTranslationRepo.Create(&newUserExperienceTranslationData); err != nil {

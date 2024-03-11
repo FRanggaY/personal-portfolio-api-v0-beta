@@ -2946,7 +2946,19 @@ const docTemplate = `{
         "models.UserEducationCreateForm": {
             "type": "object",
             "properties": {
+                "month_end": {
+                    "type": "integer"
+                },
+                "month_start": {
+                    "type": "integer"
+                },
                 "school_id": {
+                    "type": "integer"
+                },
+                "year_end": {
+                    "type": "integer"
+                },
+                "year_start": {
                     "type": "integer"
                 }
             }
@@ -2969,23 +2981,11 @@ const docTemplate = `{
                 "location_type": {
                     "type": "string"
                 },
-                "month_end": {
-                    "type": "integer"
-                },
-                "month_start": {
-                    "type": "integer"
-                },
                 "school_id": {
                     "type": "integer"
                 },
                 "title": {
                     "type": "string"
-                },
-                "year_end": {
-                    "type": "integer"
-                },
-                "year_start": {
-                    "type": "integer"
                 }
             }
         },
@@ -2993,6 +2993,18 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "company_id": {
+                    "type": "integer"
+                },
+                "month_end": {
+                    "type": "integer"
+                },
+                "month_start": {
+                    "type": "integer"
+                },
+                "year_end": {
+                    "type": "integer"
+                },
+                "year_start": {
                     "type": "integer"
                 }
             }
@@ -3021,20 +3033,8 @@ const docTemplate = `{
                 "location_type": {
                     "type": "string"
                 },
-                "month_end": {
-                    "type": "integer"
-                },
-                "month_start": {
-                    "type": "integer"
-                },
                 "title": {
                     "type": "string"
-                },
-                "year_end": {
-                    "type": "integer"
-                },
-                "year_start": {
-                    "type": "integer"
                 }
             }
         },

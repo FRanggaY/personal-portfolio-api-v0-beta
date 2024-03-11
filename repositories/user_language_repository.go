@@ -105,7 +105,7 @@ func (repo *UserLanguageRepository) DeleteByUserIDLanguageID(userID int64, langu
 	return nil
 }
 
-func (repo *UserLanguageRepository) ReadTranslationsByUserIDLanguageID(userID int64, languageID int64, pageNumber int, pageSize int) ([]models.UserLanguageTranslationResponse, error) {
+func (repo *UserLanguageRepository) ReadTranslationsByUserIDLanguageID(userID int64, languageID int64, isActive *bool, pageNumber int, pageSize int) ([]models.UserLanguageTranslationResponse, error) {
 	var languages []models.UserLanguageTranslationResponse
 
 	// default
@@ -132,6 +132,10 @@ func (repo *UserLanguageRepository) ReadTranslationsByUserIDLanguageID(userID in
 		Where("user_languages.user_id = ?", userID).
 		Where("user_language_translations.language_id = ?", languageID).
 		Limit(pageSize).Offset(offset)
+
+	if isActive != nil {
+		query = query.Where("user_languages.is_active = ?", isActive)
+	}
 
 	if err := query.Find(&languages).Error; err != nil {
 		return nil, err

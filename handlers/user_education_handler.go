@@ -65,8 +65,12 @@ func CreateUserEducation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newUserEducationData := models.UserEducation{
-		UserID:   uint(userID),
-		SchoolId: uint(userEducationInput.SchoolID),
+		UserID:     uint(userID),
+		SchoolId:   uint(userEducationInput.SchoolID),
+		MonthStart: userEducationInput.MonthStart,
+		MonthEnd:   userEducationInput.MonthEnd,
+		YearStart:  uint(userEducationInput.YearStart),
+		YearEnd:    uint(userEducationInput.YearEnd),
 	}
 
 	// insert to database

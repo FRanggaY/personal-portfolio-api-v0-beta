@@ -38,6 +38,8 @@ func GetPublicFilteredPaginatedUserSkillDetail(w http.ResponseWriter, r *http.Re
 	pageSize := helper.ParsePageSize(r.URL.Query().Get("size"))
 	pageNumber := helper.ParsePageNumber(r.URL.Query().Get("offset"))
 
+	isActiveBool := helper.ParseIDStringToBool("true")
+
 	languageIDFilter := helper.ParseIDStringToInt(languageIDFilterStr)
 
 	userRepo := repositories.NewUserRepository()
@@ -50,7 +52,7 @@ func GetPublicFilteredPaginatedUserSkillDetail(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	totalCount, err := userSkillRepo.Count(&user.ID)
+	totalCount, err := userSkillRepo.Count(&user.ID, &isActiveBool)
 	if err != nil {
 		response := map[string]string{"message": "Failed to fetch total count"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
@@ -59,7 +61,7 @@ func GetPublicFilteredPaginatedUserSkillDetail(w http.ResponseWriter, r *http.Re
 
 	totalPage := int(math.Ceil(float64(totalCount) / float64(pageSize)))
 
-	userSkills, err := userSkillRepo.ReadTranslationsByUserIDLanguageID(user.ID, languageIDFilter, pageNumber, pageSize)
+	userSkills, err := userSkillRepo.ReadTranslationsByUserIDLanguageID(user.ID, languageIDFilter, &isActiveBool, pageNumber, pageSize)
 	if err != nil {
 		response := map[string]string{"message": "Failed to fetch users skill"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)

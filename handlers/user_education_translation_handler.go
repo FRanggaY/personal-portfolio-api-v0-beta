@@ -73,10 +73,6 @@ func CreateUserEducationTranslation(w http.ResponseWriter, r *http.Request) {
 		Category:        userEducationTranslationInput.Category,
 		Location:        userEducationTranslationInput.Location,
 		LocationType:    userEducationTranslationInput.LocationType,
-		MonthStart:      userEducationTranslationInput.MonthStart,
-		MonthEnd:        userEducationTranslationInput.MonthEnd,
-		YearStart:       uint(userEducationTranslationInput.YearStart),
-		YearEnd:         uint(userEducationTranslationInput.YearEnd),
 	}
 	// insert to database
 	if newUserEducationTranslation, err := userEducationTranslationRepo.Create(&newUserEducationTranslationData); err != nil {

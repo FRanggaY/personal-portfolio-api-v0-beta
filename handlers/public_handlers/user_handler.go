@@ -37,6 +37,8 @@ func GetPublicFilteredPaginatedUserDetail(w http.ResponseWriter, r *http.Request
 	pageSize := helper.ParsePageSize(r.URL.Query().Get("size"))
 	pageNumber := helper.ParsePageNumber(r.URL.Query().Get("offset"))
 
+	isActiveBool := helper.ParseIDStringToBool("true")
+
 	userRepo := repositories.NewUserRepository()
 	userAttachmentRepo := repositories.NewUserAttachmentRepository()
 	userPositionRepo := repositories.NewUserPositionRepository()
@@ -49,21 +51,21 @@ func GetPublicFilteredPaginatedUserDetail(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	userPositions, err := userPositionRepo.ReadAll(&user.ID)
+	userPositions, err := userPositionRepo.ReadAll(&user.ID, &isActiveBool)
 	if err != nil {
 		response := map[string]string{"message": "Failed to fetch user positions"}
 		helper.ResponseJSON(w, http.StatusNotFound, response)
 		return
 	}
 
-	userAttachments, err := userAttachmentRepo.ReadAll(&user.ID, nil)
+	userAttachments, err := userAttachmentRepo.ReadAll(&user.ID, nil, &isActiveBool)
 	if err != nil {
 		response := map[string]string{"message": "Failed to fetch user attachment"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
 
-	userLanguages, err := userLanguageRepo.ReadTranslationsByUserIDLanguageID(user.ID, languageIDFilter, pageNumber, pageSize)
+	userLanguages, err := userLanguageRepo.ReadTranslationsByUserIDLanguageID(user.ID, languageIDFilter, &isActiveBool, pageNumber, pageSize)
 	if err != nil {
 		response := map[string]string{"message": "Failed to fetch user language"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)

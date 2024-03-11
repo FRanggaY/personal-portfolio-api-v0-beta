@@ -18,12 +18,16 @@ func (repo *UserExperienceRepository) Create(newData *models.UserExperience) (*m
 	return newData, nil
 }
 
-func (repo *UserExperienceRepository) Count(userID *int64) (int, error) {
+func (repo *UserExperienceRepository) Count(userID *int64, isActive *bool) (int, error) {
 	var count int64
 	query := models.DB.Model(&models.UserExperience{})
 
 	if userID != nil {
 		query = query.Where(helper.FilterUserIDEqual, userID)
+	}
+
+	if isActive != nil {
+		query = query.Where("is_active = ?", isActive)
 	}
 
 	if err := query.Count(&count).Error; err != nil {
@@ -105,7 +109,7 @@ func (repo *UserExperienceRepository) DeleteByUserIDCompanyID(userID int64, comp
 	return nil
 }
 
-func (repo *UserExperienceRepository) ReadTranslationsByUserIDLanguageID(userID int64, languageID int64, pageNumber int, pageSize int) ([]models.ExperienceTranslationResponse, error) {
+func (repo *UserExperienceRepository) ReadTranslationsByUserIDLanguageID(userID int64, languageID int64, isActive *bool, pageNumber int, pageSize int) ([]models.ExperienceTranslationResponse, error) {
 	var skills []models.ExperienceTranslationResponse
 
 	// default
@@ -123,6 +127,10 @@ func (repo *UserExperienceRepository) ReadTranslationsByUserIDLanguageID(userID 
 		Table("user_experience_translations").
 		Select(`
 			user_experience_translations.*,
+			user_experiences.month_start,
+			user_experiences.month_end,
+			user_experiences.year_start,
+			user_experiences.year_end,
 			IFNULL(companies.id, '') AS company_id, 
             IFNULL(companies.code, '') AS company_code,
             IFNULL(companies.name, '') AS company_name,
@@ -137,6 +145,10 @@ func (repo *UserExperienceRepository) ReadTranslationsByUserIDLanguageID(userID 
 		Where("user_experiences.user_id = ?", userID).
 		Where("user_experience_translations.language_id = ?", languageID).
 		Limit(pageSize).Offset(offset)
+
+	if isActive != nil {
+		query = query.Where("user_experiences.is_active = ?", isActive)
+	}
 
 	if err := query.Find(&skills).Error; err != nil {
 		return nil, err

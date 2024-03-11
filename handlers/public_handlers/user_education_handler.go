@@ -40,6 +40,8 @@ func GetPublicFilteredPaginatedUserEducationDetail(w http.ResponseWriter, r *htt
 
 	languageIDFilter := helper.ParseIDStringToInt(languageIDFilterStr)
 
+	isActiveBool := helper.ParseIDStringToBool("true")
+
 	userRepo := repositories.NewUserRepository()
 	userEducationRepo := repositories.NewUserEducationRepository()
 
@@ -50,7 +52,7 @@ func GetPublicFilteredPaginatedUserEducationDetail(w http.ResponseWriter, r *htt
 		return
 	}
 
-	totalCount, err := userEducationRepo.Count(&user.ID)
+	totalCount, err := userEducationRepo.Count(&user.ID, &isActiveBool)
 	if err != nil {
 		response := map[string]string{"message": "Failed to fetch total count"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
@@ -59,7 +61,7 @@ func GetPublicFilteredPaginatedUserEducationDetail(w http.ResponseWriter, r *htt
 
 	totalPage := int(math.Ceil(float64(totalCount) / float64(pageSize)))
 
-	userEducations, err := userEducationRepo.ReadTranslationsByUserIDLanguageID(user.ID, languageIDFilter, pageNumber, pageSize)
+	userEducations, err := userEducationRepo.ReadTranslationsByUserIDLanguageID(user.ID, languageIDFilter, &isActiveBool, pageNumber, pageSize)
 	if err != nil {
 		response := map[string]string{"message": "Failed to fetch users education"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)

@@ -14,6 +14,7 @@ type UserLanguage struct {
 	ID         int64     `gorm:"primaryKey" json:"id"`
 	UserID     uint      // Foreign key to link user experience to user
 	LanguageID uint      // Foreign key to link user experience to skill
+	IsActive   bool      `gorm:"bool;default:1" json:"is_active"`
 	CreatedAt  time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoCreateTime" json:"created_at"`
 	UpdatedAt  time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoUpdateTime" json:"updated_at"`
 

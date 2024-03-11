@@ -32,12 +32,16 @@ func (repo *UserPositionRepository) Count(userID *int64) (int, error) {
 	return int(count), nil
 }
 
-func (repo *UserPositionRepository) ReadAll(userID *int64) ([]models.UserPosition, error) {
+func (repo *UserPositionRepository) ReadAll(userID *int64, isActive *bool) ([]models.UserPosition, error) {
 	query := models.DB
 	var datas []models.UserPosition
 
 	if userID != nil {
-		query = query.Where("user_id LIKE ?", userID)
+		query = query.Where("user_id = ?", userID)
+	}
+
+	if isActive != nil {
+		query = query.Where("is_active = ?", isActive)
 	}
 
 	if err := query.Find(&datas).Error; err != nil {

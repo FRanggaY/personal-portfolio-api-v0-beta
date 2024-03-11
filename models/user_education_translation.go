@@ -37,10 +37,6 @@ type UserEducationTranslationCreateForm struct {
 	Category     string `gorm:"varchar;not null;size:14" json:"category"`
 	Location     string `gorm:"varchar;not null;size:128" json:"location"`
 	LocationType string `gorm:"varchar;not null;size:36" json:"location_type"`
-	MonthStart   int    `gorm:"int;not null;size:2" json:"month_start"`
-	MonthEnd     int    `gorm:"int;size:2" json:"month_end"`
-	YearStart    int64  `gorm:"int64;not null;size:4" json:"year_start"`
-	YearEnd      int64  `gorm:"int64;size:4" json:"year_end"`
 }
 
 type UserEducationTranslation struct {
@@ -52,10 +48,6 @@ type UserEducationTranslation struct {
 	Category        string    `gorm:"varchar;not null;size:14" json:"category"`
 	Location        string    `gorm:"varchar;not null;size:128" json:"location"`
 	LocationType    string    `gorm:"varchar;not null;size:36" json:"location_type"`
-	MonthStart      int       `gorm:"int;not null;size:2" json:"month_start"`
-	MonthEnd        int       `gorm:"int;size:2" json:"month_end"`
-	YearStart       uint      `gorm:"uint;not null" json:"year_start"`
-	YearEnd         uint      `gorm:"uint" json:"year_end"`
 	CreatedAt       time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoCreateTime" json:"created_at"`
 	UpdatedAt       time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoUpdateTime" json:"updated_at"`
 }

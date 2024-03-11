@@ -36,7 +36,7 @@ func (repo *UserAttachmentRepository) Count(userID *int64, category *string) (in
 	return int(count), nil
 }
 
-func (repo *UserAttachmentRepository) ReadAll(userID *int64, category *string) ([]models.UserAttachment, error) {
+func (repo *UserAttachmentRepository) ReadAll(userID *int64, category *string, isActive *bool) ([]models.UserAttachment, error) {
 	query := models.DB
 	var datas []models.UserAttachment
 
@@ -46,6 +46,10 @@ func (repo *UserAttachmentRepository) ReadAll(userID *int64, category *string) (
 
 	if category != nil {
 		query = query.Where(helper.FilterCategoryLike, category)
+	}
+
+	if isActive != nil {
+		query = query.Where("is_active = ?", isActive)
 	}
 
 	if err := query.Find(&datas).Error; err != nil {
