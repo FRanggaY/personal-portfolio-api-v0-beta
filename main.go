@@ -52,6 +52,12 @@ func main() {
 	apiProtect.HandleFunc("/user-skill", handlers.CreateUserSkill).Methods("POST")
 	apiProtect.HandleFunc("/user-skill/{skill_id}", handlers.DeleteUserSkill).Methods("DELETE")
 
+	apiProtect.HandleFunc("/user-language", handlers.CreateUserLanguage).Methods("POST")
+	apiProtect.HandleFunc("/user-language/{language_id}", handlers.DeleteUserLanguage).Methods("DELETE")
+
+	apiProtect.HandleFunc("/user-language-translation", handlers.CreateUserLanguageTranslation).Methods("POST")
+	apiProtect.HandleFunc("/user-language-translation/{select_language_id}/{language_id}", handlers.DeleteUserLanguageTranslation).Methods("DELETE")
+
 	apiProtect.HandleFunc("/user-experience", handlers.CreateUserExperience).Methods("POST")
 	apiProtect.HandleFunc("/user-experience/{company_id}", handlers.DeleteUserExperience).Methods("DELETE")
 

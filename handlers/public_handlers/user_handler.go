@@ -14,6 +14,8 @@ import (
 // @Tags public-users
 // @Accept json
 // @Produce json
+// @Param size query int false "Page size" default(5)
+// @Param offset query int false "Page offset" default(1)
 // @Param username path string true "Username"
 // @Param language_id query string true "Filter by languageId"
 // @Success 200 {object} map[string]string "Success"
@@ -30,12 +32,15 @@ func GetPublicFilteredPaginatedUserDetail(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	// languageIDFilterStr := r.URL.Query().Get("language_id")
-	// languageIDFilter := helper.ParseIDStringToInt(languageIDFilterStr)
+	languageIDFilterStr := r.URL.Query().Get("language_id")
+	languageIDFilter := helper.ParseIDStringToInt(languageIDFilterStr)
+	pageSize := helper.ParsePageSize(r.URL.Query().Get("size"))
+	pageNumber := helper.ParsePageNumber(r.URL.Query().Get("offset"))
 
 	userRepo := repositories.NewUserRepository()
 	userAttachmentRepo := repositories.NewUserAttachmentRepository()
 	userPositionRepo := repositories.NewUserPositionRepository()
+	userLanguageRepo := repositories.NewUserLanguageRepository()
 
 	user, err := userRepo.ReadByUsername(userNameStr)
 	if err != nil {
@@ -58,8 +63,16 @@ func GetPublicFilteredPaginatedUserDetail(w http.ResponseWriter, r *http.Request
 		return
 	}
 
+	userLanguages, err := userLanguageRepo.ReadTranslationsByUserIDLanguageID(user.ID, languageIDFilter, pageNumber, pageSize)
+	if err != nil {
+		response := map[string]string{"message": "Failed to fetch user language"}
+		helper.ResponseJSON(w, http.StatusInternalServerError, response)
+		return
+	}
+
 	var positions []map[string]interface{}
 	var attachments []map[string]interface{}
+	var languages []map[string]interface{}
 
 	for _, userPosition := range userPositions {
 		position := map[string]interface{}{
@@ -82,6 +95,18 @@ func GetPublicFilteredPaginatedUserDetail(w http.ResponseWriter, r *http.Request
 		attachments = append(attachments, attachment)
 	}
 
+	for _, userLanguage := range userLanguages {
+		language := map[string]interface{}{
+			"id":          userLanguage.ID,
+			"code":        userLanguage.Code,
+			"title":       userLanguage.Title,
+			"name":        userLanguage.Name,
+			"description": userLanguage.Description,
+			"logo_url":    helper.GetFullImageUrl(userLanguage.LogoUrl, r),
+		}
+		languages = append(languages, language)
+	}
+
 	response := map[string]interface{}{
 		"message": "success",
 		"data": map[string]interface{}{
@@ -92,6 +117,7 @@ func GetPublicFilteredPaginatedUserDetail(w http.ResponseWriter, r *http.Request
 			"updated_at":  user.UpdatedAt,
 			"positions":   positions,
 			"attachments": attachments,
+			"languages":   languages,
 		},
 	}
 

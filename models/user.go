@@ -34,6 +34,7 @@ type User struct {
 	Attachments []UserAttachment `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Experiences []UserExperience `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Educations  []UserEducation  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Languages   []UserLanguage   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
 func (User) BeforeUpdate(db *gorm.DB) error {

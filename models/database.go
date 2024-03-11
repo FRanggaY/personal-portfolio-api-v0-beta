@@ -38,6 +38,7 @@ func ConnectDatabase() {
 		&UserPosition{}, &UserAttachment{},
 		&UserExperience{}, &UserExperienceTranslation{},
 		&UserEducation{}, &UserEducationTranslation{},
+		&UserLanguage{}, &UserLanguageTranslation{},
 	)
 	if err != nil {
 		log.Fatal("Error migrating database: ", err)

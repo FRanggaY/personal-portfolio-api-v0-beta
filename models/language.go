@@ -26,6 +26,8 @@ type Language struct {
 	UserExperienceTranslations []UserExperienceTranslation `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	UserEducationTranslations  []UserEducationTranslation  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	SkillTranslations          []SkillTranslation          `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	UserLanguages              []UserLanguage              `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	UserLanguageTranslation    []UserLanguageTranslation   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
 func (Language) BeforeUpdate(db *gorm.DB) error {
