@@ -20,16 +20,16 @@ type UserLanguageTranslationResponse struct {
 type UserLanguageTranslationCreateForm struct {
 	SelectLanguageID int64  `gorm:"int64;not null" json:"select_language_id"`
 	LanguageID       int64  `gorm:"int64;not null" json:"language_id"`
-	Title            string `gorm:"varchar;not null;size:30" json:"title"`
-	Description      string `gorm:"varchar;not null;size:300" json:"description"`
+	Title            string `gorm:"varchar;size:30" json:"title"`
+	Description      string `gorm:"varchar;size:300" json:"description"`
 }
 
 type UserLanguageTranslation struct {
 	ID             int64     `gorm:"primaryKey" json:"id"`
 	LanguageID     uint      // Foreign key to link user experience translation to language
 	UserLanguageID uint      // Foreign key to link user skill translation to skill
-	Title          string    `gorm:"varchar;not null;size:30" json:"title"`
-	Description    string    `gorm:"varchar;not null;size:300" json:"description"`
+	Title          string    `gorm:"varchar;size:30" json:"title"`
+	Description    string    `gorm:"varchar;size:300" json:"description"`
 	CreatedAt      time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoCreateTime" json:"created_at"`
 	UpdatedAt      time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoUpdateTime" json:"updated_at"`
 }
