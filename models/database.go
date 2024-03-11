@@ -35,6 +35,7 @@ func ConnectDatabase() {
 		&Language{}, &User{},
 		&School{}, &Company{},
 		&Skill{}, &UserSkill{}, &SkillTranslation{},
+		&ProjectPlatform{}, &ProjectPlatformTranslation{},
 		&UserPosition{}, &UserAttachment{},
 		&UserExperience{}, &UserExperienceTranslation{},
 		&UserEducation{}, &UserEducationTranslation{},

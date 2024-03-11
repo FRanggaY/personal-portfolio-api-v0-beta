@@ -20,6 +20,12 @@ type SkillTranslationResponse struct {
 	UpdatedAt          time.Time `json:"updated_at"`
 }
 
+type SkillTranslationCreateForm struct {
+	LanguageID  int64  `gorm:"int64;not null" json:"language_id"`
+	SkillID     int64  `gorm:"int64;not null" json:"skill_id"`
+	Description string `gorm:"varchar;not null;size:300" json:"description"`
+}
+
 type SkillTranslation struct {
 	ID          int64     `gorm:"primaryKey" json:"id"`
 	SkillID     uint      // Foreign key to link user skill translation to skill

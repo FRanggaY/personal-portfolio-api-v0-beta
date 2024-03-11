@@ -23,11 +23,12 @@ type Language struct {
 	CreatedAt time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoCreateTime" json:"created_at"`
 	UpdatedAt time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoUpdateTime" json:"updated_at"`
 
-	UserExperienceTranslations []UserExperienceTranslation `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	UserEducationTranslations  []UserEducationTranslation  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	SkillTranslations          []SkillTranslation          `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	UserLanguages              []UserLanguage              `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	UserLanguageTranslation    []UserLanguageTranslation   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	UserExperienceTranslations  []UserExperienceTranslation  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	UserEducationTranslations   []UserEducationTranslation   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	SkillTranslations           []SkillTranslation           `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	ProjectPlatformTranslations []ProjectPlatformTranslation `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	UserLanguages               []UserLanguage               `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	UserLanguageTranslation     []UserLanguageTranslation    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
 func (Language) BeforeUpdate(db *gorm.DB) error {

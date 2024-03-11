@@ -14,6 +14,17 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.ProjectPlatformTranslationCreateForm:
+    properties:
+      ProjectPlatform_id:
+        type: integer
+      description:
+        type: string
+      language_id:
+        type: integer
+      title:
+        type: string
+    type: object
   models.SkillTranslationCreateForm:
     properties:
       description:
@@ -455,6 +466,202 @@ paths:
       summary: Profile user
       tags:
       - auth
+  /project-platform:
+    get:
+      consumes:
+      - application/json
+      description: Get All ProjectPlatform with the pagination need login
+      parameters:
+      - default: 5
+        description: Page size
+        in: query
+        name: size
+        type: integer
+      - default: 1
+        description: Page offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get All Project Platform
+      tags:
+      - project-platforms
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new projectPlatform with file upload support
+      parameters:
+      - description: Project Platform code
+        in: formData
+        name: code
+        required: true
+        type: string
+      - description: Project Platform name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Project Platform image file
+        in: formData
+        name: image_file
+        required: true
+        type: file
+      - description: Project Platform URL
+        in: formData
+        name: url
+        type: string
+      - description: Is external URL
+        in: formData
+        name: is_external_url
+        type: boolean
+      - description: Is external image URL
+        in: formData
+        name: is_external_image_url
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new project platform
+      tags:
+      - project-platforms
+  /project-platform-translation:
+    post:
+      consumes:
+      - application/json
+      description: Create a new project Platform translation
+      parameters:
+      - description: Project Platform translation input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProjectPlatformTranslationCreateForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new project Platform translation
+      tags:
+      - project-platforms
+  /project-platform-translation/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user project Platform
+      parameters:
+      - description: Project Platform Translation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete User Project Platform
+      tags:
+      - project-platforms
+  /project-platform/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve details of a project platform by its ID
+      parameters:
+      - description: Project Platform ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Read project Platform
+      tags:
+      - project-platforms
   /public/user/{username}:
     get:
       consumes:

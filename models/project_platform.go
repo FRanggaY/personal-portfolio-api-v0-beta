@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type SkillAllResponse struct {
+type ProjectPlatformAllResponse struct {
 	ID        int64     `json:"id"`
 	Code      string    `json:"code"`
 	Name      string    `json:"name"`
@@ -15,7 +15,7 @@ type SkillAllResponse struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-type Skill struct {
+type ProjectPlatform struct {
 	ID                 int64     `gorm:"primaryKey" json:"id"`
 	Code               string    `gorm:"varchar;unique;not null;size:5" json:"code"`
 	Name               string    `gorm:"varchar;unique;not null;size:48" json:"name"`
@@ -26,11 +26,10 @@ type Skill struct {
 	CreatedAt          time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoCreateTime" json:"created_at"`
 	UpdatedAt          time.Time `gorm:"default:current_timestamp;type:timestamp(0);autoUpdateTime" json:"updated_at"`
 
-	UserSkills        []UserSkill        `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	SkillTranslations []SkillTranslation `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	ProjectPlatformTranslations []ProjectPlatformTranslation `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
-func (Skill) BeforeUpdate(db *gorm.DB) error {
+func (ProjectPlatform) BeforeUpdate(db *gorm.DB) error {
 	// manually updated at
 	db.Statement.SetColumn("UpdatedAt", time.Now())
 	return nil

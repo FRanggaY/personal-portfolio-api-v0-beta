@@ -94,6 +94,13 @@ func main() {
 
 	apiProtect.HandleFunc("/skill-translation", handlers.CreateSkillTranslation).Methods("POST")
 	apiProtect.HandleFunc("/skill-translation/{id}", handlers.DeleteSkillTranslation).Methods("DELETE")
+
+	apiProtect.HandleFunc("/project-platform", handlers.GetFilteredPaginatedProjectPlatforms).Methods("GET")
+	apiProtect.HandleFunc("/project-platform", handlers.CreateProjectPlatform).Methods("POST")
+	apiProtect.HandleFunc("/project-platform/{id}", handlers.ReadProjectPlatform).Methods("GET")
+
+	apiProtect.HandleFunc("/project-platform-translation", handlers.CreateProjectPlatformTranslation).Methods("POST")
+	apiProtect.HandleFunc("/project-platform-translation/{id}", handlers.DeleteProjectPlatformTranslation).Methods("DELETE")
 	apiProtect.Use(middlewares.JWTMiddleware)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
