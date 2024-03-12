@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/FRanggaY/personal-portfolio-api/docs"
 	"github.com/FRanggaY/personal-portfolio-api/handlers"
@@ -17,6 +18,11 @@ func main() {
 	r := mux.NewRouter()
 
 	models.ConnectDatabase()
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default port if not provided in .env
+	}
 
 	var basePathRoute = "/api/v1"
 
@@ -114,5 +120,5 @@ func main() {
 	apiProtect.HandleFunc("/project-platform-translation/{id}", handlers.DeleteProjectPlatformTranslation).Methods("DELETE")
 	apiProtect.Use(middlewares.JWTMiddleware)
 
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }

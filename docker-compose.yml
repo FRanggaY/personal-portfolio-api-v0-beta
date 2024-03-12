@@ -1,0 +1,11 @@
+# docker-compose.yml
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "${PORT:-8080}:${PORT:-8080}"  # Use PORT from .env, default to 8080 if not set
+    volumes:
+      - .:/app
