@@ -603,15 +603,20 @@ paths:
       summary: Create a new project Platform translation
       tags:
       - project-platforms
-  /project-platform-translation/{id}:
+  /project-platform-translation/{project_platform_id}/{language_id}:
     delete:
       consumes:
       - application/json
       description: Delete user project Platform
       parameters:
-      - description: Project Platform Translation ID
+      - description: Project Platform ID
         in: path
-        name: id
+        name: project_platform_id
+        required: true
+        type: integer
+      - description: Language ID
+        in: path
+        name: language_id
         required: true
         type: integer
       produces:

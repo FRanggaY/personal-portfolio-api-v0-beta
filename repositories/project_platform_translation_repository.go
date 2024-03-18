@@ -94,3 +94,13 @@ func (repo *ProjectPlatformTranslationRepository) Delete(ID int64) error {
 	}
 	return nil
 }
+
+func (repo *ProjectPlatformTranslationRepository) DeleteByLanguageIDProjectPlatformID(languageID int64, projectPlatformID int64) error {
+	if err := models.DB.
+		Where("language_id = ? AND project_platform_id = ?", languageID, projectPlatformID).
+		Delete(&models.ProjectPlatformTranslation{}).
+		Error; err != nil {
+		return err
+	}
+	return nil
+}

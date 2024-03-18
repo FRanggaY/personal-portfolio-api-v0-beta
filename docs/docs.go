@@ -682,7 +682,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/project-platform-translation/{id}": {
+        "/project-platform-translation/{project_platform_id}/{language_id}": {
             "delete": {
                 "description": "Delete user project Platform",
                 "consumes": [
@@ -698,8 +698,15 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Project Platform Translation ID",
-                        "name": "id",
+                        "description": "Project Platform ID",
+                        "name": "project_platform_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Language ID",
+                        "name": "language_id",
                         "in": "path",
                         "required": true
                     }

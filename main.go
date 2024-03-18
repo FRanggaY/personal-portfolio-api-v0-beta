@@ -117,7 +117,7 @@ func main() {
 	apiProtect.HandleFunc("/project-platform/{id}", handlers.ReadProjectPlatform).Methods("GET")
 
 	apiProtect.HandleFunc("/project-platform-translation", handlers.CreateProjectPlatformTranslation).Methods("POST")
-	apiProtect.HandleFunc("/project-platform-translation/{id}", handlers.DeleteProjectPlatformTranslation).Methods("DELETE")
+	apiProtect.HandleFunc("/project-platform-translation/{project_platform_id}/{language_id}", handlers.DeleteProjectPlatformTranslation).Methods("DELETE")
 	apiProtect.Use(middlewares.JWTMiddleware)
 
 	log.Fatal(http.ListenAndServe(":"+port, r))

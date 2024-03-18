@@ -93,25 +93,35 @@ func CreateProjectPlatformTranslation(w http.ResponseWriter, r *http.Request) {
 // @Tags project-platforms
 // @Accept json
 // @Produce json
-// @Param id path int true "Project Platform Translation ID"
+// @Param project_platform_id path int true "Project Platform ID"
+// @Param language_id path int true "Language ID"
 // @Success 200 {object} map[string]string "Success"
 // @Success 500 {object} map[string]string "Internal Server Error"
 // @Failure 404 {object} map[string]string "Not Found"
-// @Router /project-platform-translation/{id} [delete]
+// @Router /project-platform-translation/{project_platform_id}/{language_id} [delete]
 func DeleteProjectPlatformTranslation(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	projectPlatformTranslationIDStr, ok := vars["id"]
+	projectPlatformIDStr, ok := vars["id"]
 	if !ok {
-		response := map[string]string{"message": "Project Platform Translation not found"}
+		response := map[string]string{"message": "Project ID not found"}
+		helper.ResponseJSON(w, http.StatusInternalServerError, response)
+		return
+	}
+
+	languageIDStr, ok := vars["language_id"]
+	if !ok {
+		response := map[string]string{"message": "Language ID not found"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
 
 	projectPlatformTranslationRepo := repositories.NewProjectPlatformTranslationRepository()
-	projectPlatformTranslationID := helper.ParseIDStringToInt(projectPlatformTranslationIDStr)
-	err := projectPlatformTranslationRepo.Delete(projectPlatformTranslationID)
+	projectPlatformID := helper.ParseIDStringToInt(projectPlatformIDStr)
+	languageID := helper.ParseIDStringToInt(languageIDStr)
+
+	err := projectPlatformTranslationRepo.DeleteByLanguageIDProjectPlatformID(projectPlatformID, languageID)
 	if err != nil {
-		response := map[string]string{"message": "Project Platform Translation ID not found"}
+		response := map[string]string{"message": "Project Platform ID not found"}
 		helper.ResponseJSON(w, http.StatusNotFound, response)
 		return
 	}
