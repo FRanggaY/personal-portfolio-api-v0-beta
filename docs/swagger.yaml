@@ -1299,15 +1299,20 @@ paths:
       summary: Create a new skill translation
       tags:
       - skills
-  /skill-translation/{id}:
+  /skill-translation/{skill_id}/{language_id}:
     delete:
       consumes:
       - application/json
       description: Delete user skill
       parameters:
-      - description: Skill Translation ID
+      - description: Skill ID
         in: path
-        name: id
+        name: skill_id
+        required: true
+        type: integer
+      - description: Language ID
+        in: path
+        name: language_id
         required: true
         type: integer
       produces:

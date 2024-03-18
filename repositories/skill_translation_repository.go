@@ -94,3 +94,13 @@ func (repo *SkillTranslationRepository) Delete(ID int64) error {
 	}
 	return nil
 }
+
+func (repo *SkillTranslationRepository) DeleteByLanguageIDSkillID(languageID int64, skillID int64) error {
+	if err := models.DB.
+		Where("language_id = ? AND skill_id = ?", languageID, skillID).
+		Delete(&models.SkillTranslation{}).
+		Error; err != nil {
+		return err
+	}
+	return nil
+}

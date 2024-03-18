@@ -1722,7 +1722,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/skill-translation/{id}": {
+        "/skill-translation/{skill_id}/{language_id}": {
             "delete": {
                 "description": "Delete user skill",
                 "consumes": [
@@ -1738,8 +1738,15 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Skill Translation ID",
-                        "name": "id",
+                        "description": "Skill ID",
+                        "name": "skill_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Language ID",
+                        "name": "language_id",
                         "in": "path",
                         "required": true
                     }

@@ -92,23 +92,33 @@ func CreateSkillTranslation(w http.ResponseWriter, r *http.Request) {
 // @Tags skills
 // @Accept json
 // @Produce json
-// @Param id path int true "Skill Translation ID"
+// @Param skill_id path int true "Skill ID"
+// @Param language_id path int true "Language ID"
 // @Success 200 {object} map[string]string "Success"
 // @Success 500 {object} map[string]string "Internal Server Error"
 // @Failure 404 {object} map[string]string "Not Found"
-// @Router /skill-translation/{id} [delete]
+// @Router /skill-translation/{skill_id}/{language_id} [delete]
 func DeleteSkillTranslation(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	skillTranslationIDStr, ok := vars["id"]
+	skillIDStr, ok := vars["skill_id"]
 	if !ok {
 		response := map[string]string{"message": "Skill Translation not found"}
 		helper.ResponseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
 
+	languageIDStr, ok := vars["language_id"]
+	if !ok {
+		response := map[string]string{"message": "Language ID not found"}
+		helper.ResponseJSON(w, http.StatusInternalServerError, response)
+		return
+	}
+
 	skillTranslationRepo := repositories.NewSkillTranslationRepository()
-	skillTranslationID := helper.ParseIDStringToInt(skillTranslationIDStr)
-	err := skillTranslationRepo.Delete(skillTranslationID)
+	skillID := helper.ParseIDStringToInt(skillIDStr)
+	languageID := helper.ParseIDStringToInt(languageIDStr)
+
+	err := skillTranslationRepo.DeleteByLanguageIDSkillID(languageID, skillID)
 	if err != nil {
 		response := map[string]string{"message": "Skill Translation ID not found"}
 		helper.ResponseJSON(w, http.StatusNotFound, response)

@@ -110,7 +110,7 @@ func main() {
 	apiProtect.HandleFunc("/skill/{id}", handlers.ReadSkill).Methods("GET")
 
 	apiProtect.HandleFunc("/skill-translation", handlers.CreateSkillTranslation).Methods("POST")
-	apiProtect.HandleFunc("/skill-translation/{id}", handlers.DeleteSkillTranslation).Methods("DELETE")
+	apiProtect.HandleFunc("/skill-translation/{id}/{language_id}", handlers.DeleteSkillTranslation).Methods("DELETE")
 
 	apiProtect.HandleFunc("/project-platform", handlers.GetFilteredPaginatedProjectPlatforms).Methods("GET")
 	apiProtect.HandleFunc("/project-platform", handlers.CreateProjectPlatform).Methods("POST")
